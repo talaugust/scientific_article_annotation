@@ -4,7 +4,16 @@ from django_mysql.models import JSONField, ListTextField
 from django.contrib.auth.models import User, Group
 
 
-# Create your models here.
+class Article(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    text = models.TextField()
+    title = models.TextField()
+    uri = models.URLField()
+    lead = models.TextField(blank=True)
+    site = models.TextField()
+
 class Annotation(models.Model): 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -19,6 +28,12 @@ class Annotation(models.Model):
     ranges = JSONField()
     tags = JSONField(blank=True)
     uri = models.URLField()
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+    )
 
 
-    # {'permissions': {'read': [], 'update': [], 'delete': [], 'admin': []}, 'user': 'Joe Bloggs', 'ranges': [{'start': '/p[1]', 'startOffset': 1, 'end': '/p[1]', 'endOffset': 143}], 'quote': 'The Trump administration violated the Clean Air Act by not taking action on harmful emissions from landfills, a federal court ruled yesterday.', 'text': 'testing', 'tags': [], 'uri': 'http://this/document/only'}
+
+
+

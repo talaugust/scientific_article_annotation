@@ -8,7 +8,7 @@ router.register(r'groups', views.GroupViewSet)
 
 APIrouter = routers.DefaultRouter()
 APIrouter.register(r'annotations', views.AnnotationViewSet)
-
+APIrouter.register(r'articles', views.ArticleViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
