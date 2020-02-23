@@ -1,0 +1,33 @@
+<!-- templates/HITcode.html-->
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="card mt-4">
+        	{% if completed %}
+	            <div class="card-header">
+	                <h2>Thank you for completing the HIT!</h2>
+	            </div>
+	            <div class="card-body">
+	                <p>  Your unique survey code is:<strong> {{ code }}</strong>. </p>
+	            </div>
+            {% else %}
+            	<div class="card-header">
+	                <h2>HIT incomplete</h2>
+	            </div>
+	            <div class="card-body">
+	                <p> It looks like this HIT hasn't been completed yet, please make sure you filled in all sections of the study. Thank you. </p>
+	            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}s

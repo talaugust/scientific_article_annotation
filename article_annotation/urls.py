@@ -24,7 +24,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-test/', views.root),
     path('api-test/annotations', views.annotations),
-    path('articles/<uuid:pk>/', views.ArticleDetailView.as_view(template_name='article_base.html'), name='article-detail'),
+    path('articles/<uuid:pk>/', views.ArticleView.as_view(), name='article-detail'),
     path('articles/', views.randomArticle, name='random-article-detail'),
+    path('HITcode', views.HITcode, name='HITcode'),
 ]
 

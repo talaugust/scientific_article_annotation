@@ -1,0 +1,56 @@
+{% if is_likert %}
+
+<div class="form-group">
+    {{ field.label }}
+    <div class="row w-75 mt-2">
+      <div class="col-2 ml-5">
+         Not at all 
+      </div>  
+        {% for choice in field %}
+          {% if choice.choice_label != 'None' %}
+          <div class="col-sm">{{ choice.tag }}</div>
+          {% endif %}
+        {% endfor %}
+      <div class="col-2">
+          Very much 
+      </div>
+    </div>
+    {% if form.is_bound %}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <div class="col invalid-feedback d-block">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {% else %}
+
+  <div class="form-group">
+      <strong> {{ field.label }} </strong>
+      {% for choice in field %}
+        {% if choice.choice_label != 'None' %}
+          <div class="form-check mt-2">
+            {{ choice }}
+<!--             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1">
+            <label class="form-check-label" for="exampleRadios1">
+              Default radio
+            </label> -->
+          </div> 
+        {% endif %}
+      {% endfor %}
+    {% if form.is_bound %}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <div class="col invalid-feedback d-block">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  </div>
+
+
+  {% endif %}

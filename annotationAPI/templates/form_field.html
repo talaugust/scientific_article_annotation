@@ -1,0 +1,51 @@
+{% load widget_tweaks %}
+
+{% if is_check %}
+
+	<div class="form-check">
+	 	{% if form.is_bound %}
+			{% if field.errors %}
+				{% render_field field class="form-check-inline is-invalid mr-2" %}
+				{% for error in field.errors %}
+				  <div class="invalid-feedback">
+				    {{ error }}
+				  </div>
+				{% endfor %}
+			{% else %}
+				{% render_field field class="form-check-inline is-valid mr-2" %}
+			{% endif %}
+		{% else %}
+			{% render_field field class="form-check-inline mr-2" %}
+		{% endif %}
+		{{ field.label_tag }}
+		{% if field.help_text %}
+		  <small class="form-text text-muted">{{ field.help_text }}</small>
+		{% endif %}
+	</div>
+
+
+{% else %}
+
+	<div class="form-check">
+		{{ field.label_tag }}
+	 	{% if form.is_bound %}
+			{% if field.errors %}
+				{% render_field field class="form-control is-invalid" %}
+				{% for error in field.errors %}
+				  <div class="invalid-feedback">
+				    {{ error }}
+				  </div>
+				{% endfor %}
+			{% else %}
+				{% render_field field class="form-control is-valid" %}
+			{% endif %}
+		{% else %}
+			{% render_field field class="form-control" %}
+		{% endif %}
+		{% if field.help_text %}
+		  <small class="form-text text-muted">{{ field.help_text }}</small>
+		{% endif %}
+	</div>
+
+
+{% endif %}
