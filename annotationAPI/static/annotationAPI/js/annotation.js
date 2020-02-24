@@ -61,7 +61,7 @@
   content.annotator('addPlugin', 'StoreLogger')
   content.annotator('addPlugin', 'Store', {
       // The endpoint of the store on your server.
-      prefix: 'http://127.0.0.1:8000/api',
+      prefix: '/api',
 
       // Attach the uri of the current page to all annotations to allow search.
       annotationData: {
