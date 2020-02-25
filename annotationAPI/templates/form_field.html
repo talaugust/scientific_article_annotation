@@ -2,25 +2,25 @@
 
 {% if is_check %}
 
-	<div class="form-check">
+	<div class="form-check form-check-inline">
 	 	{% if form.is_bound %}
 			{% if field.errors %}
-				{% render_field field class="form-check-inline is-invalid mr-2" %}
+				{% render_field field class="form-check-inline is-invalid mr-4" %}
 				{% for error in field.errors %}
 				  <div class="invalid-feedback">
 				    {{ error }}
 				  </div>
 				{% endfor %}
 			{% else %}
-				{% render_field field class="form-check-inline is-valid mr-2" %}
+				{% render_field field class="form-check-inline is-valid mr-4" %}
 			{% endif %}
 		{% else %}
-			{% render_field field class="form-check-inline mr-2" %}
+			{% render_field field class="form-check-inline mr-4" %}
 		{% endif %}
-		{{ field.label_tag }}
 		{% if field.help_text %}
 		  <small class="form-text text-muted">{{ field.help_text }}</small>
 		{% endif %}
+		{{ field.label_tag }}
 	</div>
 
 

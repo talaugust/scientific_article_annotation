@@ -76,7 +76,7 @@ class AnnotationHIT(models.Model):
     is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
     lead_interest =  models.IntegerField(choices=LIKERT_CHOICES, default='None')
     is_main_points_highlight = models.BooleanField()
-    is_care_highlight = models.BooleanField()
+    is_care_highlight = models.BooleanField(blank=False)
     is_conclusion = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
 
     # demographics
@@ -87,6 +87,7 @@ class AnnotationHIT(models.Model):
 
     # other
     comments = models.TextField(blank=True)
+    agree_to_contact = models.BooleanField()
 
 
 

@@ -2,16 +2,16 @@
 
 <div class="form-group">
     {{ field.label }}
-    <div class="row w-75 mt-2">
-      <div class="col-2 ml-5">
+    <div class="row mt-2">
+      <div class="col-2">
          Not at all 
       </div>  
         {% for choice in field %}
           {% if choice.choice_label != 'None' %}
-          <div class="col-sm">{{ choice.tag }}</div>
+          <div class="col">{{ choice.tag }}</div>
           {% endif %}
         {% endfor %}
-      <div class="col-2">
+      <div class="col">
           Very much 
       </div>
     </div>

@@ -1,4 +1,4 @@
- // https://docs.djangoproject.com/en/1.11/ref/csrf/#ajax
+// https://docs.djangoproject.com/en/1.11/ref/csrf/#ajax
   function getCookie(name) {
       var cookieValue = null;
       if (document.cookie && document.cookie !== '') {
@@ -34,26 +34,30 @@
 
 
 
-  var DEBUG = false; 
+  
   Annotator.Plugin.StoreLogger = function (element) {
   return {
     pluginInit: function () {
       this.annotator
           .subscribe("annotationCreated", function (annotation) {
             console.info(annotation)
+            num_annotations += 1;
           })
           .subscribe("annotationUpdated", function (annotation) {
             console.info("The annotation: %o has just been updated!", annotation)
           })
           .subscribe("annotationDeleted", function (annotation) {
             console.info("The annotation: %o has just been deleted!", annotation)
+            num_annotations -= 1;
           })
     }
   }
 };
 
+  var DEBUG = false; 
   var content = $('#storyContainer').annotator();
   var article_id = $('#storyContainer').data('id');
+  var num_annotations = 0;
   console.log(article_id);
 
   content.annotator('addPlugin', 'Permissions');
@@ -83,4 +87,17 @@
       },
     });
 
-  $('#storyContainer').data('annotator').plugins['Permissions'].setUser("3");
+
+    $('#HIT-form').on('submit', function(e) {
+      console.log(num_annotations);
+      if (num_annotations < 1) {
+        $('#annotationWarning').show();
+        return false;
+      } else {
+        $('#annotationWarning').hide();
+      }
+
+      return true;
+    })
+
+  // $('#storyContainer').data('annotator').plugins['Permissions'].setUser("3");
