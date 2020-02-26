@@ -192,6 +192,10 @@
   </main>
   <script src="{% static 'annotationAPI/js/annotator-full.min.js' %}"></script>
   <script> 
+
+    // has to be outside document.ready
+    $('#storyContainer').data('id', '{{object.id}}');   
+
     function showSelfDescribe(){
             $("#{{form.gender_self_describe.auto_id}}").show();
             $("label[for={{form.gender_self_describe.auto_id}}]").show();
@@ -202,8 +206,7 @@
     };
 
     $( document ).ready(function() {  
-        hideSelfDescribe(); 
-        $('#storyContainer').data('id', '{{object.id}}');      
+        hideSelfDescribe();    
         $("#{{form.gender.auto_id}}").change(function() {
             var selectedVal = $(this).find(':selected').val();
             var selectedText = $(this).find(':selected').text();
