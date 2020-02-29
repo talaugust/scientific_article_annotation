@@ -23,13 +23,13 @@ class AnnotationHITForm(ModelForm):
             'gender_self_describe',
             'english_prof',
             'agree_to_contact',
-            'comments'
+            'comments',
             ]
         widgets = {
         	'is_lead': RadioSelect,
         	'is_conclusion': RadioSelect,
          	'lead_interest': RadioSelect,
-            'comments': Textarea(attrs={'cols': 80, 'rows': 3})
+            'comments': Textarea(attrs={'cols': 80, 'rows': 3}),
         }
         labels = {
             'is_lead': 'Is there a lead? If so, please highlight the sentences that make up the lead and label the highlight \'LEAD\'.',
@@ -42,5 +42,5 @@ class AnnotationHITForm(ModelForm):
             'gender': 'What is your gender?',
             'gender_self_describe': 'Please self describe',
             'agree_to_contact': 'I agree to being contacted in the next few months about this HIT (this may involve additiona HITs).',
-            'comments': 'Is there anything else about the study you would like to add?'
+            'comments': 'Is there anything else about the study you would like to add?',
         }

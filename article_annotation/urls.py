@@ -22,10 +22,9 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api/', include(APIrouter.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api-test/', views.root),
     path('api-test/annotations', views.annotations),
     path('articles/<uuid:pk>/', views.ArticleView.as_view(), name='article-detail'),
-    path('articles/', views.randomArticle, name='random-article-detail'),
-    path('HITcode', views.HITcode, name='HITcode'),
+    path('articles/<str:HIT>/', views.randomArticle, name='random-article-detail'),
+    path('articles/HIT/<str:code>/', views.HITcode, name='HIT-code'), 
 ]
 

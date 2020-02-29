@@ -25,15 +25,16 @@
         <div class="panel-body">
           <p>In this task, you will be asked to do the following:</p>
           <ol><li><strong>Read a news article</strong> about a medical or scientific finding.</li>
-            <li><strong>Highlight sections</strong> of the news article and answer questions about the article.</li>
+            <li><strong>Highlight sentences</strong> of the news article and answer questions about the article.</li>
             <li>Answer a set of <strong>demographic</strong> questions.</li>
           </ol>
           <p>We expect parts 1-3 (required) to take approx. 10 minutes to complete total.</p>
+          <p> <strong> Please highlight full sentences </strong> in the article. If there are two sentences next to each other that both fit the instructions, please highlight and label each <strong> seperately</strong>.</p>
           <!-- <p>❗ <em><strong>Note:</strong> this is a multi-page task that should be completed in one sitting. You will not be able to look at the news article for some of the questions, and <strong>you cannot go back after completing each part of the study</strong>. That is, please read and answer questions carefully!</em></p> -->
           <p>⛔ <em><strong>Participation restriction:</strong> providers/turkers for this task cannot currently be an employee or student at the University of Washington.</em></p>
           <p>Thank you!</p>
-          <div class="panel panel-default"><div class="panel-heading"><strong>Additional study details</strong> <a id="toggle-study-details" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#study-details" role="button" aria-expanded="false" aria-controls="study-details"><span class="btn-text">Expand/collapse</span></a></div>
-          <div class="panel-body collapse" id="study-details">
+          <div class="panel panel-default"><div class="panel-heading"><strong>Additional study instructions and details</strong> <a id="toggle-study-details" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#study-details" role="button" aria-expanded="false" aria-controls="study-details"><span class="btn-text">Expand/collapse</span></a></div>
+          <div class="panel-body collapse" id="study-details">             
             <h5>Research motivation</h5>
             <p>We are studying what people pick up on when reading news about scientific and medical findings.</p>
             <h5>Data collection &amp; sharing</h5>
@@ -66,9 +67,12 @@
         </div>
       </div>
   </section>
-     <div class="container">
+     <div class="container" id="HITcontainer">
       <div class="panel panel-info">
-        <div class="panel-body">Please read the article and then follow additional instructions for highlighting sections of the article below </div>
+        <div class="panel-body">
+        <p> Please read the article and then follow additional instructions for highlighting sections of the article below </p> 
+        <p class="text text-left text-danger"> Required fields are marked with a *</p>
+      </div>
       </div>
 
     <div class="row">
@@ -81,26 +85,26 @@
             </div>
             <div class="card-body">
               {{ object.text | linebreaks }}
-             <p class="mt-2"> <a href={{object.uri}}> link </a>  </p>
+             <!-- <p class="mt-2"> <a href={{object.uri}}> link </a>  </p> -->
             </div>
         </div>
       </div>
       <div class="col">
 
         <form method="post" autocomplete="off" id="HIT-form">
-          {% csrf_token %}
+          {% csrf_token %} 
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> Highlighting the lead</div>
-            <div class="panel-body"> 
+            <div class="panel-heading"> <a data-toggle="collapse" href="#leadInstructions" aria-expanded="true" aria-controls="#leadInstructions"> Highlighting the lead </a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse show" id="leadInstructions""> 
               <p> <strong> If there is a lead, please highlight the sentences that make up the lead.</strong> </p>
               <p> Some articles have a few sentences at the beginning of the article, called a lead, that draws a reader in and makes them want to read more. Some examples of leads are below. If there is a lead in the first 1-2 sentences of the article, please highlight the lead sentence(s). </p>
 
-            <p> “On Wednesday, astronomers released what they said were the most detailed images ever taken of the surface of our sun.” <p>
+            <p class="font-italic ml-5"> “On Wednesday, astronomers released what they said were the most detailed images ever taken of the surface of our sun.” <p>
 
-            <p> “SYDNEY, Australia — Early on the morning of Dec. 27, Phoebe Meagher, a wildlife conservation officer at Taronga Zoo, set off on a rescue mission with colleagues from the zoo and academics from the University of New South Wales.” </p>
+            <p class="font-italic ml-5"> “SYDNEY, Australia — Early on the morning of Dec. 27, Phoebe Meagher, a wildlife conservation officer at Taronga Zoo, set off on a rescue mission with colleagues from the zoo and academics from the University of New South Wales.” </p>
 
-            <p><strong> Please label the lead, if it exists with label 'LEAD'.</strong></p>
+            <p><strong> Please label the lead, if it exists with the label 'LEAD'.</strong></p>
 
             {% include 'form_field_likert.html' with form=form field=form.is_lead is_likert=False %}
             {% include 'form_field_likert.html' with form=form field=form.lead_interest is_likert=True %}
@@ -110,15 +114,15 @@
           </div>
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> Main point(s) of the article </div>
-            <div class="panel-body"> 
-              <p> <strong> Please highlight all sentences in article that state the main findings of the article.</strong> </p>
+            <div class="panel-heading"> <a data-toggle="collapse" href="#mainInstructions" aria-expanded="true" aria-controls="#mainInstructions"> Main point(s) of the article </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse" id="mainInstructions"> 
+              <p> <strong> Please highlight all sentences in the article that state the main findings of the article.</strong> </p>
 
-              <p> Usually a scientific news articles reports the main findings or point of the article. This includes the main findings being reported or a summary of what the article talks about. [Usually these sentences are found near the beginning of the article. ] Some examples are below. </p>
+              <p> Usually a scientific news articles reports the main findings or point of the article. This includes the main findings being reported by the original paper or a high-level summary of the news article. Some examples are below. </p>
 
-              <p> “The study, by researchers at Tufts University and the International Union for Conservation of Nature, warned that fireflies could eventually face extinction globally because of multiple threats, including light pollution and habitat loss and habitat degradation from insecticides and chemical pollution.”</p>
+              <p class="font-italic ml-5"> “The study, by researchers at Tufts University and the International Union for Conservation of Nature, warned that fireflies could eventually face extinction globally because of multiple threats, including light pollution and habitat loss and habitat degradation from insecticides and chemical pollution.”</p>
 
-              <p> “In their study, published in the journal Science Advances, Yang and her colleagues at Georgia State and Emory University describe a newly identified biomarker for detection of liver metastases.”</p>
+              <p class="font-italic ml-5"> “In their study, published in the journal Science Advances, Yang and her colleagues at Georgia State and Emory University describe a newly identified biomarker for detection of liver metastases.”</p>
 
               <p><strong>  Please label the all sentences that state the main findings with the label 'MAIN'. </strong> </p>
 
@@ -128,15 +132,15 @@
           </div>
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> 'Why should I care?' sentences </div>
-            <div class="panel-body"> 
+            <div class="panel-heading"> <a data-toggle="collapse" href="#careInstructions" aria-expanded="true" aria-controls="#careInstructions"> 'Why should I care?' sentences </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse" id="careInstructions"> 
                 <p> <strong> Please highlight sentences in the article that talk about the real world impact of the science or findings being reported. </strong></p>
 
                 <p> Scientific news articles often talk about the real world impact of the science or findings being reported. This can include future technologies or breakthroughs the findings might enable, or the societal implications of the findings. These sentences can occur anywhere in the article. Some examples are below: </p>
 
-                <p> ““These ancient seeds might represent lost genetic diversity we don’t see any more,” Pérez-Escobar says. As date-palm growers adapt to climate change and battle pests and diseases, they might want to tap into the pool of ancient genes hidden in archaeological archives.”</p>
+                <p class="font-italic ml-5"> ““These ancient seeds might represent lost genetic diversity we don’t see any more,” Pérez-Escobar says. As date-palm growers adapt to climate change and battle pests and diseases, they might want to tap into the pool of ancient genes hidden in archaeological archives.”</p>
 
-                <p> “Insects like fireflies tend to be critical to their ecosystems. Their disappearance could create havoc with food webs, especially for the birds and other animals that feed on them.”</p>
+                <p class="font-italic ml-5"> “Insects like fireflies tend to be critical to their ecosystems. Their disappearance could create havoc with food webs, especially for the birds and other animals that feed on them.”</p>
 
                 <p><strong>  Please label the all sentences that state real world impact with the label 'IMPACT'. </strong> </p>
 
@@ -145,13 +149,13 @@
           </div>
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> Broaden conclusion sentences </div>
-            <div class="panel-body"> 
+            <div class="panel-heading"> <a data-toggle="collapse" href="#conclInstructions" aria-expanded="true" aria-controls="#conclInstructions"> Broaden conclusion sentences </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse" id="conclInstructions"> 
                 <p> <strong> If there is a conclusion, please highlight the sentences that make up this conclusion </strong></p>
 
                 <p> The last paragraph of a scientific news article usually ends the article with reference to a story or a high-level summary of the article. Please highlight any sentences in the last paragraph of the article that end the article this way. Some examples are below: </p>
 
-                <p> “She counts four in all. For the first time, Dobson appears crestfallen. This forest seems so healthy. She looks over her shoulder, back toward the worm-infested spot across the road. “This might very well look like that in a few years,” she says. While it may not be good or bad, it will certainly be different.”</p>
+                <p class="font-italic ml-5"> “She counts four in all. For the first time, Dobson appears crestfallen. This forest seems so healthy. She looks over her shoulder, back toward the worm-infested spot across the road. “This might very well look like that in a few years,” she says. While it may not be good or bad, it will certainly be different.”</p>
 
                 <p><strong>  Please label the conclusion sentences with the label 'CONCLUSION'. </strong> </p>
 
@@ -160,8 +164,8 @@
           </div>
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> Demographics </div>
-            <div class="panel-body"> 
+            <div class="panel-heading"> <a data-toggle="collapse" href="#demographics" aria-expanded="true" aria-controls="#demographics">  Demographics </a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse" id="demographics"> 
                 <p> <strong> Please tell us a bit about yourself </strong></p>
 
                 {% include 'form_field.html' with form=form field=form.age is_check=False %}
@@ -181,13 +185,14 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
 
+
+
         </form>
 
         <!-- col -->
       </div>
       <!-- row --> 
     </div>
-
   </div>
   </main>
   <script src="{% static 'annotationAPI/js/annotator-full.min.js' %}"></script>

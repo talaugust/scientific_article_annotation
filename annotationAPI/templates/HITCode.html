@@ -3,25 +3,25 @@
 
 {% load widget_tweaks %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block content %}
 
 <div class="container">
     <div class="row">
-        <div class="card mt-4">
+        <div class="panel panel-primary mt-4">
         	{% if completed %}
-	            <div class="card-header">
+	            <div class="panel-heading">
 	                <h2>Thank you for completing the HIT!</h2>
 	            </div>
-	            <div class="card-body">
+	            <div class="panel-body">
 	                <p>  Your unique survey code is:<strong> {{ code }}</strong>. </p>
 	            </div>
             {% else %}
-            	<div class="card-header">
+            	<div class="panel-header">
 	                <h2>HIT incomplete</h2>
 	            </div>
-	            <div class="card-body">
+	            <div class="panel-body">
 	                <p> It looks like this HIT hasn't been completed yet, please make sure you filled in all sections of the study. Thank you. </p>
 	            </div>
             {% endif %}
@@ -30,4 +30,4 @@
     </div>
 </div>
 
-{% endblock %}s
+{% endblock %}

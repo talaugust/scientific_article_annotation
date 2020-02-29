@@ -20,14 +20,16 @@
 		{% if field.help_text %}
 		  <small class="form-text text-muted">{{ field.help_text }}</small>
 		{% endif %}
-		{{ field.label_tag }}
+		{% if field.field.required %} <span class="mr-4 text-danger font-weight-bold"> * </span> {% endif %} 
+		{{ field.label_tag }} 
 	</div>
 
 
 {% else %}
 
 	<div class="form-check">
-		{{ field.label_tag }}
+		{% if field.field.required %} <span class="text-danger font-weight-bold"> * </span> {% endif %} 
+		{{ field.label_tag }} 
 	 	{% if form.is_bound %}
 			{% if field.errors %}
 				{% render_field field class="form-control is-invalid" %}
@@ -45,6 +47,7 @@
 		{% if field.help_text %}
 		  <small class="form-text text-muted">{{ field.help_text }}</small>
 		{% endif %}
+
 	</div>
 
 

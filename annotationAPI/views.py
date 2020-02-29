@@ -21,22 +21,18 @@ import string
 
 
 
-# from: https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
-
-
-def HITcode(request):
+def HITcode(request, code):
     # check that they a) exist and b) completed the last question
     if request.user.is_authenticated:
         # participant_id = request.user.id
-        code = id_generator()
+        
         # participant = Participant.objects.get(id=participant_id)
         # participant.HITcode = code
         # participant.save()
         return render(request, 'HITcode.html', {'completed': True, 'code': code})
     else: 
         return render(request, 'HITcode.html', {'completed': False, 'code': None})
+
 
 
 """
@@ -104,7 +100,7 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
         HIT.save()
         # form.save()
         # save user_id
-        return redirect(self.get_success_url())
+        return redirect(self.get_success_url(HIT.HITid))
 
     def form_invalid(self, form):
         """If the form is valid, redirect to the supplied URL."""
@@ -118,17 +114,27 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
         self.object = self.get_object()
         return super().post(request, *args, **kwargs)
 
-    def get_success_url(self):
-        return 'random-article-detail'
+    def get_success_url(self, code):
+        return reverse('HIT-code', kwargs={'code': code})
 
 
 
 # wrapper view function for getting a random article if you just go to articles/ url
-def randomArticle(request):
+# HIT is 0 for if this is not as AMT HIT, 1 if it is. 
+# right now that changes what articles can be viewed
+def randomArticle(request, HIT):
     # get a random pk for an article 
-    random_article = Article.objects.order_by('?').first()
+    if HIT == 'HIT':
+        # filter based on if it is HITable, and if it has two annotation HITs on it
+        queryset = Article.objects.isHITAvaliable()
+
+        print(queryset)
+    else:
+        queryset = Article.objects.all()
+
+    random_article = queryset.order_by('?').first()
+
     return redirect('article-detail', pk=random_article.id)
-    # (ArticleDetailView.as_view(template_name='article_base.html')(request, pk=random_article.id))
 
 
 """
@@ -166,15 +172,6 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
 
 
-    # permission_classes = (IsAuthenticated,)
- 
-    # def create(self, request):
-    #     serializer = self.serializer_class(data=request.data)
-    #     serializer.is_valid()
-    #     print(serializer.errors)
-    #     serializer.save()  
-    #     return super().create(request)
-
 
 class AnnotationViewSet(viewsets.ModelViewSet):
     """
@@ -210,15 +207,6 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         annotations = {'rows': serializer.data, 'total':len(serializer.data)}
         return Response(annotations)
 
-    # @action(detail=False, methods=['GET'])
-    # def search(self, request):
-    #     print(self.kwargs.get('uri'))
-    #     annotations = self.queryset.get(uri=uri)
-
-    #     # print(annotations)
-    #     serializer = self.get_serializer(annotations, many=True)
-    #     return Response(serializer.data)
-
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -242,18 +230,5 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
 
-
-# class CustomAuthToken(ObtainAuthToken):
-
-#     def get(self, request, *args, **kwargs):
-#         # serializer = self.serializer_class(data=request.data,
-#         #                                    context={'request': request})
-#         # serializer.is_valid(raise_exception=True)
-#         user = serializer.validated_data['user']
-
-#         token, created = Token.objects.get_or_create(user=request.user)
-#         return Response({
-#             'token': token.key,
-#         })
 
 

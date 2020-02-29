@@ -60,8 +60,8 @@
   var num_annotations = 0;
   console.log(article_id);
 
-  content.annotator('addPlugin', 'Permissions');
-  content.annotator('addPlugin', 'Tags')
+  // content.annotator('addPlugin', 'Permissions');
+  // content.annotator('addPlugin', 'Tags')
   content.annotator('addPlugin', 'StoreLogger')
   content.annotator('addPlugin', 'Store', {
       // The endpoint of the store on your server.
@@ -96,7 +96,6 @@
       } else {
         $('#annotationWarning').hide();
       }
-
       return true;
     })
 

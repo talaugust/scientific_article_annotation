@@ -18,7 +18,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ['id', 'text', 'title', 'uri', 'lead', 'site']
+        fields = ['id', 'text', 'title', 'uri', 'lead', 'site', 'HITable']
 
 
 class AnnotationSerializer(serializers.ModelSerializer):

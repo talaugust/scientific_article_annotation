@@ -2,8 +2,22 @@ from django.db import models
 from django_mysql.models import JSONField, ListTextField
 from django.contrib.auth.models import User, Group
 from django.core.validators import MaxValueValidator
+from django.db.models import Count
 import uuid
+import string
+import random
 
+
+# from: https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
+# for generating hit code
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+class ArticleManager(models.Manager):
+    def isHITAvaliable(self):
+        articles = []
+        HITableArticles = super().get_queryset().filter(HITable=True).annotate(number_of_HITs=Count('annotationhit'))
+        return HITableArticles.filter(number_of_HITs__lt=2)
 
 class Article(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -14,6 +28,9 @@ class Article(models.Model):
     uri = models.URLField()
     lead = models.TextField(blank=True)
     site = models.TextField()
+    HITable = models.BooleanField(default=False)
+    objects = ArticleManager()
+
 
 class Annotation(models.Model): 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -73,6 +90,8 @@ class AnnotationHIT(models.Model):
         Article,
         on_delete=models.CASCADE,
     )
+    created = models.DateTimeField(auto_now_add=True)
+
     is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
     lead_interest =  models.IntegerField(choices=LIKERT_CHOICES, default='None')
     is_main_points_highlight = models.BooleanField()
@@ -88,6 +107,10 @@ class AnnotationHIT(models.Model):
     # other
     comments = models.TextField(blank=True)
     agree_to_contact = models.BooleanField()
+
+    # this field is hidden until everything is submitted
+    HITid = models.CharField(max_length=25, blank=False, default=id_generator)
+
 
 
 
