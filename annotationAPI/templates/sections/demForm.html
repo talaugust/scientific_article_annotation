@@ -1,0 +1,15 @@
+<div class="panel panel-info mt-3">
+    <div class="panel-heading"> <a data-toggle="collapse" href="#demographics" aria-expanded="true" aria-controls="#demographics">  Demographics </a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+    <div class="panel-body collapse" id="demographics"> 
+        <p> <strong> Please tell us a bit about yourself </strong></p>
+
+        {% include 'form_field.html' with form=form field=form.age is_check=False %}
+        {% include 'form_field.html' with form=form field=form.english_prof is_check=False %}
+        {% include 'form_field.html' with form=form field=form.gender is_check=False %}
+        {% include 'form_field.html' with form=form field=form.gender_self_describe is_check=False %}
+        {% include 'form_field.html' with form=form field=form.comments is_check=False %}
+        <div class="mt-5">
+          {% include 'form_field.html' with form=form field=form.agree_to_contact is_check=True %}
+        </div>
+    </div>
+  </div>

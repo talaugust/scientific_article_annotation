@@ -1,0 +1,83 @@
+ <form method="post" autocomplete="off" id="HIT-form">
+          {% csrf_token %} 
+
+          <div class="panel panel-info mt-3">
+            <div class="panel-heading"> <a data-toggle="collapse" href="#leadInstructions" aria-expanded="true" aria-controls="#leadInstructions"> Highlighting the lead </a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse show" id="leadInstructions""> 
+              <p> <strong> If there is a lead, please highlight the sentences that make up the lead.</strong> </p>
+              <p> Some articles have a few sentences at the beginning of the article, called a lead, that draws a reader in and makes them want to read more. Some examples of leads are below. If there is a lead in the first 1-2 sentences of the article, please highlight the lead sentence(s). </p>
+
+            <p class="font-italic ml-5"> “On Wednesday, astronomers released what they said were the most detailed images ever taken of the surface of our sun.” <p>
+
+            <p class="font-italic ml-5"> “SYDNEY, Australia — Early on the morning of Dec. 27, Phoebe Meagher, a wildlife conservation officer at Taronga Zoo, set off on a rescue mission with colleagues from the zoo and academics from the University of New South Wales.” </p>
+
+            <p><strong> Please label the lead, if it exists with the label 'LEAD'.</strong></p>
+
+            {% include 'form_field_likert.html' with form=form field=form.is_lead is_likert=False %}
+            {% include 'form_field_likert.html' with form=form field=form.lead_interest is_likert=True %}
+
+
+            </div>
+          </div>
+
+          <div class="panel panel-info mt-3">
+            <div class="panel-heading"> <a data-toggle="collapse" href="#mainInstructions" aria-expanded="true" aria-controls="#mainInstructions"> Main point(s) of the article </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse" id="mainInstructions"> 
+              <p> <strong> Please highlight all sentences in the article that state the main findings of the article.</strong> </p>
+
+              <p> Usually a scientific news articles reports the main findings or point of the article. This includes the main findings being reported by the original paper or a high-level summary of the news article. Some examples are below. </p>
+
+              <p class="font-italic ml-5"> “The study, by researchers at Tufts University and the International Union for Conservation of Nature, warned that fireflies could eventually face extinction globally because of multiple threats, including light pollution and habitat loss and habitat degradation from insecticides and chemical pollution.”</p>
+
+              <p class="font-italic ml-5"> “In their study, published in the journal Science Advances, Yang and her colleagues at Georgia State and Emory University describe a newly identified biomarker for detection of liver metastases.”</p>
+
+              <p><strong>  Please label the all sentences that state the main findings with the label 'MAIN'. </strong> </p>
+
+              {% include 'form_field.html' with form=form field=form.is_main_points_highlight is_check=True %}
+                  
+            </div>
+          </div>
+
+          <div class="panel panel-info mt-3">
+            <div class="panel-heading"> <a data-toggle="collapse" href="#careInstructions" aria-expanded="true" aria-controls="#careInstructions"> 'Why should I care?' sentences </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse" id="careInstructions"> 
+                <p> <strong> Please highlight sentences in the article that talk about the real world impact of the science or findings being reported. </strong></p>
+
+                <p> Scientific news articles often talk about the real world impact of the science or findings being reported. This can include future technologies or breakthroughs the findings might enable, or the societal implications of the findings. These sentences can occur anywhere in the article. Some examples are below: </p>
+
+                <p class="font-italic ml-5"> ““These ancient seeds might represent lost genetic diversity we don’t see any more,” Pérez-Escobar says. As date-palm growers adapt to climate change and battle pests and diseases, they might want to tap into the pool of ancient genes hidden in archaeological archives.”</p>
+
+                <p class="font-italic ml-5"> “Insects like fireflies tend to be critical to their ecosystems. Their disappearance could create havoc with food webs, especially for the birds and other animals that feed on them.”</p>
+
+                <p><strong>  Please label the all sentences that state real world impact with the label 'IMPACT'. </strong> </p>
+
+                {% include 'form_field.html' with form=form field=form.is_care_highlight is_check=True %}
+            </div>
+          </div>
+
+          <div class="panel panel-info mt-3">
+            <div class="panel-heading"> <a data-toggle="collapse" href="#conclInstructions" aria-expanded="true" aria-controls="#conclInstructions"> Broaden conclusion sentences </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-body collapse" id="conclInstructions"> 
+                <p> <strong> If there is a conclusion, please highlight the sentences that make up this conclusion </strong></p>
+
+                <p> The last paragraph of a scientific news article usually ends the article with reference to a story or a high-level summary of the article. Please highlight any sentences in the last paragraph of the article that end the article this way. Some examples are below: </p>
+
+                <p class="font-italic ml-5"> “She counts four in all. For the first time, Dobson appears crestfallen. This forest seems so healthy. She looks over her shoulder, back toward the worm-infested spot across the road. “This might very well look like that in a few years,” she says. While it may not be good or bad, it will certainly be different.”</p>
+
+                <p><strong>  Please label the conclusion sentences with the label 'CONCLUSION'. </strong> </p>
+
+                {% include 'form_field_likert.html' with form=form field=form.is_conclusion is_likert=False %}
+            </div>
+          </div>
+
+          {% include 'sections/demForm.html' with form=form %}
+
+
+          <div class='alert alert-danger' id='annotationWarning' role='alert' style='display:none;'> Please make at least one annotation! </div>
+          <div class="row ml-3 m-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+
+
+        </form>

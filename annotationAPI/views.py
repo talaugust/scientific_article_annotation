@@ -4,13 +4,13 @@ from rest_framework import status, viewsets, generics
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated 
-from .models import Annotation, Article, AnnotationHIT
-from .forms import AnnotationHITForm
+from .models import Annotation, Article, AnnotationHIT, AnnotationHITStories, AnnotationHITExplAna
+from .forms import AnnotationHITForm, AnnotationHITStoriesForm, AnnotationHITExplAnaForm
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import FormView
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
 from django.views import View
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -43,17 +43,20 @@ def HITcode(request, code):
 # from: https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
 class ArticleView(View):
     def get(self, request, *args, **kwargs):
-        view = ArticleDetailView.as_view()
+        view = ArticleDetailView.as_view(form_class=AnnotationHITForm)
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        view = ArticleHITFormView.as_view()
+        view = ArticleHITFormView.as_view(form_class=AnnotationHITForm, HITmodel=AnnotationHIT)
         return view(request, *args, **kwargs)
 
 class ArticleDetailView(DetailView):
     template_name = 'article_base.html'
     model = Article
-    form_class = AnnotationHITForm
+    form_class = None
+
+    def set_form_class(self, form_class):
+        self.form_class = form_class
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get(self.pk_url_kwarg)
@@ -62,6 +65,7 @@ class ArticleDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class()
+        context['HITtype'] = context['form'].label
         return context
 
     # adding a section to log in a user automatically here
@@ -87,9 +91,12 @@ class ArticleDetailView(DetailView):
 
 class ArticleHITFormView(SingleObjectMixin, FormView):
     template_name = 'article_base.html'
-    form_class = AnnotationHITForm
+    form_class = None
     model = Article
-    HITmodel = AnnotationHIT
+    HITmodel = None
+
+    def set_form_class(self, form_class):
+        self.form_class = form_class
 
     def form_valid(self, form):
         """If the form is valid, add in article and user, save and redirect to the supplied URL."""
@@ -127,14 +134,16 @@ def randomArticle(request, HIT):
     if HIT == 'HIT':
         # filter based on if it is HITable, and if it has two annotation HITs on it
         queryset = Article.objects.isHITAvaliable()
-
         print(queryset)
     else:
         queryset = Article.objects.all()
 
     random_article = queryset.order_by('?').first()
 
-    return redirect('article-detail', pk=random_article.id)
+    try:
+        return redirect('article-detail', pk=random_article.id)
+    except AttributeError: 
+        raise Http404("No articles exist")
 
 
 """

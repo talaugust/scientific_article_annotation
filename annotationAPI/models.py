@@ -8,6 +8,38 @@ import string
 import random
 
 
+# common choices
+LIKERT_CHOICES = [
+    (0, 'None'),
+    (1, ''),
+    (2, ''),
+    (3, ''),
+    (4, ''),
+    (5, ''),
+    (6, ''),
+    (7, ''),
+]
+GENDER_CHOICES = [
+    ('MALE', 'male'),
+    ('FEMALE', 'female'),
+    ('NON-BIN', 'non-binary'),
+    ('SELF-DESCR', 'prefer to self-describe'),
+    ('NOT_SAY', 'prefer not to say'),
+]
+PROF_CHOICES = [
+    ('ELEM', 'Elementary Proficiency'),
+    ('LIMIT', 'Limited Working Proficiency'),
+    ('PROF', 'Professional Working Proficiency'),
+    ('FULL', 'Full Professional Proficiency'),
+    ('NATIVE', 'Native / Bilingual '),
+]
+TRUE_FALSE_CHOICES = [
+    (0, 'None'),
+    (1, 'Yes'),
+    (2, 'No')
+]
+
+
 # from: https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
 # for generating hit code
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
@@ -51,37 +83,11 @@ class Annotation(models.Model):
         on_delete=models.CASCADE,
     )
 
-# model for HIT form
-class AnnotationHIT(models.Model):
-    LIKERT_CHOICES = [
-        (0, 'None'),
-        (1, ''),
-        (2, ''),
-        (3, ''),
-        (4, ''),
-        (5, ''),
-        (6, ''),
-        (7, ''),
-    ]
-    GENDER_CHOICES = [
-        ('MALE', 'male'),
-        ('FEMALE', 'female'),
-        ('NON-BIN', 'non-binary'),
-        ('SELF-DESCR', 'prefer to self-describe'),
-        ('NOT_SAY', 'prefer not to say'),
-    ]
-    PROF_CHOICES = [
-        ('ELEM', 'Elementary Proficiency'),
-        ('LIMIT', 'Limited Working Proficiency'),
-        ('PROF', 'Professional Working Proficiency'),
-        ('FULL', 'Full Professional Proficiency'),
-        ('NATIVE', 'Native / Bilingual '),
-    ]
-    TRUE_FALSE_CHOICES = [
-        (0, 'None'),
-        (1, 'Yes'),
-        (2, 'No')
-    ]
+# abstract model class for HIT form
+# using it for different annotation hits we could want 
+class CommonHITinfo(models.Model):
+
+    # foriegn keys
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -90,15 +96,10 @@ class AnnotationHIT(models.Model):
         Article,
         on_delete=models.CASCADE,
     )
+
     created = models.DateTimeField(auto_now_add=True)
 
-    is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
-    lead_interest =  models.IntegerField(choices=LIKERT_CHOICES, default='None')
-    is_main_points_highlight = models.BooleanField()
-    is_care_highlight = models.BooleanField(blank=False)
-    is_conclusion = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
-
-    # demographics
+     # demographics
     age = models.PositiveIntegerField(validators=[MaxValueValidator(100)])
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=False)
     gender_self_describe = models.CharField(max_length=50, blank=True)
@@ -110,6 +111,31 @@ class AnnotationHIT(models.Model):
 
     # this field is hidden until everything is submitted
     HITid = models.CharField(max_length=25, blank=False, default=id_generator)
+
+    class Meta:
+        abstract = True
+
+
+class AnnotationHIT(CommonHITinfo):
+    
+    is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
+    lead_interest =  models.IntegerField(choices=LIKERT_CHOICES, default='None')
+    is_main_points_highlight = models.BooleanField()
+    is_care_highlight = models.BooleanField(blank=False)
+    is_conclusion = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
+
+
+
+# for including stories and personal details
+class AnnotationHITStories(CommonHITinfo):
+    is_story_highlight = models.BooleanField()
+    is_personal_highlight = models.BooleanField()
+    
+
+# for including stories and personal details
+class AnnotationHITExplAna(CommonHITinfo):
+    is_expl_highlight = models.BooleanField()
+    is_analogy_highlight = models.BooleanField()
 
 
 
