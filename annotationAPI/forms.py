@@ -58,7 +58,7 @@ class AnnotationHITForm(CommonHITinfoForm):
             'is_lead': 'Is there a lead? If so, please highlight the sentences that make up the lead and label the highlight \'LEAD\'.',
          	'lead_interest':'Please highlight the lead and rate, on a scale from 1-7, 1 being not at all and 7 being extremely, how excited the lead made you about the rest of the article.',
           	'is_main_points_highlight': 'Check this box after highlighting the sentences with the main point(s) of the article with the label \'MAIN\'.',
-           	'is_care_highlight': 'Did you highlight all \'Why should I care?\' sentences with the label \'IMPACT\'?' ,
+           	'is_care_highlight': 'Did you highlight all sentences talking about the real world impact of the research with the label \'IMPACT\'?' ,
             'is_conclusion':'Is there a concluding sentence? If so, please highlight the sentences that make up this conclusion with the label \'CONCLUSION\'.' ,
         })
 
