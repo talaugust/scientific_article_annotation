@@ -26,13 +26,13 @@
             <div class="panel-body collapse" id="mainInstructions"> 
               <p> <strong> Please highlight all sentences in the article that state the main findings of the article.</strong> </p>
 
-              <p> Usually scientific news articles reports the main findings or point of the article. This includes the main findings being reported by the original paper or a high-level summary of the news article. Some examples are below. </p>
+              <p> Usually scientific news articles reports the main findings or points of the article. This includes the main findings being reported by the original paper or a high-level summary of the news article. Some examples are below. </p>
 
               <p class="font-italic ml-5"> “The study, by researchers at Tufts University and the International Union for Conservation of Nature, warned that fireflies could eventually face extinction globally because of multiple threats, including light pollution and habitat loss and habitat degradation from insecticides and chemical pollution.”</p>
 
               <p class="font-italic ml-5"> “In their study, published in the journal Science Advances, Yang and her colleagues at Georgia State and Emory University describe a newly identified biomarker for detection of liver metastases.”</p>
 
-              <p><strong>  Please label the all sentences that state the main findings with the label 'MAIN'. </strong> </p>
+              <p><strong>  Please label all sentences separately that state the main findings, even those that repeat a main point, with the label 'MAIN'. </strong> </p>
 
               {% include 'form_field.html' with form=form field=form.is_main_points_highlight is_check=True %}
                   
@@ -50,7 +50,7 @@
 
                 <p class="font-italic ml-5"> “Insects like fireflies tend to be critical to their ecosystems. Their disappearance could create havoc with food webs, especially for the birds and other animals that feed on them.”</p>
 
-                <p><strong>  Please label the all sentences that state real world impact with the label 'IMPACT'. </strong> </p>
+                <p><strong>  Please label all sentences separately that state real world impact with the label 'IMPACT'. </strong> </p>
 
                 {% include 'form_field.html' with form=form field=form.is_care_highlight is_check=True %}
             </div>
@@ -65,7 +65,7 @@
 
                 <p class="font-italic ml-5"> “She counts four in all. For the first time, Dobson appears crestfallen. This forest seems so healthy. She looks over her shoulder, back toward the worm-infested spot across the road. “This might very well look like that in a few years,” she says. While it may not be good or bad, it will certainly be different.”</p>
 
-                <p><strong>  Please label the conclusion sentences with the label 'CONCLUSION'. </strong> </p>
+                <p><strong>  Please label each conclusion sentence separately with the label 'CONCLUSION'. </strong> </p>
 
                 {% include 'form_field_likert.html' with form=form field=form.is_conclusion is_likert=False %}
             </div>
