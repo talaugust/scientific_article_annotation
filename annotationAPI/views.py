@@ -160,7 +160,7 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
 # wrapper view function for getting a random article if you just go to articles/ url
 # HIT is 0 for if this is not as AMT HIT, 1 if it is. 
 # right now that changes what articles can be viewed
-def randomArticle(request, HIT, HITclass):
+def randomArticle(request, HIT, HITclass='paragraph'):
     print(HIT, HITclass)
     # get a random pk for an article 
     if HIT == 'HIT':

@@ -25,6 +25,7 @@ urlpatterns = [
     path('api-test/annotations', views.annotations),
     path('articles/<uuid:pk>/', views.ArticleView.as_view(HITclass='paragraph'), name='article-detail'),
     path('articles/<str:HITclass>/<uuid:pk>/', views.ArticleView.as_view(), name='article-detail'),
+    path('articles/<str:HIT>/', views.randomArticle, name='random-article-detail'),
     path('articles/<str:HIT>/<str:HITclass>/', views.randomArticle, name='random-article-detail'),
     path('HIT/<str:code>/', views.HITcode, name='HIT-code'), 
 ]
