@@ -58,7 +58,6 @@
   var content = $('#storyContainer').annotator();
   var article_id = $('#storyContainer').data('id');
   var num_annotations = 0;
-  console.log(article_id);
 
   // content.annotator('addPlugin', 'Permissions');
   // content.annotator('addPlugin', 'Tags')

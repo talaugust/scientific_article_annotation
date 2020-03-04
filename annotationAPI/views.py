@@ -42,12 +42,43 @@ def HITcode(request, code):
 # This is a general view to handle post and get for articles 
 # from: https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
 class ArticleView(View):
+
+    HITclass = None
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.form_class = None
+    #     self.model_clas = None
+    #     print(kwargs)
+    #     print(args)
+    #     # HITclass = kwargs.get('HITclass', None)
+    #     print(self.HITclass)    
+
+    def set_classes(self):
+        HITclass = self.kwargs.get('HITclass', None)
+        if HITclass == 'paragraph':
+            self.form_class = AnnotationHITForm
+            self.model_class = AnnotationHIT
+        elif HITclass == 'expl':
+            self.form_class = AnnotationHITExplAnaForm
+            self.model_class = AnnotationHITExplAna
+        elif HITclass == 'story':
+            self.form_class = AnnotationHITStoriesForm
+            self.model_class = AnnotationHITStories
+        # default
+        else:
+            self.form_class = AnnotationHITForm
+            self.model_class = AnnotationHIT
+        
+
     def get(self, request, *args, **kwargs):
-        view = ArticleDetailView.as_view(form_class=AnnotationHITForm)
+        self.set_classes()
+        view = ArticleDetailView.as_view(form_class=self.form_class)
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        view = ArticleHITFormView.as_view(form_class=AnnotationHITForm, HITmodel=AnnotationHIT)
+        self.set_classes()
+        view = ArticleHITFormView.as_view(form_class=self.form_class, HITmodel=self.model_class)
         return view(request, *args, **kwargs)
 
 class ArticleDetailView(DetailView):
@@ -129,19 +160,19 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
 # wrapper view function for getting a random article if you just go to articles/ url
 # HIT is 0 for if this is not as AMT HIT, 1 if it is. 
 # right now that changes what articles can be viewed
-def randomArticle(request, HIT):
+def randomArticle(request, HIT, HITclass):
+    print(HIT, HITclass)
     # get a random pk for an article 
     if HIT == 'HIT':
         # filter based on if it is HITable, and if it has two annotation HITs on it
         queryset = Article.objects.isHITAvaliable()
-        print(queryset)
     else:
         queryset = Article.objects.all()
 
     random_article = queryset.order_by('?').first()
 
     try:
-        return redirect('article-detail', pk=random_article.id)
+        return redirect('article-detail', pk=random_article.id, HITclass=HITclass)
     except AttributeError: 
         raise Http404("No articles exist")
 
