@@ -52,7 +52,7 @@ class CommonLITWinfoForm(ModelForm):
             # 'force_opinion': RadioSelect,
         }
         labels = {
-            'enjoy': 'The article was enjoyable to read.',
+            'enjoy': 'The article was fun to read.',
             'objective': 'The article was objective.',
             # 'think_pressure': 'The article tried to pressure me to think a certain way.',
             # 'force_opinion': 'The article did not try to force its opinions on me.',
