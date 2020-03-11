@@ -1,0 +1,126 @@
+<!-- templates/consent.html-->
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container LITWfont">
+	<div id="header" class="row mt-5">
+		<a href="http://www.labinthewild.org">
+			<img class="img-fluid w-25" src="{% static 'annotationAPI/img/LITW.png' %}" alt="logo" id="logo">
+		</a>
+		<div class="separator">&nbsp;</div>
+	</div>
+
+	<div class="row mb-3">
+		<h1 class="LITWbolded-blue"> How do you read science breakthroughs? </h1>
+	</div>
+
+	<div class="row mt-2">
+		<p> Please read the following information carefully before proceeding. </p>
+	</div>
+
+
+	<div class="row mt-2">
+		<p> <strong> Why we are doing this research? </strong>
+		The primary goal of this project is to improve access to technology for diverse people. </p>
+	</div>
+
+	<div class="row mt-2">
+		<p> <strong> What you will have to do:  </strong>
+		You will be asked to read a news article about a scientific finding, highlight sentences of the news article and answer questions about the article. </p>
+	</div>
+
+	<div class="row mt-2">
+		<p> <strong> What you will get out of it: </strong>
+		We will give you feedback on how you performed on the tasks. The final results from this experiment will be posted on our blog page. The studies on this website are not for clinical diagnoses. </p>
+	</div>
+
+	<div class="row mt-2">
+		<p> <strong> Privacy and Data Collection:  </strong>
+		Your responses will be kept anonymous. We do not store any information that could be used to directly establish your identity. We may, however, collect brow mt-2ser data, the city and country you are located in, mouse and click data, social media sharing activity, scrolling behavior, scores earned, timestamp, time spend on each page, audio data, or other data that may be derived from your behavior on our page. This data will be stored securely on our servers. </p>
+	</div>
+
+	<div class="row mt-2">
+		<p> <strong> Are there any risks? </strong>
+		We do not expect there to be any risks. For tasks that may cause fatigue, you have the option to skip that question or decline to respond. You are also free to end the experiment at any time by closing your brow mt-2ser window. </p>
+	</div>
+
+	<div class="row mt-2">
+		<p> <strong> Expected Duration:  </strong>
+		5-20 minutes. </p>
+	</div>
+
+	<div class="row mt-2">
+		<p> <strong> Contact information:  </strong>
+		If you have questions about this research or if you think you have been harmed by participating, you may contact Professor Katharina Reinecke, Paul G. Allen Center for Computer Science & Engineering, Box 352350, Seattle, WA 98195, reinecke@cs.washington.edu. </p>
+	</div>
+
+	<div class="row mt-2">
+		<p> <strong> Funding:  </strong>
+		The primary goal of this project is to improve access to technology for diverse people. </p>
+	</div>
+
+	<div class="row mt-2">
+		<p> If you have questions about your rights as a research participant, or wish to obtain information, ask questions or discuss any concerns about this study with someone other than the researcher(s), please contact the University of Washington Human Subjects Division at 206-543-0098 or call collect at 206-221-5940 (for international calls include the US Calling Code: +1-206-543-0098). </p>
+	</div>
+
+	<form id="consent-form">
+	<input type="checkbox" id="agree-to-study" onchange="checkApprove()">
+	<label for="agree-to-study">I agree to participate in this research. Participation in this research is voluntary, and I can stop at any time without penalty. I feel that I understand what I am getting into, and I know I am free to leave the experiment at any time by simply closing the web browser.</label>
+
+</form>	
+
+<span class="LITWbolded-blue" id="approve-irb">You must check the box to continue.</span>
+
+<a  href="{% url 'random-article-detail' HIT='LITW' HITclass='paragraph' %}" class="btn btn-primary" id="approve-irb-continue" style="display:none;">Continue</a>
+
+
+</div>
+
+<script> 
+
+	function checkApprove()
+    {
+        if($('#agree-to-study').is(":checked")) {
+			$("#approve-irb").hide();  
+            $("#approve-irb-continue").show();
+        } 
+        else {
+			$("#approve-irb-continue").hide();
+        	$("#approve-irb").show();
+        }
+    }
+
+
+    function showSelfDescribe(){
+            $("#{{form.gender_self_describe.auto_id}}").show();
+            $("label[for={{form.gender_self_describe.auto_id}}]").show();
+    };
+    function hideSelfDescribe(){
+        $("#{{form.gender_self_describe.auto_id}}").hide();
+        $("label[for={{form.gender_self_describe.auto_id}}]").hide();
+    };
+
+    // $( document ).ready(function() {  
+    //     hideSelfDescribe();    
+    //     $("#{{form.gender.auto_id}}").change(function() {
+    //         var selectedVal = $(this).find(':selected').val();
+    //         var selectedText = $(this).find(':selected').text();
+
+    //         if (selectedVal === 'SELF-DESCR'){ 
+    //             showSelfDescribe();
+    //         } else {
+    //             hideSelfDescribe();
+    //         }
+    //     });
+            
+    // });
+  </script>
+
+
+
+{% endblock %}

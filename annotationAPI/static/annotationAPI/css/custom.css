@@ -1,0 +1,34 @@
+.separator {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	height: 10px;
+	clear: both;
+	display: block;
+	width: 100%;
+	border-top: 2px dotted #366;
+}
+
+.LITWfont {
+	font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 22px;
+}
+
+.LITWbolded-blue { 
+	font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
+	font-weight: bold; 
+	color: #3f6379; 
+}
+
+#approve-irb {
+	float: left;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+
+#approve-irb-continue {
+	float: left;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}

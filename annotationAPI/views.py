@@ -3,7 +3,7 @@ from annotationAPI.serializers import UserSerializer, GroupSerializer, Annotatio
 from rest_framework import status, viewsets, generics
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated 
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Annotation, Article, AnnotationHIT, AnnotationHITStories, AnnotationHITExplAna
 from .forms import AnnotationHITForm, AnnotationHITStoriesForm, AnnotationHITExplAnaForm
 from django.views.generic.detail import DetailView, SingleObjectMixin
@@ -20,39 +20,37 @@ import string
 
 
 
+#############################################################################################
+########### ########### ########### LITW specific views ########### ########### ############# 
+#############################################################################################
+def consent(request):
+    return render(request, 'consent.html')
 
+
+
+#############################################################################################
+########### ########### ########### Turk specific views ########### ########### ############# 
+#############################################################################################
+
+# super simple view function for displaying the hitcode
 def HITcode(request, code):
-    # check that they a) exist and b) completed the last question
     if request.user.is_authenticated:
-        # participant_id = request.user.id
-        
-        # participant = Participant.objects.get(id=participant_id)
-        # participant.HITcode = code
-        # participant.save()
         return render(request, 'HITcode.html', {'completed': True, 'code': code})
     else: 
         return render(request, 'HITcode.html', {'completed': False, 'code': None})
 
 
 
-"""
-    Article views (not part of the API)
-"""
+
+#############################################################################################
+########### ###########  Article views (not part of the API) ########### ########### ########
+#############################################################################################
 
 # This is a general view to handle post and get for articles 
 # from: https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
 class ArticleView(View):
 
     HITclass = None
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.form_class = None
-    #     self.model_clas = None
-    #     print(kwargs)
-    #     print(args)
-    #     # HITclass = kwargs.get('HITclass', None)
-    #     print(self.HITclass)    
 
     def set_classes(self):
         HITclass = self.kwargs.get('HITclass', None)
@@ -81,6 +79,8 @@ class ArticleView(View):
         view = ArticleHITFormView.as_view(form_class=self.form_class, HITmodel=self.model_class)
         return view(request, *args, **kwargs)
 
+
+######### GET ##########
 class ArticleDetailView(DetailView):
     template_name = 'article_base.html'
     model = Article
@@ -101,6 +101,8 @@ class ArticleDetailView(DetailView):
 
     # adding a section to log in a user automatically here
     def get(self, request, *args, **kwargs):
+
+        print(kwargs)
         # there is no user in this session`
         if not request.user.is_authenticated:
 
@@ -120,6 +122,7 @@ class ArticleDetailView(DetailView):
 
         return super().get(request, *args, **kwargs)
 
+######### POST ##########
 class ArticleHITFormView(SingleObjectMixin, FormView):
     template_name = 'article_base.html'
     form_class = None
@@ -177,6 +180,10 @@ def randomArticle(request, HIT, HITclass='paragraph'):
         raise Http404("No articles exist")
 
 
+#############################################################################################
+########### ########### ###########  API endpoints ########### ########### ######## #########
+#############################################################################################
+
 """
     API endpoints
 """
@@ -217,6 +224,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows annotations
     """
+    permission_classes = [IsAuthenticated]
     queryset = Annotation.objects.all()
     # model = Annotation
     serializer_class = AnnotationSerializer
@@ -256,7 +264,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAdminUser,)
 
 
 
