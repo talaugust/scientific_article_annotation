@@ -116,7 +116,20 @@ class CommonHITinfo(models.Model):
         abstract = True
 
 
-class AnnotationHIT(CommonHITinfo):
+# abstract model class for *additional* LITW form info 
+class CommonLITWinfo(models.Model):
+
+    enjoy = models.IntegerField(choices=LIKERT_CHOICES, default=0)
+    objective = models.IntegerField(choices=LIKERT_CHOICES, default=0)
+    # think_pressure = models.IntegerField(choices=LIKERT_CHOICES, default=0, blank=True)
+    # force_opinion = models.IntegerField(choices=LIKERT_CHOICES, default=0, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+
+class AnnotationHIT(CommonHITinfo, CommonLITWinfo):
     
     is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
     lead_interest =  models.IntegerField(choices=LIKERT_CHOICES, default='None')
@@ -127,13 +140,13 @@ class AnnotationHIT(CommonHITinfo):
 
 
 # for including stories and personal details
-class AnnotationHITStories(CommonHITinfo):
+class AnnotationHITStories(CommonHITinfo, CommonLITWinfo):
     is_story_highlight = models.BooleanField()
     is_personal_highlight = models.BooleanField()
     
 
 # for including stories and personal details
-class AnnotationHITExplAna(CommonHITinfo):
+class AnnotationHITExplAna(CommonHITinfo, CommonLITWinfo):
     is_expl_highlight = models.BooleanField()
     is_analogy_highlight = models.BooleanField()
 

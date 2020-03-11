@@ -26,7 +26,11 @@ import string
 def consent(request):
     return render(request, 'consent.html')
 
+def instructions(request):
+    return render(request, 'instructions.html')
 
+def results(request):
+    return render(request, 'results.html')
 
 #############################################################################################
 ########### ########### ########### Turk specific views ########### ########### ############# 
@@ -156,7 +160,8 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
         return super().post(request, *args, **kwargs)
 
     def get_success_url(self, code):
-        return reverse('HIT-code', kwargs={'code': code})
+        return reverse('LITW-results')
+        # return reverse('HIT-code', kwargs={'code': code})
 
 
 

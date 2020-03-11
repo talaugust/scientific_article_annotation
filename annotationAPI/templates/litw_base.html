@@ -10,6 +10,7 @@
   {% load staticfiles %}
    <link rel="stylesheet" href="{% static 'annotationAPI/css/bootstrap.css' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'annotationAPI/css/annotator.min.css' %}">   
+  <link rel="stylesheet" type="text/css" href="{% static 'annotationAPI/css/custom.css' %}">   
 
   <script type="text/javascript" src="{% static 'annotationAPI/js/jquery-3.4.1.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'annotationAPI/js/bootstrap.bundle.js' %}"></script>
@@ -19,8 +20,17 @@
 </head>
 <body>
   <main>
+    <div class="container LITWfont">
+  <div id="header" class="row mt-5">
+    <a href="http://www.labinthewild.org">
+      <img class="img-fluid w-25" src="{% static 'annotationAPI/img/LITW.png' %}" alt="logo" id="logo">
+    </a>
+    <div class="separator">&nbsp;</div>
+  </div>
     {% block content %}
     {% endblock %}
+  </div>
+</div>
   </main>
 </body>
 </html>

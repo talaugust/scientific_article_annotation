@@ -29,5 +29,7 @@ urlpatterns = [
     path('articles/<str:HIT>/<str:HITclass>/', views.randomArticle, name='random-article-detail'),
     path('HIT/<str:code>/', views.HITcode, name='HIT-code'), 
     path('LITW/consent', views.consent, name='LITW-consent'), 
+    path('LITW/instructions', views.instructions, name='LITW-instructions'), 
+    path('LITW/results', views.results, name='LITW-results'),
 ]
 

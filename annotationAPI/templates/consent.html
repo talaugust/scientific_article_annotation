@@ -1,19 +1,11 @@
 <!-- templates/consent.html-->
-{% extends 'base.html' %}
+{% extends 'litw_base.html' %}
 
 {% load widget_tweaks %}
 
 {% load static %}
 
 {% block content %}
-
-<div class="container LITWfont">
-	<div id="header" class="row mt-5">
-		<a href="http://www.labinthewild.org">
-			<img class="img-fluid w-25" src="{% static 'annotationAPI/img/LITW.png' %}" alt="logo" id="logo">
-		</a>
-		<div class="separator">&nbsp;</div>
-	</div>
 
 	<div class="row mb-3">
 		<h1 class="LITWbolded-blue"> How do you read science breakthroughs? </h1>
@@ -76,10 +68,7 @@
 
 <span class="LITWbolded-blue" id="approve-irb">You must check the box to continue.</span>
 
-<a  href="{% url 'random-article-detail' HIT='LITW' HITclass='paragraph' %}" class="btn btn-primary" id="approve-irb-continue" style="display:none;">Continue</a>
-
-
-</div>
+<a  href="{% url 'LITW-instructions' %}" class="btn btn-primary" id="approve-irb-continue" style="display:none;">Continue</a>
 
 <script> 
 

@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 
 
 
+
 # common form class for HITs
 class CommonHITinfoForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -31,7 +32,34 @@ class CommonHITinfoForm(ModelForm):
         }
 
 
-class AnnotationHITForm(CommonHITinfoForm):
+# common form class for *additional* LITW form info 
+class CommonLITWinfoForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        fields = [
+            'enjoy',
+            'objective',
+            # 'think_pressure',
+            # 'force_opinion',
+            ]
+        widgets = {
+            'enjoy': RadioSelect,
+            'objective': RadioSelect,
+            # 'think_pressure': RadioSelect,
+            # 'force_opinion': RadioSelect,
+        }
+        labels = {
+            'enjoy': 'The article was enjoyable to read.',
+            'objective': 'The article was objective.',
+            # 'think_pressure': 'The article tried to pressure me to think a certain way.',
+            # 'force_opinion': 'The article did not try to force its opinions on me.',
+        }
+
+
+class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,21 +67,23 @@ class AnnotationHITForm(CommonHITinfoForm):
         self.fields['is_care_highlight'].required = True
         self.label = 'paragraph_specific'
 
-    class Meta(CommonHITinfoForm.Meta):
+    class Meta(CommonHITinfoForm.Meta, CommonLITWinfoForm.Meta):
         model = AnnotationHIT
-        fields = CommonHITinfoForm.Meta.fields + ['is_lead',
+        fields = CommonHITinfoForm.Meta.fields + CommonLITWinfoForm.Meta.fields + ['is_lead',
          	'lead_interest',
           	'is_main_points_highlight',
            	'is_care_highlight',
             'is_conclusion',
             ]
         widgets = CommonHITinfoForm.Meta.widgets
+        widgets.update(CommonLITWinfoForm.Meta.widgets)
         widgets.update({
             'is_lead': RadioSelect,
             'is_conclusion': RadioSelect,
             'lead_interest': RadioSelect,
         })
         labels = CommonHITinfoForm.Meta.labels
+        labels.update(CommonLITWinfoForm.Meta.labels)
         labels.update({
             'is_lead': 'Is there a lead? If so, please highlight the sentences that make up the lead and label the highlight \'LEAD\'.',
          	'lead_interest':'Please highlight the lead and rate, on a scale from 1-7, 1 being not at all and 7 being extremely, how excited the lead made you about the rest of the article.',
@@ -63,7 +93,7 @@ class AnnotationHITForm(CommonHITinfoForm):
         })
 
 
-class AnnotationHITStoriesForm(CommonHITinfoForm):
+class AnnotationHITStoriesForm(CommonHITinfoForm, CommonLITWinfoForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -81,7 +111,7 @@ class AnnotationHITStoriesForm(CommonHITinfoForm):
             'is_personal_highlight':'Check this box after highlighting all sentences in the article that describes personal details with the label \'PERSONAL\'.',
         })
 
-class AnnotationHITExplAnaForm(CommonHITinfoForm):
+class AnnotationHITExplAnaForm(CommonHITinfoForm, CommonLITWinfoForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
