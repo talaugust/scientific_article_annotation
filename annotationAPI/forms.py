@@ -63,6 +63,7 @@ class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['lead_interest'].required = False # might break
         self.fields['is_main_points_highlight'].required = True
         self.fields['is_care_highlight'].required = True
         self.label = 'paragraph_specific'
@@ -85,8 +86,8 @@ class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
         labels = CommonHITinfoForm.Meta.labels
         labels.update(CommonLITWinfoForm.Meta.labels)
         labels.update({
-            'is_lead': 'Is there a lead? If so, please highlight the sentences that make up the lead and label the highlight \'LEAD\'.',
-         	'lead_interest':'Please highlight the lead and rate, on a scale from 1-7, 1 being not at all and 7 being extremely, how excited the lead made you about the rest of the article.',
+            'is_lead': 'Is there a lead? If so, please highlight the sentences that make up the lead and label it \'LEAD\' in the \'Comments...\' box that pops up.',
+         	'lead_interest':'Independent of the topic, how excited does the lead make you about the rest of the article?',
           	'is_main_points_highlight': 'Check this box after highlighting the sentences with the main point(s) of the article with the label \'MAIN\'.',
            	'is_care_highlight': 'Did you highlight all sentences talking about the real world impact of the research with the label \'IMPACT\'?' ,
             'is_conclusion':'Is there a concluding sentence? If so, please highlight the sentences that make up this conclusion with the label \'CONCLUSION\'.' ,

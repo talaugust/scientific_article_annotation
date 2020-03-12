@@ -141,11 +141,15 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
         data = form.cleaned_data
         data['user_id']= self.request.user.id
         data['article_id'] = self.object.id
+        if data['lead_interest'] == '':
+            data['lead_interest'] = 0
+        # print(data)
+
         HIT = self.HITmodel(**data)
         HIT.save()
         # form.save()
         # save user_id
-        return redirect(self.get_success_url(HIT.HITid))
+        return redirect(self.get_success_url())
 
     def form_invalid(self, form):
         """If the form is valid, redirect to the supplied URL."""
@@ -157,9 +161,12 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
         self.object = self.get_object()
+        # form = self.get_form()
+        # print(form.data)
+
         return super().post(request, *args, **kwargs)
 
-    def get_success_url(self, code):
+    def get_success_url(self):
         return reverse('LITW-results')
         # return reverse('HIT-code', kwargs={'code': code})
 
