@@ -21,6 +21,7 @@ APIrouter.register(r'articles', views.ArticleViewSet)
 urlpatterns = [
 	path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('home/', views.home, name='home'), 
     path('', include(router.urls)),
     path('api/', include(APIrouter.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -30,7 +31,7 @@ urlpatterns = [
     path('articles/<str:HIT>/', views.randomArticle, name='random-article-detail'),
     path('articles/<str:HIT>/<str:HITclass>/', views.randomArticle, name='random-article-detail'),
     path('HIT/<str:code>/', views.HITcode, name='HIT-code'), 
-    path('test/', views.test, name='test'), 
+    path('article/', views.rand_article, name='rand-article'), 
     # path('LITW/consent', views.consent, name='LITW-consent'), 
     # path('LITW/instructions', views.instructions, name='LITW-instructions'), 
     # path('LITW/results', views.results, name='LITW-results'),

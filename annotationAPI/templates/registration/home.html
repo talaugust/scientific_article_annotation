@@ -1,0 +1,34 @@
+<!-- templates/home.html-->
+{% extends 'litw_base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    {% if user.is_authenticated %}
+        <div class="row">   
+            <div class="col">
+                Hi {{ user.username }}! <a href="{% url 'random-article-detail' HIT='LITW' HITclass='all' %}">Go to an article</a>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col">
+                <p><a href="{% url 'logout' %}">logout</a></p>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col">
+                <p>You are not logged in</p>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col">
+                    <a href="{% url 'login' %}">login</a>
+            </div>
+        </div>
+    
+    {% endif %}
+    {% endblock %}

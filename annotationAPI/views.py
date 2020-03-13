@@ -21,12 +21,14 @@ import string
 
 
 
-TESTING = False
+TESTING = False 
 # TEST_DATA = {'age': 24, 'gender': 'MALE', 'gender_self_describe': '', 'english_prof': 'NATIVE', 'agree_to_contact': False, 'comments': '24', 'enjoy': 1, 'objective': 1, 'is_lead': 1, 'lead_interest': 1, 'is_main_points_highlight': True, 'is_care_highlight': True, 'is_conclusion': 1, 'is_story_highlight': True, 'is_personal_highlight': True, 'is_expl_highlight': True, 'is_analogy_highlight': True, 'user_id': 8, 'article_id': '366fbfbf-c9c0-407d-8f51-d7826930ed41'}
 TEST_DATA = { 'comments': '24', 'is_lead': 1, 'lead_interest': 1, 'is_main_points_highlight': True, 'is_care_highlight': True, 'is_conclusion': 1, 'is_story_highlight': True, 'is_personal_highlight': True, 'is_expl_highlight': True, 'is_analogy_highlight': True, 'user_id': 8, 'article_id': '366fbfbf-c9c0-407d-8f51-d7826930ed41'}
 
-def test(request):
-    return redirect(reverse('random-article-detail', kwargs={'HIT': 'None', 'HITclass': 'all'}))
+
+
+def home(request):
+    return render(request, 'registration/home.html')
 
 #############################################################################################
 ########### ########### ########### LITW specific views ########### ########### ############# 
@@ -189,6 +191,9 @@ class ArticleHITFormView(LoginRequiredMixin, SingleObjectMixin, FormView):
         # return reverse('HIT-code', kwargs={'code': code})
 
 
+
+def rand_article(request):
+    return redirect(reverse('random-article-detail', kwargs={'HIT': 'None', 'HITclass': 'all'}))
 
 # wrapper view function for getting a random article if you just go to articles/ url
 # HIT is 0 for if this is not as AMT HIT, 1 if it is. 
