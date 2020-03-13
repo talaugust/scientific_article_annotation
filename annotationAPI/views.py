@@ -4,8 +4,8 @@ from rest_framework import status, viewsets, generics
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Annotation, Article, AnnotationHIT, AnnotationHITStories, AnnotationHITExplAna
-from .forms import AnnotationHITForm, AnnotationHITStoriesForm, AnnotationHITExplAnaForm
+from .models import Annotation, Article, AnnotationHIT, AnnotationHITStories, AnnotationHITExplAna, AnnotationHITParagraph
+from .forms import AnnotationHITForm, AnnotationHITStoriesForm, AnnotationHITExplAnaForm, AnnotationHITParagraphForm
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import FormView
 from django.shortcuts import render, redirect, reverse
@@ -59,14 +59,17 @@ class ArticleView(View):
     def set_classes(self):
         HITclass = self.kwargs.get('HITclass', None)
         if HITclass == 'paragraph':
-            self.form_class = AnnotationHITForm
-            self.model_class = AnnotationHIT
+            self.form_class = AnnotationHITParagraphForm
+            self.model_class = AnnotationHITParagraph
         elif HITclass == 'expl':
             self.form_class = AnnotationHITExplAnaForm
             self.model_class = AnnotationHITExplAna
         elif HITclass == 'story':
             self.form_class = AnnotationHITStoriesForm
             self.model_class = AnnotationHITStories
+        elif HITclass == 'all':
+            self.form_class = AnnotationHITForm
+            self.model_class = AnnotationHIT
         # default
         else:
             self.form_class = AnnotationHITForm

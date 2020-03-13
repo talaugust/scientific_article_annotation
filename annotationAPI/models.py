@@ -128,8 +128,20 @@ class CommonLITWinfo(models.Model):
         abstract = True
 
 
-
 class AnnotationHIT(CommonHITinfo, CommonLITWinfo):
+    
+    is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
+    lead_interest =  models.IntegerField(choices=LIKERT_CHOICES, default=0)
+    is_main_points_highlight = models.BooleanField()
+    is_care_highlight = models.BooleanField(blank=False)
+    is_conclusion = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
+    is_story_highlight = models.BooleanField()
+    is_personal_highlight = models.BooleanField()
+    is_expl_highlight = models.BooleanField()
+    is_analogy_highlight = models.BooleanField()
+
+
+class AnnotationHITParagraph(CommonHITinfo, CommonLITWinfo):
     
     is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
     lead_interest =  models.IntegerField(choices=LIKERT_CHOICES, default=0)

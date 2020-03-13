@@ -75,11 +75,13 @@
 
         <!-- For changing which type of annotation we are doing --> 
         {% if HITtype == 'paragraph_specific' %}
-          {% include 'sections/HITform.html' with form=form %}
+          {% include 'sections/HITParagraph.html' with form=form %}
         {% elif HITtype == 'personal_and_stories' %}
           {% include 'sections/HITstoriesform.html' with form=form %}
         {% elif HITtype == 'explanation_and_analogies' %}
           {% include 'sections/HITExplanationAnalogyform.html' with form=form %}
+        {% elif HITtype == 'all' %}
+          {% include 'sections/HITform.html' with form=form %}
         {% endif %}
 
         <!-- col -->
@@ -102,7 +104,7 @@
         $("#{{form.gender_self_describe.auto_id}}").hide();
         $("label[for={{form.gender_self_describe.auto_id}}]").hide();
     };
-    
+
 
     $( document ).ready(function() {  
         hideSelfDescribe();    

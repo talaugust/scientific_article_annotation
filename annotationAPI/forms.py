@@ -66,7 +66,12 @@ class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
         self.fields['lead_interest'].required = False # might break
         self.fields['is_main_points_highlight'].required = True
         self.fields['is_care_highlight'].required = True
-        self.label = 'paragraph_specific'
+        self.fields['is_story_highlight'].required = True
+        self.fields['is_personal_highlight'].required = True
+        self.fields['is_expl_highlight'].required = True
+        self.fields['is_analogy_highlight'].required = True
+
+        self.label = 'all'
 
     class Meta(CommonHITinfoForm.Meta, CommonLITWinfoForm.Meta):
         model = AnnotationHIT
@@ -75,6 +80,10 @@ class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
           	'is_main_points_highlight',
            	'is_care_highlight',
             'is_conclusion',
+            'is_story_highlight',
+            'is_personal_highlight',
+            'is_expl_highlight',
+            'is_analogy_highlight',
             ]
         widgets = CommonHITinfoForm.Meta.widgets
         widgets.update(CommonLITWinfoForm.Meta.widgets)
@@ -91,8 +100,47 @@ class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
           	'is_main_points_highlight': 'Check this box after highlighting the sentences with the main point(s) of the article with the label \'MAIN\'.',
            	'is_care_highlight': 'Did you highlight all sentences talking about the real world impact of the research with the label \'IMPACT\'?' ,
             'is_conclusion':'Is there a concluding sentence? If so, please highlight the sentences that make up this conclusion with the label \'CONCLUSION\'.' ,
+            'is_story_highlight': 'Check this box after highlighting all storytelling sentences in the article with the label \'STORY\'.',
+            'is_personal_highlight':'Check this box after highlighting all sentences in the article that describes personal details with the label \'PERSONAL\'.',
+            'is_expl_highlight': 'Check this box after highlighting all explanations sentences in the article with the label \'EXPL\'.',
+            'is_analogy_highlight':'Check this box after highlighting all sentences in the article with analogies with the label \'ANALOGY\'.',
+       
         })
 
+class AnnotationHITParagraphForm(CommonHITinfoForm, CommonLITWinfoForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['lead_interest'].required = False # might break
+        self.fields['is_main_points_highlight'].required = True
+        self.fields['is_care_highlight'].required = True
+        self.label = 'paragraph_specific'
+
+    class Meta(CommonHITinfoForm.Meta, CommonLITWinfoForm.Meta):
+        model = AnnotationHIT
+        fields = CommonHITinfoForm.Meta.fields + CommonLITWinfoForm.Meta.fields + ['is_lead',
+            'lead_interest',
+            'is_main_points_highlight',
+            'is_care_highlight',
+            'is_conclusion',
+            ]
+        widgets = CommonHITinfoForm.Meta.widgets
+        widgets.update(CommonLITWinfoForm.Meta.widgets)
+        widgets.update({
+            'is_lead': RadioSelect,
+            'is_conclusion': RadioSelect,
+            'lead_interest': RadioSelect,
+        })
+        labels = CommonHITinfoForm.Meta.labels
+        labels.update(CommonLITWinfoForm.Meta.labels)
+        labels.update({
+            'is_lead': 'Is there a lead? If so, please highlight the sentences that make up the lead and label it \'LEAD\' in the \'Comments...\' box that pops up.',
+            'lead_interest':'Independent of the topic, how excited does the lead make you about the rest of the article?',
+            'is_main_points_highlight': 'Check this box after highlighting the sentences with the main point(s) of the article with the label \'MAIN\'.',
+            'is_care_highlight': 'Did you highlight all sentences talking about the real world impact of the research with the label \'IMPACT\'?' ,
+            'is_conclusion':'Is there a concluding sentence? If so, please highlight the sentences that make up this conclusion with the label \'CONCLUSION\'.' ,
+        
+        })
 
 class AnnotationHITStoriesForm(CommonHITinfoForm, CommonLITWinfoForm):
 

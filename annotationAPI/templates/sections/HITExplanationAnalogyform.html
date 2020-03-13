@@ -4,14 +4,15 @@
           <div class="panel panel-info mt-3">
             <div class="panel-heading"> <a data-toggle="collapse" href="#explInstructions" aria-expanded="true" aria-controls="#explInstructions"> Highlighting explanation details</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse show" id="explInstructions""> 
-              <p> <strong> Please highlight any sentences that explain a concept or idea in non-technical terms. </strong> </p>
-              <p> This could be explaining what researchers did in a study or what the findings mean. Some examples below: </p>
+              <!-- <p> <strong> Please highlight any sentences that explain a concept or idea in non-technical terms. </strong> </p> -->
+              <p> Some articles include explanations about scientific subjects or words. 
+              This could be explaining a certian topic or word, or what researchers did in a study and what the findings mean. Some examples below: </p>
 
             <p class="font-italic ml-5"> “This idea suggests that as humans increasingly relied on peaceable social interactions to flourish, our ancestors began selecting mates with less aggressive features for facial appearance and other traits.” <p>
 
             <p class="font-italic ml-5"> “To uncover this link, investigators used cells from people with a well-characterized genetic condition called Williams-Beuren syndrome”</p>
 
-            <p><strong> Please highlight and label each sentence separately that includes an explanation with the label 'EXPL'.</strong></p>
+            <p><strong> Please highlight and label all sentences that includes an explanation with the label 'EXPL'.</strong></p>
 
             {% include 'form_field.html' with form=form field=form.is_expl_highlight is_check=True %}
 
@@ -21,14 +22,13 @@
         <div class="panel panel-info mt-3">
             <div class="panel-heading"> <a data-toggle="collapse" href="#analogyInstructions" aria-expanded="true" aria-controls="#analogyInstructions"> Highlighting analogies and metaphors</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse" id="analogyInstructions""> 
-              <p> <strong> Please highlight any sentences that contain analogies or metaphors. </strong> </p>
+              <!-- <p> <strong> Please highlight any sentences that contain analogies or metaphors. </strong> </p> -->
+              <p> Some articles include analogies or metaphor as a way to explain concepts or make ideas in the article more relatable. </p>
               <p> Analogies are a comparison between two things, such as “Life is like a box of chocolates” A metaphor compares two things without using ‘as’ or ‘like’. Some example sentences are below:  </p>
 
             <p class="font-italic ml-5"> “The male climbed onto a platform and changed positions like a swimsuit model posing for a photograph” <p>
 
-            
-
-            <p><strong> Please highlight and label each sentence separately that includes a metaphor or analogy with the label 'ANALOGY'.</strong></p>
+            <p><strong> Please highlight and label all sentences that includes a metaphor or analogy with the label 'ANALOGY'.</strong></p>
 
             {% include 'form_field.html' with form=form field=form.is_analogy_highlight is_check=True %}
 

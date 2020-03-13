@@ -4,14 +4,14 @@
           <div class="panel panel-info mt-3">
             <div class="panel-heading"> <a data-toggle="collapse" href="#personalInstructions" aria-expanded="true" aria-controls="#personalInstructions"> Highlighting personal details</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse show" id="personalInstructions""> 
-              <p> <strong> Please highlight any sentences that talk about personal details or anecdotes about the researchers. </strong> </p>
-              <p> Some articles include personal details about those involved with the research. Some examples are below:</p>
+             <!--  <p> <strong> Please highlight any sentences that talk about personal details or anecdotes about the researchers. </strong> </p> -->
+              <p> Some articles include personal details about researchers in order to make them more approachable and add depth to the story. Some examples are below:</p>
 
             <p class="font-italic ml-5"> “But Dobson, bounding ahead in khaki hiking pants with her blond ponytail swinging, appears unfazed.” <p>
 
             <p class="font-italic ml-5"> “To the surprise and delight of Sallon and her colleagues, it sprouted, and they named that first date-palm tree Methuselah, who in the Bible lived to the age of 969.” </p>
 
-            <p><strong> Please highlight and label each sentence separately that includes personal details with the label 'PERSONAL'.</strong></p>
+            <p><strong> Please highlight and label all sentences that includes personal details with the label 'PERSONAL'.</strong></p>
 
             {% include 'form_field.html' with form=form field=form.is_personal_highlight is_check=True %}
 
@@ -21,14 +21,16 @@
           <div class="panel panel-info mt-3">
             <div class="panel-heading"> <a data-toggle="collapse" href="#storyInstructions" aria-expanded="true" aria-controls="#storyInstructions">Highlighting stories</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse" id="storyInstructions""> 
-              <p> <strong> Please highlight any sentences that include stories about the research, people involved in the research, or on the impact of the research. </strong> </p>
-              <p> If a story is continued through multiple parts of the article, please highlight each sentence where the story appears.  Some examples below:</p>
+              <!-- <p> <strong> Please highlight any sentences that include stories about the research, people involved in the research, or on the impact of the research. </strong> </p> -->
+               <p> Some articles use stories to engage their audience and make the science being reported more interesting. This can include short story snippets, or coming back to an underlying story throughout an article. Some examples below: </p>
+              
 
             <p class="font-italic ml-5"> “Ms. Moser was 23. It had taken her months to convince the clinic at NewYork-Presbyterian Hospital/Columbia University Medical Center in Manhattan that she wanted, at such a young age, to find out whether she carried the gene for Huntington's disease.” <p>
 
             <p class="font-italic ml-5"> “When Katie Couric said in a ''60 Minutes'' interview with Mrs. Edwards how hard it must be ''staring at possible death,'' Mrs. Edwards correctly shot back, ''Aren't we all, though?''” </p>
 
-            <p><strong> Please highlight and label each sentence separately that includes a story with the label 'STORY'.</strong></p>
+            <p><strong> Please highlight and label all sentences that includes a story with the label 'STORY'.</strong></p>
+            <p> If a story is continued through multiple parts of the article, please highlight all sentence where the story appears.  </p>
 
             {% include 'form_field.html' with form=form field=form.is_story_highlight is_check=True %}
             
