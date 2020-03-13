@@ -83,6 +83,7 @@ class Annotation(models.Model):
         on_delete=models.CASCADE,
     )
 
+################# NOT USING FOR UPWORK #################
 # abstract model class for HIT form
 # using it for different annotation hits we could want 
 class CommonHITinfo(models.Model):
@@ -115,7 +116,7 @@ class CommonHITinfo(models.Model):
     class Meta:
         abstract = True
 
-
+################# NOT USING FOR UPWORK #################
 # abstract model class for *additional* LITW form info 
 class CommonLITWinfo(models.Model):
 
@@ -128,7 +129,9 @@ class CommonLITWinfo(models.Model):
         abstract = True
 
 
-class AnnotationHIT(CommonHITinfo, CommonLITWinfo):
+
+# For upwork really only using this
+class AnnotationHIT(models.Model):
     
     is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
     lead_interest =  models.IntegerField(choices=LIKERT_CHOICES, default=0)
@@ -140,7 +143,22 @@ class AnnotationHIT(CommonHITinfo, CommonLITWinfo):
     is_expl_highlight = models.BooleanField()
     is_analogy_highlight = models.BooleanField()
 
+    ################# ADDED HERE FROM CommonHITinfo #################
+    comments = models.TextField(blank=True)
 
+    # foriegn keys
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+    )
+
+    created = models.DateTimeField(auto_now_add=True)
+
+################# NOT USING FOR UPWORK #################
 class AnnotationHITParagraph(CommonHITinfo, CommonLITWinfo):
     
     is_lead = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
@@ -150,13 +168,14 @@ class AnnotationHITParagraph(CommonHITinfo, CommonLITWinfo):
     is_conclusion = models.IntegerField(choices=TRUE_FALSE_CHOICES, default=0)
 
 
-
+################# NOT USING FOR UPWORK #################
 # for including stories and personal details
 class AnnotationHITStories(CommonHITinfo, CommonLITWinfo):
     is_story_highlight = models.BooleanField()
     is_personal_highlight = models.BooleanField()
     
 
+################# NOT USING FOR UPWORK #################
 # for including stories and personal details
 class AnnotationHITExplAna(CommonHITinfo, CommonLITWinfo):
     is_expl_highlight = models.BooleanField()

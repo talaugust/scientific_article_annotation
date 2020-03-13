@@ -2,7 +2,7 @@
           {% csrf_token %} 
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> <a data-toggle="collapse" href="#leadInstructions" aria-expanded="true" aria-controls="#leadInstructions"> Highlighting the lead </a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-heading"> <a data-toggle="collapse" href="#leadInstructions" aria-expanded="true" aria-controls="#leadInstructions"> The lead </a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse show" id="leadInstructions""> 
               <p> Some articles have a few sentences at the beginning of the article, called a lead, that draws a reader in and makes them want to read more. Some examples of leads are below. </p>
 
@@ -40,7 +40,7 @@
           </div>
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> <a data-toggle="collapse" href="#careInstructions" aria-expanded="true" aria-controls="#careInstructions"> Real world impact sentences </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-heading"> <a data-toggle="collapse" href="#careInstructions" aria-expanded="true" aria-controls="#careInstructions"> Real world impact </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse" id="careInstructions"> 
 <!--                 <p> <strong> Please highlight sentences in the article that talk about the real world impact of the science or findings being reported. </strong></p> -->
 
@@ -57,7 +57,7 @@
           </div>
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> <a data-toggle="collapse" href="#conclInstructions" aria-expanded="true" aria-controls="#conclInstructions"> Broaden conclusion sentences </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-heading"> <a data-toggle="collapse" href="#conclInstructions" aria-expanded="true" aria-controls="#conclInstructions"> Broad conclusion </a><span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse" id="conclInstructions"> 
 <!--                 <p> <strong> If there is a conclusion, please highlight the sentences that make up this conclusion </strong></p>
  -->
@@ -72,7 +72,7 @@
           </div>
 
                     <div class="panel panel-info mt-3">
-            <div class="panel-heading"> <a data-toggle="collapse" href="#personalInstructions" aria-expanded="true" aria-controls="#personalInstructions"> Highlighting personal details</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-heading"> <a data-toggle="collapse" href="#personalInstructions" aria-expanded="true" aria-controls="#personalInstructions"> Personal details</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse" id="personalInstructions""> 
              <!--  <p> <strong> Please highlight any sentences that talk about personal details or anecdotes about the researchers. </strong> </p> -->
               <p> Some articles include personal details about researchers in order to make them more approachable and add depth to the story. Some examples are below:</p>
@@ -89,7 +89,7 @@
           </div>
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> <a data-toggle="collapse" href="#storyInstructions" aria-expanded="true" aria-controls="#storyInstructions">Highlighting stories</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-heading"> <a data-toggle="collapse" href="#storyInstructions" aria-expanded="true" aria-controls="#storyInstructions">Stories</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse" id="storyInstructions""> 
               <!-- <p> <strong> Please highlight any sentences that include stories about the research, people involved in the research, or on the impact of the research. </strong> </p> -->
                <p> Some articles use stories to engage their audience and make the science being reported more interesting. This can include short story snippets, or coming back to an underlying story throughout an article. Some examples below: </p>
@@ -108,7 +108,7 @@
           </div>
 
           <div class="panel panel-info mt-3">
-            <div class="panel-heading"> <a data-toggle="collapse" href="#explInstructions" aria-expanded="true" aria-controls="#explInstructions"> Highlighting explanation details</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-heading"> <a data-toggle="collapse" href="#explInstructions" aria-expanded="true" aria-controls="#explInstructions"> Explanations</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse" id="explInstructions""> 
               <!-- <p> <strong> Please highlight any sentences that explain a concept or idea in non-technical terms. </strong> </p> -->
               <p> Some articles include explanations about scientific subjects or words. 
@@ -126,7 +126,7 @@
           </div>
 
         <div class="panel panel-info mt-3">
-            <div class="panel-heading"> <a data-toggle="collapse" href="#analogyInstructions" aria-expanded="true" aria-controls="#analogyInstructions"> Highlighting analogies and metaphors</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
+            <div class="panel-heading"> <a data-toggle="collapse" href="#analogyInstructions" aria-expanded="true" aria-controls="#analogyInstructions"> Analogies and metaphors</a> <span class="mr-4 text-danger font-weight-bold"> * </span> </div>
             <div class="panel-body collapse" id="analogyInstructions""> 
               <!-- <p> <strong> Please highlight any sentences that contain analogies or metaphors. </strong> </p> -->
               <p> Some articles include analogies or metaphor as a way to explain concepts or make ideas in the article more relatable. </p>
@@ -140,10 +140,10 @@
           </div>
         </div>
 
-          {% include 'sections/demForm.html' with form=form %}
 
+        {% include 'form_field.html' with form=form field=form.comments is_check=False %}
 
-          <div class='alert alert-danger' id='annotationWarning' role='alert' style='display:none;'> Please make at least one annotation! </div>
+          <div class='mt-3 alert alert-danger' id='annotationWarning' role='alert' style='display:none;'> Please make at least one annotation! </div>
           <div class="row ml-3 m-3">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>

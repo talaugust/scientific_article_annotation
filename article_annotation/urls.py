@@ -2,6 +2,7 @@ from django.urls import include, path
 from rest_framework import routers
 from annotationAPI import views
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 
 router = routers.DefaultRouter()
@@ -19,6 +20,7 @@ APIrouter.register(r'articles', views.ArticleViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
 	path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('', include(router.urls)),
     path('api/', include(APIrouter.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -28,8 +30,9 @@ urlpatterns = [
     path('articles/<str:HIT>/', views.randomArticle, name='random-article-detail'),
     path('articles/<str:HIT>/<str:HITclass>/', views.randomArticle, name='random-article-detail'),
     path('HIT/<str:code>/', views.HITcode, name='HIT-code'), 
-    path('LITW/consent', views.consent, name='LITW-consent'), 
-    path('LITW/instructions', views.instructions, name='LITW-instructions'), 
-    path('LITW/results', views.results, name='LITW-results'),
+    path('test/', views.test, name='test'), 
+    # path('LITW/consent', views.consent, name='LITW-consent'), 
+    # path('LITW/instructions', views.instructions, name='LITW-instructions'), 
+    # path('LITW/results', views.results, name='LITW-results'),
 ]
 

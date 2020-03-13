@@ -1,10 +1,10 @@
 from django.forms import ModelForm, Textarea, RadioSelect, HiddenInput, ChoiceField
-from .models import AnnotationHIT, CommonHITinfo, AnnotationHITStories, AnnotationHITExplAna
+from .models import AnnotationHIT, CommonHITinfo, AnnotationHITStories, AnnotationHITExplAna, AnnotationHITParagraph
 from django.core.exceptions import ValidationError
 
 
 
-
+################# NOT USING FOR UPWORK #################
 # common form class for HITs
 class CommonHITinfoForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -31,7 +31,7 @@ class CommonHITinfoForm(ModelForm):
             'comments': 'Is there anything else about the study you would like to add?',
         }
 
-
+################# NOT USING FOR UPWORK #################
 # common form class for *additional* LITW form info 
 class CommonLITWinfoForm(ModelForm):
 
@@ -59,7 +59,7 @@ class CommonLITWinfoForm(ModelForm):
         }
 
 
-class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
+class AnnotationHITForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,9 +73,9 @@ class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
 
         self.label = 'all'
 
-    class Meta(CommonHITinfoForm.Meta, CommonLITWinfoForm.Meta):
+    class Meta():
         model = AnnotationHIT
-        fields = CommonHITinfoForm.Meta.fields + CommonLITWinfoForm.Meta.fields + ['is_lead',
+        fields =  ['is_lead',
          	'lead_interest',
           	'is_main_points_highlight',
            	'is_care_highlight',
@@ -84,17 +84,17 @@ class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
             'is_personal_highlight',
             'is_expl_highlight',
             'is_analogy_highlight',
+            'comments',
             ]
-        widgets = CommonHITinfoForm.Meta.widgets
-        widgets.update(CommonLITWinfoForm.Meta.widgets)
-        widgets.update({
+        
+        widgets = {
             'is_lead': RadioSelect,
             'is_conclusion': RadioSelect,
             'lead_interest': RadioSelect,
-        })
-        labels = CommonHITinfoForm.Meta.labels
-        labels.update(CommonLITWinfoForm.Meta.labels)
-        labels.update({
+            'comments': Textarea(attrs={'cols': 80, 'rows': 3}),
+        }
+       
+        labels = {
             'is_lead': 'Is there a lead? If so, please highlight the sentences that make up the lead and label it \'LEAD\' in the \'Comments...\' box that pops up.',
          	'lead_interest':'Independent of the topic, how excited does the lead make you about the rest of the article?',
           	'is_main_points_highlight': 'Check this box after highlighting the sentences with the main point(s) of the article with the label \'MAIN\'.',
@@ -105,8 +105,9 @@ class AnnotationHITForm(CommonHITinfoForm, CommonLITWinfoForm):
             'is_expl_highlight': 'Check this box after highlighting all explanations sentences in the article with the label \'EXPL\'.',
             'is_analogy_highlight':'Check this box after highlighting all sentences in the article with analogies with the label \'ANALOGY\'.',
        
-        })
+        }
 
+################# NOT USING FOR UPWORK #################
 class AnnotationHITParagraphForm(CommonHITinfoForm, CommonLITWinfoForm):
 
     def __init__(self, *args, **kwargs):
@@ -117,7 +118,7 @@ class AnnotationHITParagraphForm(CommonHITinfoForm, CommonLITWinfoForm):
         self.label = 'paragraph_specific'
 
     class Meta(CommonHITinfoForm.Meta, CommonLITWinfoForm.Meta):
-        model = AnnotationHIT
+        model = AnnotationHITParagraph
         fields = CommonHITinfoForm.Meta.fields + CommonLITWinfoForm.Meta.fields + ['is_lead',
             'lead_interest',
             'is_main_points_highlight',
@@ -142,6 +143,7 @@ class AnnotationHITParagraphForm(CommonHITinfoForm, CommonLITWinfoForm):
         
         })
 
+################# NOT USING FOR UPWORK #################
 class AnnotationHITStoriesForm(CommonHITinfoForm, CommonLITWinfoForm):
 
     def __init__(self, *args, **kwargs):
@@ -160,6 +162,7 @@ class AnnotationHITStoriesForm(CommonHITinfoForm, CommonLITWinfoForm):
             'is_personal_highlight':'Check this box after highlighting all sentences in the article that describes personal details with the label \'PERSONAL\'.',
         })
 
+################# NOT USING FOR UPWORK #################
 class AnnotationHITExplAnaForm(CommonHITinfoForm, CommonLITWinfoForm):
 
     def __init__(self, *args, **kwargs):

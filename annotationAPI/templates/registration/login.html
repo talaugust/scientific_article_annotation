@@ -1,0 +1,38 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Login</h2>
+        </div>
+    </div>
+    {% if form.errors %}
+        <p class="text-danger">Your username and password didn't match. Please try again.</p>
+    {% endif %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.username.auto_id }}">
+                {{ form.username.label }}
+            </label>
+            {% render_field form.username class+='form-control' %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password.auto_id }}">
+                {{ form.password.label }}
+            </label>
+            {% render_field form.password class+='form-control' %}
+        </div>
+   
+    <button type="submit">Login</button>
+    </form>
+  </div>
+
+
+{% endblock %}

@@ -10,6 +10,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import FormView
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden, Http404
 from django.views import View
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -20,17 +21,24 @@ import string
 
 
 
+TESTING = False
+# TEST_DATA = {'age': 24, 'gender': 'MALE', 'gender_self_describe': '', 'english_prof': 'NATIVE', 'agree_to_contact': False, 'comments': '24', 'enjoy': 1, 'objective': 1, 'is_lead': 1, 'lead_interest': 1, 'is_main_points_highlight': True, 'is_care_highlight': True, 'is_conclusion': 1, 'is_story_highlight': True, 'is_personal_highlight': True, 'is_expl_highlight': True, 'is_analogy_highlight': True, 'user_id': 8, 'article_id': '366fbfbf-c9c0-407d-8f51-d7826930ed41'}
+TEST_DATA = { 'comments': '24', 'is_lead': 1, 'lead_interest': 1, 'is_main_points_highlight': True, 'is_care_highlight': True, 'is_conclusion': 1, 'is_story_highlight': True, 'is_personal_highlight': True, 'is_expl_highlight': True, 'is_analogy_highlight': True, 'user_id': 8, 'article_id': '366fbfbf-c9c0-407d-8f51-d7826930ed41'}
+
+def test(request):
+    return redirect(reverse('random-article-detail', kwargs={'HIT': 'None', 'HITclass': 'all'}))
+
 #############################################################################################
 ########### ########### ########### LITW specific views ########### ########### ############# 
 #############################################################################################
-def consent(request):
-    return render(request, 'consent.html')
+# def consent(request):
+#     return render(request, 'consent.html')
 
-def instructions(request):
-    return render(request, 'instructions.html')
+# def instructions(request):
+#     return render(request, 'instructions.html')
 
-def results(request):
-    return render(request, 'results.html')
+# def results(request):
+#     return render(request, 'results.html')
 
 #############################################################################################
 ########### ########### ########### Turk specific views ########### ########### ############# 
@@ -45,16 +53,16 @@ def HITcode(request, code):
 
 
 
-
 #############################################################################################
 ########### ###########  Article views (not part of the API) ########### ########### ########
 #############################################################################################
 
 # This is a general view to handle post and get for articles 
 # from: https://docs.djangoproject.com/en/2.2/topics/class-based-views/mixins/#using-formmixin-with-detailview
-class ArticleView(View):
+class ArticleView(LoginRequiredMixin, View):
 
     HITclass = None
+    login_url = '/accounts/login/'
 
     def set_classes(self):
         HITclass = self.kwargs.get('HITclass', None)
@@ -88,10 +96,11 @@ class ArticleView(View):
 
 
 ######### GET ##########
-class ArticleDetailView(DetailView):
+class ArticleDetailView(LoginRequiredMixin, DetailView):
     template_name = 'article_base.html'
     model = Article
     form_class = None
+    login_url = '/accounts/login/'
 
     def set_form_class(self, form_class):
         self.form_class = form_class
@@ -102,46 +111,52 @@ class ArticleDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class()
+        if TESTING:
+            context['form'] = self.form_class(initial=TEST_DATA)
+        else: 
+            context['form'] = self.form_class()
         context['HITtype'] = context['form'].label
         return context
 
     # adding a section to log in a user automatically here
     def get(self, request, *args, **kwargs):
 
-        print(kwargs)
-        # there is no user in this session`
-        if not request.user.is_authenticated:
+        # # there is no user in this session`
+        # if not request.user.is_authenticated:
 
-            # make a new user with a random name and password
-            username = uuid.uuid4()
-            password = uuid.uuid4()
-            user = User.objects.create_user(username=username, password=password)
-            # set password to unusable, since we won't be having participants log in anywhere
-            # user.set_unusable_password()
-            user.save()
+        #     # make a new user with a random name and password
+        #     username = uuid.uuid4()
+        #     password = uuid.uuid4()
+        #     user = User.objects.create_user(username=username, password=password)
+        #     # set password to unusable, since we won't be having participants log in anywhere
+        #     # user.set_unusable_password()
+        #     user.save()
 
-            # authenticate the user
-            user = authenticate(username=username, password=password)
+        #     # authenticate the user
+        #     user = authenticate(username=username, password=password)
 
-            # log the user in
-            login(request, user)
+        #     # log the user in
+        #     login(request, user)
 
         return super().get(request, *args, **kwargs)
 
 ######### POST ##########
-class ArticleHITFormView(SingleObjectMixin, FormView):
+class ArticleHITFormView(LoginRequiredMixin, SingleObjectMixin, FormView):
     template_name = 'article_base.html'
     form_class = None
     model = Article
     HITmodel = None
+    login_url = '/accounts/login/'
 
     def set_form_class(self, form_class):
         self.form_class = form_class
 
     def form_valid(self, form):
         """If the form is valid, add in article and user, save and redirect to the supplied URL."""
-        data = form.cleaned_data
+        if TESTING:
+            data = TEST_DATA
+        else:
+            data = form.cleaned_data
         data['user_id']= self.request.user.id
         data['article_id'] = self.object.id
         if data['lead_interest'] == '':
@@ -170,7 +185,7 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
         return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('LITW-results')
+        return reverse('random-article-detail', kwargs={'HIT': 'None', 'HITclass': 'all'})
         # return reverse('HIT-code', kwargs={'code': code})
 
 
@@ -178,7 +193,7 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
 # wrapper view function for getting a random article if you just go to articles/ url
 # HIT is 0 for if this is not as AMT HIT, 1 if it is. 
 # right now that changes what articles can be viewed
-def randomArticle(request, HIT, HITclass='paragraph'):
+def randomArticle(request, HIT, HITclass='all'):
     print(HIT, HITclass)
     # get a random pk for an article 
     if HIT == 'HIT':
@@ -203,7 +218,7 @@ def randomArticle(request, HIT, HITclass='paragraph'):
     API endpoints
 """
 @api_view(['GET'])
-def root(request):
+def root(request):  
     """
     returns: object containing store metadata, including API version
     """
