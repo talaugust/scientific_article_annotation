@@ -219,10 +219,12 @@ def randomArticle(request, HIT, HITclass='all'):
 def api_results(request):
     if request.method == 'GET':
         print(request.query_params)
+        print(request.user.id)
         article_id = request.query_params.get('article', None)
         article = Article.objects.get(pk=article_id)
-        # get current user annotations
+        # get current user annotations - Might want try except here
         article_annotations = Annotation.objects.filter(article_id=article.id).filter(user_id=request.user.id)
+        print(article_annotations)
         # get all articles of that site
         site_articles = Article.objects.filter(site=article.site) 
         site_articles_with_annotations = site_articles.annotate(number_of_annotations=Count('annotation')).filter(number_of_annotations__gt=0)
