@@ -7,31 +7,21 @@
 
 {% block content %}
 
-<style>
-
-	.bar {
-	  fill: steelblue;
-	}
-
-	.bar:hover {
-	  fill: brown;
-	}
-
-</style>
-
-
 <div class="row mb-3">
-	<h1 class="LITWbolded-blue"> You look for [real world impact] when reading an article! 
+	<h1 class="LITWbolded-blue"> You catch writing strategies like an expert!  
 	</h1>
 </div>
 
 <div class="row mb-3">
-	<p class="lead LITWbolded-blue"> When reading you identified real world impacts ____% more than the average reader, and ____% more than expert science readers! </p>
+	<p> When reading news articles you identified [] total strategies. This is similar to experts and other readers, who identified []. Below you can see the breakdown of the different strategies you identified and those identified by expert readers. </p>
 </div>
 
-
+<div class="row mt-5 pb-5 justify-content-md-center" id="title"></div>
 
 <div class="row justify-content-md-center" id="vis_anchor"></div>
+
+<div class="row justify-content-md-center" id="caption"></div>
+
 
 <div class="row mt-5 pb-5 justify-content-md-center" id="examples"></div>
 
@@ -45,86 +35,149 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script type="text/javascript">
 
-	// load the data
-	var data = [
-	{
-		"rater": "You",
-		"Freq": 20	
-	},
-	{
-		"rater" : "Average",
-		"Freq": 12
-	},
-	{
-		"rater" : "Expert",
-		"Freq": 47
-	},
-	];
-
-	var examples = 
-	{
-		"You": "This is a sentence pulled from the current article the participant just annotated",
-		"Average": "This is a sentence pulled from another article from the same site",	
-		"Expert": "This is a sentnece pulled from another article from the same site made by one of the trained annotators (currently myself or Lauren)",
-	};
-	
-
-
 	// add the SVG element
 	var svg = d3.select("#vis_anchor").append("svg"),
     	margin = {top: 20, right: 20, bottom: 30, left: 40},
-    	width = 550
-    	height = 300
+    	width = 550 - margin.left - margin.right,
+    	height = 300 - margin.top - margin.bottom;
 
-    var caption = d3.select("#vis_anchor").append("text")
-    				.text("Frequency of highlighting [real world impact]. Click on a bar to see example highglights.")
+    var caption = d3.select("#caption").insert("text")
+    				.text("Frequency of identified writing strategies. Click on a bar to see example highglights.")
 
     var text_examples = d3.select("#examples").append("text")
     						.attr("fill", "#000")
 
-	var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-    	y = d3.scaleLinear().rangeRound([height, 0]);
 
 	var g = svg.attr("width", width + margin.left + margin.right)
     	.attr("height", height + margin.top + margin.bottom)
     	.append("g")
     	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    // get the data	
+	$.ajax({
+	  url: "http://localhost:8000/api/results",
+	  type: "get", //send it through get method
+	  data: { article: localStorage.getItem("id")},
+	  success: function(response) {
+		  	var columns = ['Type', 'You', 'Expert']
+			var examples = 
+			{
+				'LEAD': {
+					"You": "",
+					"Expert": "The toxic effects of lead—developmental delays, organ damage, even death—are well-known. But millions of Americans still rely on lead pipes to deliver drinking water",
+				},
+				'MAIN': {
+					"You": "",
+					"Expert": "In an attempt to make them safer, researchers at the University of California, Berkeley, are working on a new technology that uses electrical current to rapidly build a protective layer on the insides of the pipes.",
+				},
+				'IMPACT':{
+					"You": "",
+					"Expert": "According to the authors, this integrated approach is a first step in providing metrics aimed at unifying the psychology and neurophysiology of chronic pain across diverse clinical conditions.",
+				},
+				'CONCLUSION':{
+					"You": "",
+					"Expert": "Things move so fast, nothing stays the same for long. Even if the current model is working, we have to be thinking about what is coming next. If we don’t disrupt ourselves, somebody else will disrupt us.",
+				},
+				'STORY':{
+					"You": "",
+					"Expert": "So 66 million years ago, when an asteroid hit the planet, it blocked out the sun for several months, which turned off photosynthesis, causing the food web to collapse",
+				}
+			};
 
-    data = data.map((d) => {
-          d.Freq = +d.Freq;
-          return d;  
-    });
-		
-  x.domain(data.map(function(d) { return d.rater; }));
-  y.domain([0, d3.max(data, function(d) { return d.Freq; })]);
+		  	console.log(response);
+		  	var data = response['results'];
+		  	for (ex in examples) {
+		  		examples[ex]['You'] = response['examples'][ex];
+		  	}
+		  	console.log(examples);
+	    	//make the graph
+	      	var groupKey = columns[0]
+		  	var keys = columns.slice(1)	
 
-    g.append("g")
-        .attr("class", "axis axis--x")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+		  	const color = d3.scaleOrdinal(d3.schemeCategory10).range(["#98abc5", "#7b6888", "#ff8c00"]);
 
-    g.append("g")
-        .attr("class", "axis axis--y")
-        .call(d3.axisLeft(y).ticks(10))
-      .append("text")
-      	.attr("y", 15)
-    	.attr("fill", "#000")
-		.attr("transform", "rotate(-90)")
-    	.attr("text-anchor", "end")
-        .text("Frequency");	
 
-    g.selectAll(".bar")
-      .data(data)
-      .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function(d) { return x(d.rater); })
-        .attr("y", function(d) { return y(d.Freq); })
-        .attr("width", x.bandwidth())
-        .attr("height", function(d) { return height - y(d.Freq); })
-   
-   g.selectAll(".bar").on("click", function(d) {
-   		text_examples.text('Example sentence: ' + examples[d['rater']])
+		   	var x0 = d3.scaleBand()
+			    .domain(data.map(d => d[groupKey]))
+			    .rangeRound([margin.left, width - margin.right])
+			    .paddingInner(0.1)
+
+			var x1 = d3.scaleBand()
+			    .domain(keys)
+			    .rangeRound([0, x0.bandwidth()])
+			    .padding(0.05)
+
+			var y = d3.scaleLinear()
+				.rangeRound([height, 0 + margin.top])
+				.domain([0, d3.max(data, d => d3.max(keys, key => d[key]))]).nice()
+
+			var xAxis = g => g
+			    .attr("transform", `translate(0,${height})`)
+			    .call(d3.axisBottom(x0).tickSizeOuter(0))
+			    .call(g => g.select(".domain").remove())
+
+			var yAxis = g => g
+			    .attr("transform", `translate(${margin.left},0)`)
+			    .call(d3.axisLeft(y).ticks(null, "s"))
+			    .call(g => g.select(".domain").remove())
+			    .call(g => g.select(".tick:last-of-type text").clone()
+			        .attr("x", 3)
+			        .attr("text-anchor", "start")
+			        .attr("font-weight", "bold")
+			        .text(data.y))
+
+			var legend = g.append("g")
+		            .attr("font-family", "sans-serif")
+		            .attr("font-size", 10)
+		            .attr("text-anchor", "end")
+		            .selectAll("g")
+		            .data(keys.slice().reverse())
+		            .enter().append("g")
+		            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+		        legend.append("rect")
+		            .attr("x", width - 17)
+		            .attr("width", 15)
+		            .attr("height", 15)
+		            .attr("fill", color)
+		            .attr("stroke", color)
+		            .attr("stroke-width",2);
+
+		        legend.append("text")
+		            .attr("x", width - 24)
+		            .attr("y", 9.5)
+		            .attr("dy", "0.32em")
+		            .text(function(d) { return d; });
+				
+				  svg.append("g")
+				    .call(xAxis);
+
+				  svg.append("g")
+				    .call(yAxis);
+
+
+			      svg.append("g")
+				    .selectAll("g")
+				    .data(data)
+				    .join("g")
+				      .attr("transform", d => `translate(${x0(d[groupKey])},0)`)
+				    .selectAll("rect")
+				    .data(d => keys.map(key => ({key, value: d[key], type: d[groupKey]})))
+				    .join("rect")
+				      .attr("x", d => x1(d.key))
+				      .attr("y", d => y(d.value))
+				      .attr("width", x1.bandwidth())
+				      .attr("height", d => y(0) - y(d.value))		
+				      .attr("fill", d => color(d.key))
+					  .on("click", function(d) {
+					  	console.log(d);
+			   		text_examples.text('Example sentence: ' + examples[d['type']][d['key']])
+				});
+	  },
+	  error: function(xhr) {
+	    //Do Something to handle error
+	    console.log(xhr);
+	  }
 	});
 
 </script>

@@ -1,5 +1,13 @@
 <!-- Not extending another template because I think we need access do full document in the annotator.js scripts-->
-<!DOCTYPE html>
+{% extends 'litw_base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -28,6 +36,9 @@
       </a>
     <div class="separator">&nbsp;</div>
   </div>
+ -->
+
+
 
   <div class="mb-3">
     <h1 class="LITWbolded-blue"> Instructions </h1>
@@ -94,7 +105,12 @@
   <script> 
 
     // has to be outside document.ready
-    $('#storyContainer').data('id', '{{object.id}}');   
+    //HTML5 local storage 
+    localStorage.setItem("id","{{object.id}}");
+
+
+
+    // $('#baseContainer').data('id', '{{object.id}}');   
 
     function showSelfDescribe(){
             $("#{{form.gender_self_describe.auto_id}}").show();
@@ -123,5 +139,4 @@
   </script>
   <script src="{% static 'annotationAPI/js/annotation.js' %}"></script>
 
-</body>
-</html>
+{% endblock %}

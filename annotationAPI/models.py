@@ -2,7 +2,7 @@ from django.db import models
 from django_mysql.models import JSONField, ListTextField
 from django.contrib.auth.models import User, Group
 from django.core.validators import MaxValueValidator
-from django.db.models import Count
+from django.db.models import Count, Q
 import uuid
 import string
 import random
@@ -50,6 +50,14 @@ class ArticleManager(models.Manager):
         articles = []
         HITableArticles = super().get_queryset().filter(HITable=True).annotate(number_of_HITs=Count('annotationhit'))
         return HITableArticles.filter(number_of_HITs__lt=2)
+
+    # similar as above but for logged in annotators, check if they have already annotated this article
+    def isAvaliableforUser(self, user):
+        # get annotation function for annoting based on count of annotations from this user
+        # adatped from: https://docs.djangoproject.com/en/3.0/topics/db/aggregation/#filtering-on-annotations
+        user_submissions = Count('annotationhit', filter=Q(annotationhit__user_id=user.id))
+        avalaibleArticles = super().get_queryset().annotate(user_submissions=user_submissions)
+        return avalaibleArticles.filter(user_submissions__lt=1)
 
 class Article(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

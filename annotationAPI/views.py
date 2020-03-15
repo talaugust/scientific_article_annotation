@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Annotation, Article, AnnotationHIT, AnnotationHITStories, AnnotationHITExplAna, AnnotationHITParagraph
+from django.db.models import Count
 from .forms import AnnotationHITForm, AnnotationHITStoriesForm, AnnotationHITExplAnaForm, AnnotationHITParagraphForm
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import FormView
@@ -19,6 +20,8 @@ import uuid
 import string
 
 
+TESTING = True 
+TEST_DATA = {'age': 24, 'gender': 'MALE', 'gender_self_describe': '', 'english_prof': 'NATIVE', 'agree_to_contact': False, 'comments': '24', 'enjoy': 1, 'objective': 1, 'is_lead': 1, 'lead_interest': 1, 'is_main_points_highlight': True, 'is_care_highlight': True, 'is_conclusion': 1, 'is_story_highlight': True, 'is_personal_highlight': True, 'is_expl_highlight': True, 'is_analogy_highlight': True, 'user_id': 8, 'article_id': '366fbfbf-c9c0-407d-8f51-d7826930ed41'}
 
 #############################################################################################
 ########### ########### ########### LITW specific views ########### ########### ############# 
@@ -97,12 +100,16 @@ class ArticleDetailView(DetailView):
         self.form_class = form_class
 
     def get_object(self, queryset=None):
-        pk = self.kwargs.get(self.pk_url_kwarg)
+        pk = self.kwargs.get(self.pk_url_kwarg, None)
+
         return super().get_object(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class()
+        if TESTING:
+            context['form'] = self.form_class(initial=TEST_DATA)
+        else: 
+            context['form'] = self.form_class()
         context['HITtype'] = context['form'].label
         return context
 
@@ -127,6 +134,8 @@ class ArticleDetailView(DetailView):
             # log the user in
             login(request, user)
 
+
+
         return super().get(request, *args, **kwargs)
 
 ######### POST ##########
@@ -141,7 +150,10 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
 
     def form_valid(self, form):
         """If the form is valid, add in article and user, save and redirect to the supplied URL."""
-        data = form.cleaned_data
+        if TESTING:
+            data = TEST_DATA
+        else:
+            data = form.cleaned_data
         data['user_id']= self.request.user.id
         data['article_id'] = self.object.id
         if data['lead_interest'] == '':
@@ -178,14 +190,14 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
 # wrapper view function for getting a random article if you just go to articles/ url
 # HIT is 0 for if this is not as AMT HIT, 1 if it is. 
 # right now that changes what articles can be viewed
-def randomArticle(request, HIT, HITclass='paragraph'):
+def randomArticle(request, HIT, HITclass='all'):
     print(HIT, HITclass)
     # get a random pk for an article 
     if HIT == 'HIT':
         # filter based on if it is HITable, and if it has two annotation HITs on it
         queryset = Article.objects.isHITAvaliable()
     else:
-        queryset = Article.objects.all()
+        queryset = Article.objects.isAvaliableforUser(request.user)
 
     random_article = queryset.order_by('?').first()
 
@@ -198,6 +210,47 @@ def randomArticle(request, HIT, HITclass='paragraph'):
 #############################################################################################
 ########### ########### ###########  API endpoints ########### ########### ######## #########
 #############################################################################################
+
+
+"""
+    returns: the number of annotations by experts for site of the article
+"""
+@api_view(['GET'])
+def api_results(request):
+    if request.method == 'GET':
+        print(request.query_params)
+        article_id = request.query_params.get('article', None)
+        article = Article.objects.get(pk=article_id)
+        # get current user annotations
+        article_annotations = Annotation.objects.filter(article_id=article.id).filter(user_id=request.user.id)
+        # get all articles of that site
+        site_articles = Article.objects.filter(site=article.site) 
+        site_articles_with_annotations = site_articles.annotate(number_of_annotations=Count('annotation')).filter(number_of_annotations__gt=0)
+        # TODO get all annotations of those articles
+        site_annotations = Annotation.objects.filter(article_id__in=[a.id for a in site_articles])
+
+        # TODO return count of annotations avged over articles of that site and grouped by type
+        types = ['LEAD', 'IMPACT', 'CONCLUSION', 'STORY', 'MAIN'] 
+        expert_counts = {t:0 for t in types}
+        user_counts = {t:0 for t in types}
+        example_user_annotations = {t:'' for t in types}
+
+        for t in expert_counts.keys(): 
+            if TESTING:
+                expert_counts[t] = len(site_annotations.filter(text=t)) 
+            else:
+                expert_counts[t] = len(site_annotations.filter(text=t))/len(site_articles_with_annotations)
+            user_counts[t] = len(article_annotations.filter(text=t))
+            try:
+                example_user_annotations[t] = article_annotations.filter(text=t).order_by('?').first().quote
+            except:
+                example_user_annotations[t] = "You identified none of this strategy."
+
+        # make into the correct response format for d3
+        results = [{'Type': t, 'Expert': expert_counts[t], 'You': user_counts[t]} for t in types]
+        return Response({"message": "Got some data!", "results": results, 'examples': example_user_annotations})
+
+    return Response({"message": "Hello, world!"})
 
 """
     API endpoints

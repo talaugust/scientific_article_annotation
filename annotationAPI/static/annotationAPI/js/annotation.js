@@ -56,7 +56,7 @@
 
   var DEBUG = false; 
   var content = $('#storyContainer').annotator();
-  var article_id = $('#storyContainer').data('id');
+  var article_id = localStorage.getItem("id");
   var num_annotations = 0;
 
   // content.annotator('addPlugin', 'Permissions');
