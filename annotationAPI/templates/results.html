@@ -13,7 +13,7 @@
 </div>
 
 <div class="row mb-3">
-	<p> When reading news articles you identified {{ total_strategies }} total strategies. This is similar to experts and other readers, who identified {{ expert_strategies }} in similar articles. Below you can see the breakdown of the different strategies you identified and those identified by expert readers. </p>
+	<p> When reading news articles you identified {{ total_strategies }} total strategie(s). This is similar to experts and other readers, who identified {{ expert_strategies }} total strategies in similar articles. Below you can see the breakdown of the different strategies you identified and those identified by expert readers. Note that these are not all the different strategies you may have highlighted, but a subset of the most common ones. </p>
 </div>
 
 <div class="row mt-5 pb-5 justify-content-md-center" id="title"></div>
@@ -57,7 +57,7 @@
     	height = 300 - margin.top - margin.bottom;
 
     var caption = d3.select("#caption").insert("text")
-    				.text("Frequency of identified writing strategies. Click on a bar to see example highglights.")
+    				.text("Frequency of identified writing strategies. Click on a bar to see example highlights.")
 
     var text_examples = d3.select("#examples").append("text")
     						.attr("fill", "#000")
@@ -70,7 +70,7 @@
 
     // get the data	https://litw-sci-scomm.azurewebsites.net/api/results
 	$.ajax({
-	  url: "https://litw-sci-scomm.azurewebsites.net/api/results",
+	  url: "http://localhost:8000/api/results",
 	  type: "get", //send it through get method
 	  data: { article: localStorage.getItem("id")},
 	  success: function(response) {
@@ -89,9 +89,9 @@
 					"You": "",
 					"Expert": "According to the authors, this integrated approach is a first step in providing metrics aimed at unifying the psychology and neurophysiology of chronic pain across diverse clinical conditions.",
 				},
-				'CONCLUSION':{
+				'PERSONAL':{
 					"You": "",
-					"Expert": "Things move so fast, nothing stays the same for long. Even if the current model is working, we have to be thinking about what is coming next. If we don’t disrupt ourselves, somebody else will disrupt us.",
+					"Expert": "\"I never would have imagined we would reach this in my lifetime,\" says Sandholm, a professor of computer science at Carnegie Mellon University.",
 				},
 				'STORY':{
 					"You": "",

@@ -30,7 +30,7 @@ SECRET_KEY = os.environ['PROD_KEY']
 DEBUG = True  
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = [os.environ['WEBSITE_SITE_NAME'] + '.azurewebsites.net', '127.0.0.1', 'localhost'] if 'WEBSITE_SITE_NAME' in os.environ else ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [os.environ['WEBSITE_SITE_NAME'] + '.azurewebsites.net', '127.0.0.1', '0.0.0.0', 'localhost'] if 'WEBSITE_SITE_NAME' in os.environ else ['127.0.0.1', '0.0.0.0', 'localhost']
 
 
 # Application definition
@@ -100,7 +100,8 @@ DATABASES = {
         'USER': os.environ['DBUSER'],
         'PASSWORD': os.environ['DBPASS'],
         'OPTIONS': {
-            'ssl': {'ssl-ca': 'BaltimoreCyberTrustRoot.crt.pem'}
+            'ssl': {'ssl-ca': 'BaltimoreCyberTrustRoot.crt.pem'},
+            'charset': 'utf8mb4',
         }
     }
 }
