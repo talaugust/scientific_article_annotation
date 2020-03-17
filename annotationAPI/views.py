@@ -255,19 +255,16 @@ def api_results(request):
         site_annotations = Annotation.objects.filter(article_id__in=[a.id for a in site_articles_with_annotations])
 
         # return count of annotations avged over articles of that site and grouped by type
-        types = ['LEAD', 'IMPACT', 'CONCLUSION', 'STORY', 'MAIN'] 
+        types = ['LEAD', 'IMPACT', 'STORY', 'MAIN', 'PERSONAL'] 
         expert_counts = {t:0 for t in types}
         user_counts = {t:0 for t in types}
         example_user_annotations = {t:'' for t in types}
 
         for t in expert_counts.keys(): 
-            if TESTING:
-                expert_counts[t] = len(site_annotations.filter(text=t)) 
-            else:
-                try:
-                    expert_counts[t] = len(site_annotations.filter(text=t))/len(site_articles_with_annotations)
-                except:
-                    expert_counts[t] = 0
+            try:
+                expert_counts[t] = len(site_annotations.filter(text=t))/len(site_articles_with_annotations)
+            except:
+                expert_counts[t] = 0
             user_counts[t] = len(article_annotations.filter(text=t))
             try:
                 example_user_annotations[t] = article_annotations.filter(text=t).order_by('?').first().quote
