@@ -32,8 +32,33 @@ def consent(request):
 def instructions(request):
     return render(request, 'instructions.html')
 
+# api request is called by d3 to get the data, seperate from the actual call of the page 
 def results(request):
-    return render(request, 'results.html')
+    context = {}
+    # get the article 
+    article_id = request.session.get('article_id', None)
+
+
+    # just return this without an image
+    if article_id is None:
+        return render(request, 'results.html', context=context)
+
+    # just return the number of annotations made by them and those averaged by everyone else
+    # much of the code is duplicated from the results api endpoint
+    article = Article.objects.get(pk=article_id)
+    # get current user annotations - Might want try except here
+    article_annotations = Annotation.objects.filter(article_id=article.id).filter(user_id=request.user.id)
+    site_articles = Article.objects.filter(site=article.site) 
+    site_articles_with_annotations = site_articles.annotate(number_of_annotations=Count('annotation')).filter(number_of_annotations__gt=0)
+    site_annotations = Annotation.objects.filter(article_id__in=[a.id for a in site_articles_with_annotations])
+
+    try:
+        context['total_strategies'] = len(article_annotations)
+        context['expert_strategies'] = len(site_annotations) / len(site_articles_with_annotations)
+    except:
+        pass
+    
+    return render(request, 'results.html', context=context)
 
 #############################################################################################
 ########### ########### ########### Turk specific views ########### ########### ############# 
@@ -116,7 +141,6 @@ class ArticleDetailView(DetailView):
     # adding a section to log in a user automatically here
     def get(self, request, *args, **kwargs):
 
-        print(kwargs)
         # there is no user in this session`
         if not request.user.is_authenticated:
 
@@ -133,8 +157,6 @@ class ArticleDetailView(DetailView):
 
             # log the user in
             login(request, user)
-
-
 
         return super().get(request, *args, **kwargs)
 
@@ -156,6 +178,10 @@ class ArticleHITFormView(SingleObjectMixin, FormView):
             data = form.cleaned_data
         data['user_id']= self.request.user.id
         data['article_id'] = self.object.id
+
+        # save the object to the session
+        self.request.session['article_id'] = str(self.object.id)
+
         if data['lead_interest'] == '':
             data['lead_interest'] = 0
         # print(data)
@@ -211,15 +237,12 @@ def randomArticle(request, HIT, HITclass='all'):
 ########### ########### ###########  API endpoints ########### ########### ######## #########
 #############################################################################################
 
-
 """
     returns: the number of annotations by experts for site of the article
 """
 @api_view(['GET'])
 def api_results(request):
     if request.method == 'GET':
-        print(request.query_params)
-        print(request.user.id)
         article_id = request.query_params.get('article', None)
         article = Article.objects.get(pk=article_id)
         # get current user annotations - Might want try except here
@@ -229,7 +252,7 @@ def api_results(request):
         site_articles = Article.objects.filter(site=article.site) 
         site_articles_with_annotations = site_articles.annotate(number_of_annotations=Count('annotation')).filter(number_of_annotations__gt=0)
         # get all annotations of those articles
-        site_annotations = Annotation.objects.filter(article_id__in=[a.id for a in site_articles])
+        site_annotations = Annotation.objects.filter(article_id__in=[a.id for a in site_articles_with_annotations])
 
         # return count of annotations avged over articles of that site and grouped by type
         types = ['LEAD', 'IMPACT', 'CONCLUSION', 'STORY', 'MAIN'] 
@@ -256,6 +279,7 @@ def api_results(request):
         return Response({"message": "Got some data!", "results": results, 'examples': example_user_annotations})
 
     return Response({"message": "Hello, world!"})
+
 
 """
     API endpoints

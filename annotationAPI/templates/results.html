@@ -8,12 +8,12 @@
 {% block content %}
 
 <div class="row mb-3">
-	<h1 class="LITWbolded-blue"> You catch writing strategies like an expert!  
+	<h1 class="LITWbolded-blue"> Nice work! You have the eyes of an expert writer!  
 	</h1>
 </div>
 
 <div class="row mb-3">
-	<p> When reading news articles you identified [] total strategies. This is similar to experts and other readers, who identified []. Below you can see the breakdown of the different strategies you identified and those identified by expert readers. </p>
+	<p> When reading news articles you identified {{ total_strategies }} total strategies. This is similar to experts and other readers, who identified {{ expert_strategies }} in similar articles. Below you can see the breakdown of the different strategies you identified and those identified by expert readers. </p>
 </div>
 
 <div class="row mt-5 pb-5 justify-content-md-center" id="title"></div>
@@ -24,6 +24,21 @@
 
 
 <div class="row mt-5 pb-5 justify-content-md-center" id="examples"></div>
+
+<div class="row"> <h3 class="LITWbolded-blue"> Interested in learning more? </h3> </div>
+
+<div class="row">
+	<p> This study explores how science news articles, blogs, and press releases communicate new scientific findings to a diverse audience of readers. By analyzing scientific communication books and training materials, we identified writing strategies that are recommended for science writing, like explaining scientific concepts or using analogies. </p>
+	<p> We are curious how these writing strategies get used in actual science communication. Your annotations will help us identify when these strategies get used, and how effective they are. Thank you! </p>
+	<p> If you are interested in learning more, check out these great resources: </p>
+</div>
+
+<div class="row">
+	<ul> 
+		<li> <a href="https://www.reddit.com/r/science"> r/Science </a>: A forum dedicated to communicating and discussing scientific topics. </li>
+		<li> <a href="https://en.wikipedia.org/wiki/Science_communication"> Wikipedia on science communication. </a> </li>
+	</ul>
+</div>
 
 <div class="row mt-5 pb-5" id="examples">
 	<a  href="{% url 'random-article-detail' HIT='LITW' HITclass='all' %}" class="btn btn-primary">Try another article!</a>
