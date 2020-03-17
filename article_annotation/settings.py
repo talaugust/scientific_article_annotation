@@ -100,7 +100,8 @@ DATABASES = {
         'USER': os.environ['DBUSER'],
         'PASSWORD': os.environ['DBPASS'],
         'OPTIONS': {
-            'ssl': {'ssl-ca': 'BaltimoreCyberTrustRoot.crt.pem'}
+            'ssl': {'ssl-ca': 'BaltimoreCyberTrustRoot.crt.pem'},
+            'charset': 'utf8mb4',
         }
     }
 }
