@@ -20,7 +20,7 @@ import uuid
 import string
 
 
-TESTING = True 
+TESTING = False 
 TEST_DATA = {'age': 24, 'gender': 'MALE', 'gender_self_describe': '', 'english_prof': 'NATIVE', 'agree_to_contact': False, 'comments': '24', 'enjoy': 1, 'objective': 1, 'is_lead': 1, 'lead_interest': 1, 'is_main_points_highlight': True, 'is_care_highlight': True, 'is_conclusion': 1, 'is_story_highlight': True, 'is_personal_highlight': True, 'is_expl_highlight': True, 'is_analogy_highlight': True, 'user_id': 8, 'article_id': '366fbfbf-c9c0-407d-8f51-d7826930ed41'}
 
 #############################################################################################
