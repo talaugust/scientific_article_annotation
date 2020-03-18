@@ -70,7 +70,7 @@
 
     // get the data	https://litw-sci-scomm.azurewebsites.net/api/results
 	$.ajax({
-	  url: "http://localhost:8000/api/results",
+	  url: "https://litw-sci-scomm.azurewebsites.net/api/results",
 	  type: "get", //send it through get method
 	  data: { article: localStorage.getItem("id")},
 	  success: function(response) {
