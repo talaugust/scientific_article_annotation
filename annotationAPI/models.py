@@ -2,7 +2,7 @@ from django.db import models
 from django_mysql.models import JSONField, ListTextField
 from django.contrib.auth.models import User, Group
 from django.core.validators import MaxValueValidator
-from django.db.models import Count
+from django.db.models import Count, Q
 import uuid
 import string
 import random
@@ -50,6 +50,11 @@ class ArticleManager(models.Manager):
         articles = []
         HITableArticles = super().get_queryset().filter(HITable=True).annotate(number_of_HITs=Count('annotationhit'))
         return HITableArticles.filter(number_of_HITs__lt=2)
+
+    def getUserAnnotated(self, user):
+        user_annotations = Count('annotation', filter=Q(annotation__user_id=user.id))
+        avalaibleArticles = super().get_queryset().annotate(user_annotations=user_annotations)
+        return avalaibleArticles.filter(user_annotations__gt=0)
 
 class Article(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

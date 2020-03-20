@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/', include(APIrouter.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-test/annotations', views.annotations),
-    path('articles/<uuid:pk>/', views.ArticleView.as_view(HITclass='paragraph'), name='article-detail'), # depreciated
+    path('articles/<uuid:pk>/', views.ArticleView.as_view(HITclass='all'), name='article-detail'), # depreciated
     path('articles/<str:HITclass>/<uuid:pk>/', views.ArticleView.as_view(), name='article-detail'),
     path('articles/<str:HIT>/', views.randomArticle, name='random-article-detail'),
     path('articles/<str:HIT>/<str:HITclass>/', views.randomArticle, name='random-article-detail'),

@@ -28,7 +28,12 @@ TEST_DATA = { 'comments': '24', 'is_lead': 1, 'lead_interest': 1, 'is_main_point
 
 
 def home(request):
-    return render(request, 'registration/home.html')
+    context = {}
+    if request.user.is_authenticated:
+        annotated_articles = Article.objects.getUserAnnotated(request.user)
+        context['articles'] = annotated_articles
+
+    return render(request, 'registration/home.html', context)
 
 #############################################################################################
 ########### ########### ########### LITW specific views ########### ########### ############# 

@@ -9,10 +9,20 @@
     {% if user.is_authenticated %}
         <div class="row">   
             <div class="col">
-                Hi {{ user.username }}! <a href="{% url 'random-article-detail' HIT='LITW' HITclass='all' %}">Go to an article</a>
+                Hi {{ user.username }}! <a href="{% url 'random-article-detail' HIT='LITW' HITclass='all' %}">Go to a random article</a>
             </div>
         </div>
 
+        <br> 
+        <p class="litw-boldedBlue"> Articles you have annotations in: </p>
+        <div class="row">
+
+            <ul> 
+                {% for article in articles %}
+                    <li> <a href="{% url 'article-detail' HITclass='all' pk=article.id %}"> {{ article.title }} </a> </li>
+                {% endfor %}
+            </ul>
+        </div>
         <div class="row mt-5">
             <div class="col">
                 <p><a href="{% url 'logout' %}">logout</a></p>
