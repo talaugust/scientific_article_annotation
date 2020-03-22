@@ -29,9 +29,20 @@ TEST_DATA = { 'comments': '24', 'is_lead': 1, 'lead_interest': 1, 'is_main_point
 
 def home(request):
     context = {}
-    if request.user.is_authenticated:
+    if request.user.is_superuser:
+        context['super'] = True
+        # get all annotated articles from all users
+        users = User.objects.all()
+        user_articles = {}
+        for user in users:
+            user_articles[user.username] = Article.objects.getUserAnnotated(user)
+        context['user_articles'] = user_articles
+        
+    elif request.user.is_authenticated:
+        context['super'] = False 
         annotated_articles = Article.objects.getUserAnnotated(request.user)
         context['articles'] = annotated_articles
+        
 
     return render(request, 'registration/home.html', context)
 

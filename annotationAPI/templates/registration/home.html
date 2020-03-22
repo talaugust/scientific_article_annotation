@@ -12,17 +12,33 @@
                 Hi {{ user.username }}! <a href="{% url 'random-article-detail' HIT='LITW' HITclass='all' %}">Go to a random article</a>
             </div>
         </div>
-
         <br> 
-        <p class="litw-boldedBlue"> Articles you have annotations in: </p>
-        <div class="row">
-
-            <ul> 
-                {% for article in articles %}
-                    <li> <a href="{% url 'article-detail' HITclass='all' pk=article.id %}"> {{ article.title }} </a> </li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% if super %}
+            <p class="litw-boldedBlue"> All annotated articles: </p>
+            {% if user_articles %}
+            {% for user, articles in user_articles.items %}
+                <div class="row">
+                    <p> {{ user }} </p>
+                </div>
+                <div class="row">
+                    <ol> 
+                        {% for article in articles %}
+                            <li> <a href="{% url 'article-detail' HITclass='all' pk=article.id %}"> {{ article.title }} </a> </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            {% endfor %}
+            {% endif %}
+        {% else %}
+            <p class="litw-boldedBlue"> Articles you have annotations in: </p>
+            <div class="row">
+                <ol> 
+                    {% for article in articles %}
+                        <li> <a href="{% url 'article-detail' HITclass='all' pk=article.id %}"> {{ article.title }} </a> </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        {% endif %}
         <div class="row mt-5">
             <div class="col">
                 <p><a href="{% url 'logout' %}">logout</a></p>
