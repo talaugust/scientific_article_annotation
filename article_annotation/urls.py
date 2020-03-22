@@ -15,6 +15,8 @@ APIrouter.register(r'annotations', views.AnnotationViewSet)
 # note that this router is api/articles while the class view below is just articles/ because it is not really part of the API
 APIrouter.register(r'articles', views.ArticleViewSet)
 
+APIrouter.register(r'hits', views.AnnotationHITViewSet)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

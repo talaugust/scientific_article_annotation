@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from annotationAPI.serializers import UserSerializer, GroupSerializer, AnnotationSerializer, ArticleSerializer
+from annotationAPI.serializers import UserSerializer, GroupSerializer, AnnotationSerializer, ArticleSerializer, AnnotationHITSerializer
 from rest_framework import status, viewsets, generics
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
@@ -244,7 +244,7 @@ def root(request):
     returns: object containing store metadata, including API version
     """
     if request.method == 'GET':
-        response = {'name': 'Annotator Store Dummy API', 'version': '1.2.10 (annotator.js)'}
+        response = {'name': 'Annotator Store API', 'version': '1.2.10 (annotator.js)'}
         return Response(response)
 
 @api_view(['GET', 'POST'])
@@ -253,11 +253,11 @@ def annotations(request):
     returns: object containing store metadata, including API version
     """
     if request.method == 'GET':
-        response = {'name': 'Annotator Store Dummy API', 'version': '1.2.10 (annotator.js)'}
+        response = {'name': 'Annotator Store API', 'version': '1.2.10 (annotator.js)'}
         return Response(response)
 
     if request.method == 'POST':
-        response = {'name': 'Annotator Store Dummy API', 'version': '1.2.10 (annotator.js)'}
+        response = {'name': 'Annotator Store API', 'version': '1.2.10 (annotator.js)'}
         print(request.data)
         return Response(response)
 
@@ -316,6 +316,15 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         annotations = {'rows': serializer.data, 'total':len(serializer.data)}   
         return Response(annotations)
 
+
+class AnnotationHITViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = AnnotationHIT.objects.all()
+    serializer_class = AnnotationHITSerializer
+    
+    permission_classes = (IsAdminUser,)
 
 
 class UserViewSet(viewsets.ModelViewSet):
