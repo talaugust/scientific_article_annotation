@@ -36,6 +36,7 @@ def home(request):
         user_articles = {}
         for user in users:
             user_articles[user.username] = Article.objects.getUserAnnotated(user)
+        user_articles['None'] = Article.objects.getNoneAnnotated()
         context['user_articles'] = user_articles
         
     elif request.user.is_authenticated:
@@ -323,7 +324,7 @@ class AnnotationHITViewSet(viewsets.ModelViewSet):
     """
     queryset = AnnotationHIT.objects.all()
     serializer_class = AnnotationHITSerializer
-    
+
     permission_classes = (IsAdminUser,)
 
 

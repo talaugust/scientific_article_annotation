@@ -56,6 +56,11 @@ class ArticleManager(models.Manager):
         avalaibleArticles = super().get_queryset().annotate(user_annotations=user_annotations)
         return avalaibleArticles.filter(user_annotations__gt=0)
 
+    def getNoneAnnotated(self):
+        avalaibleArticles = super().get_queryset().annotate(number_of_HITs=Count('annotationhit'))
+        return avalaibleArticles.filter(number_of_HITs=0)
+
+
 class Article(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField(auto_now_add=True)
