@@ -283,7 +283,11 @@ class AnnotationViewSet(viewsets.ModelViewSet):
 
 
     def get_queryset(self):
-        annotations = self.queryset.filter(user=self.request.user.id)
+        if self.request.user.is_superuser:
+             # return all the annotations
+             annotations = self.queryset
+        else:
+            annotations = self.queryset.filter(user=self.request.user.id)
         return annotations
 
     def create(self, request):
@@ -301,9 +305,15 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     def list(self, request): 
         article_id = request.GET.get('id', None)
         limit = request.GET.get('limit', len(self.get_queryset()))
-        filtered_queryset = self.get_queryset().filter(article=article_id)[:int(limit)]   
+
+        if article_id is None:
+            # return all the annotations
+            filtered_queryset = self.get_queryset()[:int(limit)]   
+        else:
+            filtered_queryset = self.get_queryset().filter(article=article_id)[:int(limit)]  
+
         serializer = self.serializer_class(filtered_queryset, many=True)
-        annotations = {'rows': serializer.data, 'total':len(serializer.data)}
+        annotations = {'rows': serializer.data, 'total':len(serializer.data)}   
         return Response(annotations)
 
 
