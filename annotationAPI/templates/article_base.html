@@ -71,8 +71,21 @@
             </div>
         </div>
       </div>
-      <div class="col">
-
+      {% if user.is_superuser %}
+        <div class="col">
+          <div class="form-group">
+            <label for="userChoice">Select User</label>
+            <select class="form-control" id="userChoice">
+              {% for u in users %}
+                {% if u == user %}
+                  <option selected value="{{ u.id }}"> {{ u }}</option>
+                {% else %}
+                  <option value="{{ u.id }}"> {{ u }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+        </div>
+      {% endif %}
         <!-- For changing which type of annotation we are doing --> 
         {% if HITtype == 'paragraph_specific' %}
           {% include 'sections/HITParagraph.html' with form=form %}
@@ -90,40 +103,33 @@
       </div>
       <!-- row --> 
     </div>
+
   </div>
   </main>
   <script src="{% static 'annotationAPI/js/annotator-full.min.js' %}"></script>
+  <script src="{% static 'annotationAPI/js/annotation.js' %}"></script>
   <script> 
-
     // has to be outside document.ready
     $('#storyContainer').data('id', '{{object.id}}');   
 
-    function showSelfDescribe(){
-            $("#{{form.gender_self_describe.auto_id}}").show();
-            $("label[for={{form.gender_self_describe.auto_id}}]").show();
-    };
-    function hideSelfDescribe(){
-        $("#{{form.gender_self_describe.auto_id}}").hide();
-        $("label[for={{form.gender_self_describe.auto_id}}]").hide();
-    };
+    $( document ).ready(function() {
 
+        var annotator = setupAnnotator('#storyContainer', '{{object.id}}', $("#userChoice").find(':selected').val()); 
 
-    $( document ).ready(function() {  
-        hideSelfDescribe();    
-        $("#{{form.gender.auto_id}}").change(function() {
-            var selectedVal = $(this).find(':selected').val();
-            var selectedText = $(this).find(':selected').text();
+        $("#userChoice").change(function() {
+          var userChoice = $(this).find(':selected').val();
+          console.log(userChoice);
+          // annotator.loadAnnotations(); 
+          annotator.data('annotator').plugins['Store'].options['loadFromSearch']['search_user'] = userChoice;
+          // annotator.data('annotator').viewer.hide();
+          annotator.data('annotator').plugins['Store'].loadAnnotationsFromSearch({'limit':100, 'id':'{{object.id}}', 'search_user':userChoice});
 
-            if (selectedVal === 'SELF-DESCR'){ 
-                showSelfDescribe();
-            } else {
-                hideSelfDescribe();
-            }
+          // setupAnnotator('#storyContainer', '{{object.id}}', userChoice)  
         });
+
             
     });
   </script>
-  <script src="{% static 'annotationAPI/js/annotation.js' %}"></script>
 
 </body>
 </html>

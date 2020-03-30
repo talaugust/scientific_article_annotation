@@ -134,6 +134,11 @@ class ArticleDetailView(LoginRequiredMixin, DetailView):
             context['form'] = self.form_class(initial=TEST_DATA)
         else: 
             context['form'] = self.form_class()
+
+        # send rest of users with superuser
+        if self.request.user.is_superuser:
+            context['users'] = User.objects.all()
+
         context['HITtype'] = context['form'].label
         return context
 
@@ -283,10 +288,14 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
 
-    def get_queryset(self):
+    def get_queryset(self, search_user=None):
         if self.request.user.is_superuser:
-             # return all the annotations
-             annotations = self.queryset
+            # return whatever user the super user is querying
+            if search_user is not None:
+                annotations = self.queryset.filter(user=search_user)
+            else:   
+                # return all the annotations
+                annotations = self.queryset
         else:
             annotations = self.queryset.filter(user=self.request.user.id)
         return annotations
@@ -295,7 +304,6 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         # copy data and override user
         data = request.data
         data['user'] = request.user.id 
-        print(data)
         serializer = self.serializer_class(data=data)
         serializer.is_valid()
         print(serializer.errors)
@@ -304,14 +312,16 @@ class AnnotationViewSet(viewsets.ModelViewSet):
 
 
     def list(self, request): 
+        print(request.GET)
         article_id = request.GET.get('id', None)
         limit = request.GET.get('limit', len(self.get_queryset()))
+        search_user = request.GET.get('search_user', request.user)
 
         if article_id is None:
             # return all the annotations
-            filtered_queryset = self.get_queryset()[:int(limit)]   
+            filtered_queryset = self.get_queryset(search_user=search_user)[:int(limit)]   
         else:
-            filtered_queryset = self.get_queryset().filter(article=article_id)[:int(limit)]  
+            filtered_queryset = self.get_queryset(search_user=search_user).filter(article=article_id)[:int(limit)]  
 
         serializer = self.serializer_class(filtered_queryset, many=True)
         annotations = {'rows': serializer.data, 'total':len(serializer.data)}   

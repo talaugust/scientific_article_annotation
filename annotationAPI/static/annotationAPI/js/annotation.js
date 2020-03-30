@@ -55,14 +55,21 @@
 };
 
   var DEBUG = false; 
-  var content = $('#storyContainer').annotator();
-  var article_id = $('#storyContainer').data('id');
+  // var content = $('#storyContainer').annotator();
+  // var article_id = $('#storyContainer').data('id');
   var num_annotations = 0;
 
   // content.annotator('addPlugin', 'Permissions');
+
   // content.annotator('addPlugin', 'Tags')
-  content.annotator('addPlugin', 'StoreLogger')
-  content.annotator('addPlugin', 'Store', {
+
+
+  // function for setting up an annotator
+  var setupAnnotator = function(area, article_id, search_user){
+    var content = $(area).annotator();
+    content.annotator('addPlugin', 'StoreLogger')
+    
+    content.annotator('addPlugin', 'Store', {
       // The endpoint of the store on your server.
       prefix: '/api',
 
@@ -82,9 +89,15 @@
       // request the last 20 annotations for the current url.
       loadFromSearch: {
         'id': DEBUG? 'https://www.test.com':article_id,
-        'limit': 20,
+        'limit': 100,
+        'search_user':search_user,
       },
     });
+
+    return content;
+    
+    };
+
 
 
     $('#HIT-form').on('submit', function(e) {
