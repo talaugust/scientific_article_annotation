@@ -114,7 +114,11 @@
 
     $( document ).ready(function() {
 
-        var annotator = setupAnnotator('#storyContainer', '{{object.id}}', $("#userChoice").find(':selected').val()); 
+        var read_only = false;
+
+        if ('{{ user }}' == 'checkUser') {read_only = true}
+
+        var annotator = setupAnnotator('#storyContainer', '{{object.id}}', $("#userChoice").find(':selected').val(), read_only); 
 
         $("#userChoice").change(function() {
           var userChoice = $(this).find(':selected').val();

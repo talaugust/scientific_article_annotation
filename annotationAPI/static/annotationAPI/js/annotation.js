@@ -65,10 +65,12 @@
 
 
   // function for setting up an annotator
-  var setupAnnotator = function(area, article_id, search_user){
-    var content = $(area).annotator();
+  var setupAnnotator = function(area, article_id, search_user, read_only){
+    var content = $(area).annotator({
+        readOnly: read_only
+    });
     content.annotator('addPlugin', 'StoreLogger')
-    
+
     content.annotator('addPlugin', 'Store', {
       // The endpoint of the store on your server.
       prefix: '/api',
