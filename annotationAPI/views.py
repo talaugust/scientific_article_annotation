@@ -319,7 +319,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
 
         if article_id is None:
             # return all the annotations
-            filtered_queryset = self.get_queryset(search_user=search_user)[:int(limit)]   
+            filtered_queryset = self.get_queryset()[:int(limit)]   
         else:
             filtered_queryset = self.get_queryset(search_user=search_user).filter(article=article_id)[:int(limit)]  
 
