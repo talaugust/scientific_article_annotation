@@ -54,7 +54,7 @@ class ArticleManager(models.Manager):
     def getUserAnnotated(self, user):
         user_annotations = Count('annotation', filter=Q(annotation__user_id=user.id))
         avalaibleArticles = super().get_queryset().annotate(user_annotations=user_annotations)
-        return avalaibleArticles.filter(user_annotations__gt=0)
+        return avalaibleArticles.filter(user_annotations__gt=0).order_by('-updated')
 
     def getNoneAnnotated(self):
         avalaibleArticles = super().get_queryset().annotate(number_of_HITs=Count('annotationhit'))
