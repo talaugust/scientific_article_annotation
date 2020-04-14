@@ -26,8 +26,8 @@ TESTING = False
 TEST_DATA = { 'comments': '24', 'is_lead': 1, 'lead_interest': 2, 'is_main_points_highlight': True, 'is_care_highlight': True, 'is_conclusion': 1, 'is_story_highlight': True, 'is_personal_highlight': True, 'is_expl_highlight': True, 'is_analogy_highlight': True, 'user_id': 8, 'article_id': '366fbfbf-c9c0-407d-8f51-d7826930ed41'}
 
 
-
-def home(request):
+# NOTE: order is for unannotated articles
+def home(request, order=None):
     context = {}
     if request.user.is_superuser:
         context['super'] = True
@@ -35,13 +35,13 @@ def home(request):
         users = User.objects.all()
         user_articles = {}
         for user in users:
-            user_articles[user.username] = Article.objects.getUserAnnotated(user)
-        user_articles['None'] = Article.objects.getNoneAnnotated()
+            user_articles[user.username] = Article.objects.getUserAnnotated(user, order)
+        user_articles['None'] = Article.objects.getNoneAnnotated(order)
         context['user_articles'] = user_articles
         
     elif request.user.is_authenticated:
         context['super'] = False 
-        annotated_articles = Article.objects.getUserAnnotated(request.user)
+        annotated_articles = Article.objects.getUserAnnotated(request.user, order)
         context['articles'] = annotated_articles
         
 

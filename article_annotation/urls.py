@@ -23,7 +23,8 @@ APIrouter.register(r'hits', views.AnnotationHITViewSet)
 urlpatterns = [
 	path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('home/', views.home, name='home'), 
+    path('home/', views.home, name='home'),
+    path('home/<str:order>', views.home, name='home'),  
     path('', include(router.urls)),
     path('api/', include(APIrouter.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

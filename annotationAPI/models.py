@@ -51,14 +51,20 @@ class ArticleManager(models.Manager):
         HITableArticles = super().get_queryset().filter(HITable=True).annotate(number_of_HITs=Count('annotationhit'))
         return HITableArticles.filter(number_of_HITs__lt=2)
 
-    def getUserAnnotated(self, user):
+    def getUserAnnotated(self, user, order=None):
         user_annotations = Count('annotation', filter=Q(annotation__user_id=user.id))
         avalaibleArticles = super().get_queryset().annotate(user_annotations=user_annotations)
-        return avalaibleArticles.filter(user_annotations__gt=0).order_by('-updated')
+        if order is not None:
+            return avalaibleArticles.filter(user_annotations__gt=0).order_by(order)
+        else:
+            return avalaibleArticles.filter(user_annotations__gt=0).order_by('-updated')
 
-    def getNoneAnnotated(self):
+    def getNoneAnnotated(self, order=None):
         avalaibleArticles = super().get_queryset().annotate(number_of_HITs=Count('annotationhit'))
-        return avalaibleArticles.filter(number_of_HITs=0)
+        if order is not None:
+            return avalaibleArticles.filter(number_of_HITs=0).order_by(order)
+        else:
+            return avalaibleArticles.filter(number_of_HITs=0)
 
 
 class Article(models.Model):
