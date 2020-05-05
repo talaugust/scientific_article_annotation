@@ -69,7 +69,8 @@
     var content = $(area).annotator({
         readOnly: read_only
     });
-    content.annotator('addPlugin', 'StoreLogger')
+    content.annotator('addPlugin', 'StoreLogger');
+    content.annotator('addPlugin', 'Tags');
 
     content.annotator('addPlugin', 'Store', {
       // The endpoint of the store on your server.

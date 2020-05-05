@@ -312,7 +312,6 @@ class AnnotationViewSet(viewsets.ModelViewSet):
 
 
     def list(self, request): 
-        print(request.GET)
         article_id = request.GET.get('id', None)
         limit = request.GET.get('limit', len(self.get_queryset()))
         search_user = request.GET.get('search_user', request.user)
@@ -324,6 +323,14 @@ class AnnotationViewSet(viewsets.ModelViewSet):
             filtered_queryset = self.get_queryset(search_user=search_user).filter(article=article_id)[:int(limit)]  
 
         serializer = self.serializer_class(filtered_queryset, many=True)
+
+        # update the serialized data to also show the tag of the user who created that
+        for item in serializer.data: 
+            # check if item tags is empty (in which case it is an empty dict)
+            if item['tags'] == {}:
+                item['tags'] = [str(item['user'])]
+            elif str(item['user']) not in item['tags']:
+                item['tags'].append(str(item['user']))
         annotations = {'rows': serializer.data, 'total':len(serializer.data)}   
         return Response(annotations)
 
