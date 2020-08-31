@@ -45,9 +45,11 @@ INSTALLED_APPS = [
     'django_mysql',
     'rest_framework',
     'corsheaders',
+    'intra_article_survey',
     'annotationAPI',
     'widget_tweaks',
     'rest_framework.authtoken',
+    'multiselectfield',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -103,7 +105,8 @@ DATABASES = {
         'OPTIONS': {
             'ssl': {'ssl-ca': 'BaltimoreCyberTrustRoot.crt.pem'},
             'charset': 'utf8mb4',
-        }
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 

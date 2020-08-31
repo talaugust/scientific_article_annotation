@@ -1,0 +1,63 @@
+{% extends 'litw_base.html' %}
+
+{% block title %}Landing{% endblock %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 class="LITWbolded-blue">First, please tell us a bit about yourself!</h2>
+        </div>
+    </div>
+    <form method="post">
+	    {% csrf_token %}
+
+
+
+        {% include 'form_field.html' with form=form field=form.age is_check=False %}
+        {% include 'form_field.html' with form=form field=form.english_prof is_check=False %}
+        {% include 'form_field.html' with form=form field=form.gender is_check=False %}
+        {% include 'form_field.html' with form=form field=form.gender_self_describe is_check=False %}
+        {% include 'form_field.html' with form=form field=form.education is_check=False %}
+        {% include 'form_field.html' with form=form field=form.stem_background is_check=False %}
+        {% include 'form_field.html' with form=form field=form.profession is_check=False %}
+        {% include 'form_field_likert.html' with form=form field=form.sci_info is_likert=False %}
+
+    	<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>
+
+<script>
+
+	function showSelfDescribe(){
+            $("#{{form.gender_self_describe.auto_id}}").show();
+            $("label[for={{form.gender_self_describe.auto_id}}]").show();
+    };
+
+    function hideSelfDescribe(){
+        $("#{{form.gender_self_describe.auto_id}}").hide();
+        $("label[for={{form.gender_self_describe.auto_id}}]").hide();
+    };
+
+
+    $( document ).ready(function() {  
+        hideSelfDescribe();    
+        $("#{{form.gender.auto_id}}").change(function() {
+            var selectedVal = $(this).find(':selected').val();
+            var selectedText = $(this).find(':selected').text();
+
+            if (selectedVal === 'SELF-DESCR'){ 
+                showSelfDescribe();
+            } else {
+                hideSelfDescribe();
+            }
+        });
+            
+    });
+
+</script>
+
+
+{% endblock %}

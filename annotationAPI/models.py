@@ -59,12 +59,23 @@ class ArticleManager(models.Manager):
         else:
             return avalaibleArticles.filter(user_annotations__gt=0).order_by('-updated')
 
+    # same as above but for unannotated articles
+    def getNotUserAnnotated(self, user, order=None):
+        user_annotations = Count('annotation', filter=Q(annotation__user_id=user.id))
+        avalaibleArticles = super().get_queryset().annotate(user_annotations=user_annotations)
+        if order is not None:
+            return avalaibleArticles.filter(user_annotations=0).order_by(order)
+        else:
+            return avalaibleArticles.filter(user_annotations=0).order_by('-updated')
+
     def getNoneAnnotated(self, order=None):
         avalaibleArticles = super().get_queryset().annotate(number_of_HITs=Count('annotationhit'))
         if order is not None:
             return avalaibleArticles.filter(number_of_HITs=0).order_by(order)
         else:
             return avalaibleArticles.filter(number_of_HITs=0)
+
+
 
 
 class Article(models.Model):

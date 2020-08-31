@@ -1,0 +1,36 @@
+<!-- templates/consent.html-->
+{% extends 'litw_base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="row mb-3">
+	<h1 class="LITWbolded-blue"> Thank you!  
+	</h1>
+</div>
+
+<!-- <div class="row"> <h3 class="LITWbolded-blue"> Interested in learning more? </h3> </div>
+ -->
+<div class="row">
+	<p> This study explores how science news articles, blogs, and press releases communicate new scientific findings to a diverse audience of readers. By analyzing scientific communication books and training materials, we identified writing strategies that are recommended for science writing, like explaining scientific concepts or using analogies. </p>
+	<p> We are curious how these writing strategies get used in actual science communication. Your responses will help us identify when these strategies get used, and how effective they are. Thank you! </p>	
+	<p> If you are interested in learning more, check out these great resources: </p>
+</div>
+
+<div class="row">
+	<ul> 
+		<li> <a href="https://www.reddit.com/r/science"> r/Science </a>: A forum dedicated to communicating and discussing scientific topics. </li>
+		<li> <a href="https://en.wikipedia.org/wiki/Science_communication"> Wikipedia on science communication. </a> </li>
+	</ul>
+</div>
+
+<div class="row mt-5 pb-5" id="examples">
+	<a  href="{% url 'landing' %}" class="btn btn-primary">Go back to the front page</a>
+</div>
+
+
+{% endblock %}
+
