@@ -29,25 +29,6 @@
     <div class="separator">&nbsp;</div>
   </div>
 
-  <div class="mb-3">
-    <h1 class="LITWbolded-blue"> Instructions </h1>
-  </div>
-<!-- 
- <ol><li class="mt-3">Read a news article about a scientific finding.</li> 
-    <li class="mt-3">Highlight sentences of the news article and answer questions about the article.</li>
-    <li class="mt-3">Answer a set of demographic questions.</li>
-  </ol> -->
-
-  <p> During the experiment, you will be shown a news article. To the side of the article will be questions about the article. Some questions will ask you to highlight parts of the article. Please read the article and follow the instructions and questions to the side of the article. </p>
-
-  <!-- <p class="mt-3"><strong> How to highlight sentences </strong></p>
-  <p> During the expirement you will be shown a news article, to the side of the news article will be instructions on which sentences to highlight in the article. Please follow these instructions for highlighting sentences. </p> -->
-  <p class="mt-3"><strong>Please highlight full sentences in the article. </strong> If there are two or more sentences next to each other that both fit the instructions for highlighting, please highlight and label them <strong> together </strong>. </p>
-
-  <p> A sentence can fall into multiple categories, in which case highlight it once for each category. </p>
-  <p class="text text-left text-danger"> Required fields are marked with a *</p>
-</div>
-
 
      <div class="container LITWfont" id="HITcontainer">
       <div class="row justify-content-md-center">
@@ -65,6 +46,14 @@
 
       <div class="col">
 
+        <p class='strong lead'> Instructions </p> 
+
+        <p class='ml-5'> Please highlight and label with <strong> INT </strong> the 2-3 sentences that were most interesting to you in the article. These sentences do not have to occur in the same place in the article. </p>
+
+
+        <p class='mt-5 ml-5'> If there were any sentences in the article that were confusing or difficult to understand, please highlight and label them <strong> HARD</strong>.</p>
+
+
         <div class="card mt-4" id="storyContainer">
             <div class="card-header">
                 <h2> {{ object.title }} </h2>
@@ -75,6 +64,8 @@
             </div>
         </div>
       </div>
+    </div>
+    <div class="row">
       <div class="col">
 
           {% include 'components/article_questions.html' with form=form %}

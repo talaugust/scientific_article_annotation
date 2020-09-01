@@ -8,7 +8,7 @@ class DemographicsForm(ModelForm):
 
     class Meta:
         model = Demographics
-        fields = ['age', 'gender', 'gender_self_describe', 'english_prof', 'education', 'stem_background', 'sci_info', 'profession']
+        fields = ['age', 'gender', 'gender_self_describe', 'english_prof', 'education', 'stem_background', 'sci_info_time', 'sci_info', 'profession']
         # widgets = {
   #       }
 
@@ -17,9 +17,10 @@ class DemographicsForm(ModelForm):
             'gender': 'What is your gender?',
             'gender_self_describe': 'Please self-describe your gender.',
             'english_prof': 'What is your English proficeancy?',
-            'education':'What is the highest level of education you have received or are currently pursuing?', 
+            'education':'What is the highest level of education you have received?', 
             'stem_background': 'Approximately how many STEM courses have you taken after high school? (STEM stands for "science, technology, engineering, and math.")',
-            'sci_info': 'Where do you get most of your information about science and technology? Check all that apply',
+            'sci_info': 'If you read science and technology news, what is your primary source of information about science and technology? Check all that apply.',
+            'sci_info_time': 'How often do you read science and technology news, blog posts, press releases, or magazines?',
             'profession': 'What is your profession?'
         }
 
@@ -27,7 +28,7 @@ class DemographicsForm(ModelForm):
 class ArticleResponseForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['is_most_interesting_highlight'].required = True
+        # self.fields['is_most_interesting_highlight'].required = True
 
     class Meta:
         model = ArticleResponse

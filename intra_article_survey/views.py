@@ -11,8 +11,8 @@ from django.contrib.auth import authenticate, login, logout
 
 
 
-TESTING = False 
-TEST_DATA_DEM = {'age': 12, 'gender': 'FEMALE', 'gender_self_describe': '', 'english_prof': 'LIMIT', 'education': 'HIGH', 'stem_background': '1-3', 'sci_info': ['Magazines', 'LIBRARY'], 'profession': 'Tal', 'user_id': 6}
+TESTING = True 
+TEST_DATA_DEM = {'age': 12, 'gender': 'FEMALE', 'gender_self_describe': '', 'english_prof': 'LIMIT', 'education': 'HIGH', 'stem_background': '1-3', 'sci_info_time': 'DAILY', 'sci_info': ['Magazines', 'LIBRARY'], 'profession': 'Tal', 'user_id': 6}
 TEST_DATA_RESPONSE = {'enjoy': 1, 'is_most_interesting_highlight': True, 'is_difficult_highlight': False, 'reactions': '', 'user_id': 6, 'article_id': '2b76323f-40f7-47eb-8f33-655da6541e15'}
 
 # IDS for articles used in our survey, selected as a randmized, stratified sample from the full dataset
@@ -28,6 +28,13 @@ SURVEY_ARTICLE_IDS = ['1449d9ad-0fbb-47af-8925-bbdf5a99e265',
 
 def landing(request):
     return render(request, 'consent.html', {})
+
+
+def instructions(request):
+
+    # get a new article to go to after the instructions 
+    new_article = Article.objects.getNotUserAnnotated(user=request.user).filter(id__in=SURVEY_ARTICLE_IDS).order_by('?').first()
+    return render(request, 'instructions.html', {'pk': new_article.id})
 
 def thank_you(request):
 
@@ -46,8 +53,8 @@ def thank_you(request):
         return render(request, 'thank_you.html', {})
 
 
-def dem(request):
-    return render(request, 'demographics.html', {})
+# def dem(request):
+#     return render(request, 'demographics.html', {})
 
 class DemographicsView(FormView):
 
@@ -118,8 +125,9 @@ class DemographicsView(FormView):
         return super().form_invalid(form)
 
     def get_success_url(self):
-        new_article = self.article_model.objects.getNotUserAnnotated(user=self.request.user).filter(id__in=SURVEY_ARTICLE_IDS).order_by('?').first()
-        return reverse('article-response-form', kwargs={'pk': new_article.id})
+        return reverse('instructions')
+        # new_article = self.article_model.objects.getNotUserAnnotated(user=self.request.user).filter(id__in=SURVEY_ARTICLE_IDS).order_by('?').first()
+        # return reverse('article-response-form', kwargs={'pk': new_article.id})
 
 
 

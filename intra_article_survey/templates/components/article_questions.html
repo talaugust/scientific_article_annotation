@@ -9,12 +9,13 @@
         {% include 'form_field_likert.html' with form=form field=form.enjoy is_likert=True %}
         <br>
 
-        <p> Please highlight and label with <strong> INT </strong> the 2-3 sentences that were most interesting to you in the article. These sentences do not have to occur in the same place in the article. Check the box below when you have done so. </p>
-
+<!--         <p> Please highlight and label with <strong> INT </strong> the 2-3 sentences that were most interesting to you in the article. These sentences do not have to occur in the same place in the article. Check the box below when you have done so. </p>
+ -->
         {% include 'form_field.html' with form=form field=form.is_most_interesting_highlight is_check=True %}
 
-        <p class='mt-5'> Were there any sentences in the article that were confusing or difficult to understand? If so, highlight and label them <strong> DIFF </strong>  them and check the box below when you have done so. </p>
-
+<!--         <p class='mt-5'> Were there any sentences in the article that were confusing or difficult to understand? If so, highlight and label them <strong> DIFF </strong>  them and check the box below when you have done so. </p>
+ -->
+        <br>
         {% include 'form_field.html' with form=form field=form.is_difficult_highlight is_check=True %}
         <br>
         <br>
@@ -22,7 +23,7 @@
         {% include 'form_field.html' with form=form field=form.reactions is_check=False %}
 
 
-        <div class='mt-3 alert alert-danger' id='annotationWarning' role='alert' style='display:none;'> Please make at least one annotation! </div>
+        <div class='mt-3 alert alert-danger' id='annotationWarning' role='alert' style='display:none;'> Please make at least one highlight! </div>
         <div class="row ml-3 m-3">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>

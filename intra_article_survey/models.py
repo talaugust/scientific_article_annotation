@@ -24,6 +24,8 @@ GENDER_CHOICES = [
     ('SELF-DESCR', 'prefer to self-describe'),
     ('NOT_SAY', 'prefer not to say'),
 ]
+
+
 PROF_CHOICES = [
     ('ELEM', 'Elementary Proficiency'),
     ('LIMIT', 'Limited Working Proficiency'),
@@ -55,8 +57,8 @@ TRUE_FALSE_CHOICES = [
 ]
 
 SCI_INFO_CHOICES = [
-    ('MAGAZINES', 'Magazines'),
-    ('NEWSPAPERS', 'Newspapers'),
+    ('MAGAZINES', 'Magazines (online or offline)'),
+    ('NEWSPAPERS', 'Newspapers (online or offline)'),
     ('INTERNET', 'Internet'),
     ('PRINT', 'Book or other print'),
     ('TELEVISION', 'Television'),
@@ -65,9 +67,15 @@ SCI_INFO_CHOICES = [
     ('FAMILY', 'Family'),
     ('FRIEND', 'Friend or colleague'),
     ('LIBRARY', 'Library'),
-    ('DONTKNOW', 'Don\'t know'),
     ('REDDIT', 'Reddit'),
     ('OTHER', 'Other'),
+]
+
+SCI_INFO_TIME_CHOICES = [
+    ('DAILY', 'Daily'),
+    ('WEEKLY', 'Weekly'),
+    ('MONTHLY', 'Monthly'),
+    ('LESS', 'Less than monhtly'),
 ]
 
 
@@ -88,6 +96,7 @@ class Demographics(models.Model):
     education = models.CharField(max_length=50, choices=EDU_CHOICES)
     stem_background = models.CharField(max_length=50, choices=STEM_CHOICES)
     sci_info = MultiSelectField(choices=SCI_INFO_CHOICES)
+    sci_info_time = models.CharField(max_length=50, choices=SCI_INFO_TIME_CHOICES)
 
     profession = models.CharField(max_length=100, blank=True)
 
