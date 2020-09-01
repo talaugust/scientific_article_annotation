@@ -1,7 +1,7 @@
 from django.db import models
 from django_mysql.models import JSONField, ListTextField
 from django.contrib.auth.models import User, Group
-from annotationAPI.models import Article, Annotation
+from annotationAPI.models import Article, Annotation, id_generator
 from django.core.validators import MaxValueValidator
 from multiselectfield import MultiSelectField
 
@@ -90,6 +90,10 @@ class Demographics(models.Model):
     sci_info = MultiSelectField(choices=SCI_INFO_CHOICES)
 
     profession = models.CharField(max_length=100, blank=True)
+
+    # this is an odd thing to add, but for if we do it on turk, otherwise just won't use it
+    HITid = models.CharField(max_length=25, blank=False, default=id_generator)
+
 
     # other
     # comments = models.TextField(blank=True)

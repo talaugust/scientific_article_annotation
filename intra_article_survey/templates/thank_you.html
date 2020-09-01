@@ -12,6 +12,14 @@
 	</h1>
 </div>
 
+<div class="row">
+	{% if code %}
+	 	<p>  Your unique survey code is:<strong> {{ code }}</strong>. </p>
+	{% else %}
+		<p> It looks like this HIT hasn't been completed yet, please make sure you filled in all sections of the study. Thank you. </p>
+	{% endif %}
+</div>
+
 <!-- <div class="row"> <h3 class="LITWbolded-blue"> Interested in learning more? </h3> </div>
  -->
 <div class="row">

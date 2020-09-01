@@ -7,7 +7,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views import View
 import uuid
 from django.contrib.auth.models import User, Group
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 
@@ -30,7 +30,21 @@ def landing(request):
     return render(request, 'consent.html', {})
 
 def thank_you(request):
-    return render(request, 'thank_you.html', {})
+
+    # try to get the hitcode based on if this person is logged in and completed the demographics
+    user = request.user 
+    # print('User: {}'.format(user))
+    try:
+        user_dem = Demographics.objects.filter(user_id=user.id).order_by('-id')[0]
+        # and they completed three articles
+        # print('ARTICLE COUNT: {}'.format(request.session.get('article_count')))
+        if request.session.get('article_count') > 3:
+            return render(request, 'thank_you.html', {'code': user_dem.HITid})
+        else:
+            return render(request, 'thank_you.html', {})
+    except:
+        return render(request, 'thank_you.html', {})
+
 
 def dem(request):
     return render(request, 'demographics.html', {})
@@ -47,27 +61,27 @@ class DemographicsView(FormView):
     # also this sets the user's session article count to 1 (starting at one, going to > 3)
     def make_user(self):
 
+        # if there is already a user, make a new one
+        if self.request.user.is_authenticated:
+            logout(self.request)
+
         self.request.session['article_count'] = 1
 
-        # there is no user in this session`
-        if not self.request.user.is_authenticated:
 
-            # make a new user with a random name and password
-            username = uuid.uuid4()
-            password = uuid.uuid4()
-            user = User.objects.create_user(username=username, password=password)
-            user.save()
+        # make a new user with a random name and password
+        username = uuid.uuid4()
+        password = uuid.uuid4()
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
 
-            # authenticate the user
-            user = authenticate(username=username, password=password)
+        # authenticate the user
+        user = authenticate(username=username, password=password)
 
-            # log the user in
-            login(self.request, user)
+        # log the user in
+        login(self.request, user)
 
-            return user
-        else:
-            return self.request.user
-
+        return user
+        
     # overriding to add in testing infrastructure
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
