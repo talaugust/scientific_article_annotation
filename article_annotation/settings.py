@@ -27,10 +27,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['PROD_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  
+DEBUG = True  
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = [os.environ['WEBSITE_SITE_NAME'] + '.azurewebsites.net', '127.0.0.1', 'localhost'] if 'WEBSITE_SITE_NAME' in os.environ else ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['scicomm.labinthewild.org', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'annotationAPI',
     'widget_tweaks',
     'rest_framework.authtoken',
-    'multiselectfield',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -105,8 +104,7 @@ DATABASES = {
         'OPTIONS': {
             'ssl': {'ssl-ca': 'BaltimoreCyberTrustRoot.crt.pem'},
             'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+        }
     }
 }
 
@@ -168,4 +166,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'
+

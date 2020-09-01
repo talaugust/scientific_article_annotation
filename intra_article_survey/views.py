@@ -5,6 +5,9 @@ from .models import Demographics, ArticleResponse
 from .forms import DemographicsForm, ArticleResponseForm
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views import View
+import uuid
+from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate, login
 
 
 
@@ -29,8 +32,12 @@ def landing(request):
 def thank_you(request):
     return render(request, 'thank_you.html', {})
 
+def dem(request):
+    return render(request, 'demographics.html', {})
+
 class DemographicsView(FormView):
-    template_name = 'Demographics.html'
+
+    template_name = 'demographics.html'
     form_class = DemographicsForm
     model = Demographics
     article_model = Article
@@ -55,7 +62,7 @@ class DemographicsView(FormView):
             user = authenticate(username=username, password=password)
 
             # log the user in
-            login(request, user)
+            login(self.request, user)
 
             return user
         else:
@@ -74,7 +81,7 @@ class DemographicsView(FormView):
     # adding a section to log in a user automatically here before they fill out the form
     def get(self, request, *args, **kwargs):
         user = self.make_user()
-
+        
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
