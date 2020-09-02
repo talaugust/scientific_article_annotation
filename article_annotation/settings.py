@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['PROD_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  
+DEBUG = False  
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['scicomm.labinthewild.org', '127.0.0.1', 'localhost']
@@ -166,7 +166,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'
+# STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'
 

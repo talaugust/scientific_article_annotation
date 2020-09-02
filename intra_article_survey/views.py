@@ -11,9 +11,12 @@ from django.contrib.auth import authenticate, login, logout
 
 
 
-TESTING = True 
+TESTING = False 
 TEST_DATA_DEM = {'age': 12, 'gender': 'FEMALE', 'gender_self_describe': '', 'english_prof': 'LIMIT', 'education': 'HIGH', 'stem_background': '1-3', 'sci_info_time': 'DAILY', 'sci_info': ['Magazines', 'LIBRARY'], 'profession': 'Tal', 'user_id': 6}
 TEST_DATA_RESPONSE = {'enjoy': 1, 'is_most_interesting_highlight': True, 'is_difficult_highlight': False, 'reactions': '', 'user_id': 6, 'article_id': '2b76323f-40f7-47eb-8f33-655da6541e15'}
+
+ARTICLE_COUNT = 2
+
 
 # IDS for articles used in our survey, selected as a randmized, stratified sample from the full dataset
 SURVEY_ARTICLE_IDS = ['1449d9ad-0fbb-47af-8925-bbdf5a99e265', 
@@ -45,7 +48,7 @@ def thank_you(request):
         user_dem = Demographics.objects.filter(user_id=user.id).order_by('-id')[0]
         # and they completed three articles
         # print('ARTICLE COUNT: {}'.format(request.session.get('article_count')))
-        if request.session.get('article_count') > 3:
+        if request.session.get('article_count') > ARTICLE_COUNT:
             return render(request, 'thank_you.html', {'code': user_dem.HITid})
         else:
             return render(request, 'thank_you.html', {})
@@ -169,6 +172,8 @@ class ArticleResponseDetailView(DetailView):
         else: 
             context['form'] = self.form_class()
 
+        context['max_count'] = ARTICLE_COUNT
+
         return context
 
 # view for handling form posting
@@ -212,7 +217,7 @@ class ArticleResponseFormView(SingleObjectMixin, FormView):
 
         # checks if the user has done three articles, if so sends them to the thank you page
         article_count = self.request.session.get('article_count')
-        if article_count > 3:
+        if article_count > ARTICLE_COUNT:
             return reverse('thank_you')
         else:
             # get another article to show the user
