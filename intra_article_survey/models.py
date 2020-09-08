@@ -37,9 +37,9 @@ PROF_CHOICES = [
 EDU_CHOICES = [
     ('PRE-HIGH', 'Pre-high school'),
     ('HIGH', 'High school'),
-    ('COLL', 'College'),
-    ('GRAD', 'Graduate school'),
-    ('PROF', 'Professional school'),
+    ('COLL', 'Bachelor\'s Degree'),
+    ('GRAD', 'Master\'s school'),
+    ('PROF', 'Doctorate (PhD)'),
 ]
 
 STEM_CHOICES = [
