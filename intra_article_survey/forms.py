@@ -16,7 +16,7 @@ class DemographicsForm(ModelForm):
             'age': 'What is your age?',
             'gender': 'What is your gender?',
             'gender_self_describe': 'Please self-describe your gender.',
-            'english_prof': 'What is your English proficeancy?',
+            'english_prof': 'What is your English proficiency?',
             'education':'What is the highest level of education you have received?', 
             'stem_background': 'Approximately how many STEM courses have you taken after high school? (STEM stands for "science, technology, engineering, and math.")',
             'sci_info': 'If you read science and technology news, what is your primary source of information about science and technology? Check all that apply.',

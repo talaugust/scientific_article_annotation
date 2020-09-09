@@ -14,7 +14,7 @@ from article_annotation.settings import DEBUG
 TESTING = DEBUG  
 TEST_DATA_DEM = {'age': 12, 'gender': 'FEMALE', 'gender_self_describe': '', 'english_prof': 'LIMIT', 'education': 'HIGH', 'stem_background': '1-3', 'sci_info_time': 'DAILY', 'sci_info': ['Magazines', 'LIBRARY'], 'profession': 'Tal', 'user_id': 6, 'research_involved':'1'}
 TEST_DATA_RESPONSE = {'enjoy': 1, 'is_most_interesting_highlight': True, 'is_difficult_highlight': False, 'int_why': 'TEST', 'user_id': 6, 'article_id': '2b76323f-40f7-47eb-8f33-655da6541e15'}
-
+TEST_END_RESPONSE = {'sci_info_time_open': 'DAILY', 'open_comments': 'TEST', 'user_id': 57}
 ARTICLE_COUNT = 2
 
 
@@ -68,6 +68,31 @@ class EndQuestionsView(FormView):
 
     def get_success_url(self):
         return reverse('thank_you')
+
+
+    # overriding to add in testing infrastructure
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if TESTING:
+            context['form'] = self.form_class(initial=TEST_END_RESPONSE)
+        else: 
+            context['form'] = self.form_class()
+        return context
+
+    def form_valid(self, form):
+
+        if TESTING:
+            data = TEST_END_RESPONSE
+        else:
+            data = form.cleaned_data
+
+
+        data['user_id']= self.request.user.id
+        print(data)
+        end_questions = self.model(**data)
+        end_questions.save()
+        return super().form_valid(form)
 
 class DemographicsView(FormView):
 
