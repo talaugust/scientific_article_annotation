@@ -37,9 +37,9 @@ PROF_CHOICES = [
 EDU_CHOICES = [
     ('PRE-HIGH', 'Pre-high school'),
     ('HIGH', 'High school'),
-    ('COLL', 'Bachelor\'s Degree'),
-    ('GRAD', 'Master\'s school'),
-    ('PROF', 'Doctorate (PhD)'),
+    ('BACH', 'Bachelor\'s Degree'),
+    ('MAST', 'Master\'s school'),
+    ('DOCT', 'Doctorate (PhD)'),
 ]
 
 STEM_CHOICES = [
@@ -54,6 +54,11 @@ TRUE_FALSE_CHOICES = [
     (0, 'None'),
     (1, 'Yes'),
     (2, 'No')
+]
+
+YES_NO_CHOICES = [
+    ('0', 'No'),
+    ('1', 'Yes'),
 ]
 
 SCI_INFO_CHOICES = [
@@ -79,6 +84,8 @@ SCI_INFO_TIME_CHOICES = [
 ]
 
 
+
+
 class Demographics(models.Model):
 
     # foriegn keys
@@ -97,6 +104,8 @@ class Demographics(models.Model):
     stem_background = models.CharField(max_length=50, choices=STEM_CHOICES)
     sci_info = MultiSelectField(choices=SCI_INFO_CHOICES)
     sci_info_time = models.CharField(max_length=50, choices=SCI_INFO_TIME_CHOICES)
+
+    research_involved = models.CharField(max_length=10, choices=YES_NO_CHOICES, blank=False)
 
     profession = models.CharField(max_length=100, blank=True)
 
@@ -125,10 +134,21 @@ class ArticleResponse(models.Model):
     enjoy = models.IntegerField(choices=LIKERT_CHOICES, default=0)
 
     is_most_interesting_highlight = models.BooleanField()
+
+    int_why = models.TextField(blank=False)
+
     is_difficult_highlight = models.BooleanField()
 
     reactions = models.TextField(blank=True)
 
+# for final questions
+class GeneralEndQuestions(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    sci_info_time_open = models.CharField(max_length=50, choices=SCI_INFO_TIME_CHOICES)
+    open_comments = models.TextField(blank=True)
 
 
 

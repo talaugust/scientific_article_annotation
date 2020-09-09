@@ -41,6 +41,9 @@
       this.annotator
           .subscribe("annotationCreated", function (annotation) {
             console.info(annotation)
+            if (annotation['text'].toUpperCase() == 'INT'){
+              num_int_annotations += 1
+            }
             num_annotations += 1;
           })
           .subscribe("annotationUpdated", function (annotation) {
@@ -48,6 +51,9 @@
           })
           .subscribe("annotationDeleted", function (annotation) {
             console.info("The annotation: %o has just been deleted!", annotation)
+            if (annotation['text'].toUpperCase() == 'INT'){
+              num_int_annotations -= 1
+            }
             num_annotations -= 1;
           })
     }
@@ -58,6 +64,7 @@
   // var content = $('#storyContainer').annotator();
   // var article_id = $('#storyContainer').data('id');
   var num_annotations = 0;
+  var num_int_annotations = 0
 
   // content.annotator('addPlugin', 'Permissions');
 
@@ -102,10 +109,10 @@
     };
 
 
-
+    // TODO: SET TO INTEREST ANNOTATIONS SPECIFICALLY NOW
     $('#HIT-form').on('submit', function(e) {
       console.log(num_annotations);
-      if (num_annotations < 1) {
+      if (num_int_annotations < 1) {
         $('#annotationWarning').show();
         return false;
       } else {

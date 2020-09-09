@@ -7,5 +7,6 @@ urlpatterns = [
     path('instructions/', views.instructions, name='instructions'),
     path('demographics/', views.DemographicsView.as_view(), name='demographics'),
     path('article/<uuid:pk>/', views.ArticleResponseView.as_view(), name='article-response-form'),
+    path('end_question/', views.EndQuestionsView.as_view(), name='end_question'),
     path('thank_you/', views.thank_you, name='thank_you'),
 ]

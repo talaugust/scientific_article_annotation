@@ -1,19 +1,19 @@
 from django.shortcuts import render, redirect, reverse
 from annotationAPI.models import Annotation, Article
 from django.views.generic.edit import FormView
-from .models import Demographics, ArticleResponse
-from .forms import DemographicsForm, ArticleResponseForm
+from .models import Demographics, ArticleResponse, GeneralEndQuestions
+from .forms import DemographicsForm, ArticleResponseForm, GeneralEndQuestionsForm
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views import View
 import uuid
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
+from article_annotation.settings import DEBUG
 
 
-
-TESTING = False 
-TEST_DATA_DEM = {'age': 12, 'gender': 'FEMALE', 'gender_self_describe': '', 'english_prof': 'LIMIT', 'education': 'HIGH', 'stem_background': '1-3', 'sci_info_time': 'DAILY', 'sci_info': ['Magazines', 'LIBRARY'], 'profession': 'Tal', 'user_id': 6}
-TEST_DATA_RESPONSE = {'enjoy': 1, 'is_most_interesting_highlight': True, 'is_difficult_highlight': False, 'reactions': '', 'user_id': 6, 'article_id': '2b76323f-40f7-47eb-8f33-655da6541e15'}
+TESTING = DEBUG  
+TEST_DATA_DEM = {'age': 12, 'gender': 'FEMALE', 'gender_self_describe': '', 'english_prof': 'LIMIT', 'education': 'HIGH', 'stem_background': '1-3', 'sci_info_time': 'DAILY', 'sci_info': ['Magazines', 'LIBRARY'], 'profession': 'Tal', 'user_id': 6, 'research_involved':'1'}
+TEST_DATA_RESPONSE = {'enjoy': 1, 'is_most_interesting_highlight': True, 'is_difficult_highlight': False, 'int_why': 'TEST', 'user_id': 6, 'article_id': '2b76323f-40f7-47eb-8f33-655da6541e15'}
 
 ARTICLE_COUNT = 2
 
@@ -58,6 +58,16 @@ def thank_you(request):
 
 # def dem(request):
 #     return render(request, 'demographics.html', {})
+
+
+
+class EndQuestionsView(FormView):
+    template_name = 'end_questions.html'
+    form_class = GeneralEndQuestionsForm
+    model = GeneralEndQuestions
+
+    def get_success_url(self):
+        return reverse('thank_you')
 
 class DemographicsView(FormView):
 
@@ -218,7 +228,7 @@ class ArticleResponseFormView(SingleObjectMixin, FormView):
         # checks if the user has done three articles, if so sends them to the thank you page
         article_count = self.request.session.get('article_count')
         if article_count > ARTICLE_COUNT:
-            return reverse('thank_you')
+            return reverse('end_question')
         else:
             # get another article to show the user
             new_article = self.model.objects.getNotUserAnnotated(user=self.request.user).filter(id__in=SURVEY_ARTICLE_IDS).order_by('?').first()
