@@ -41,7 +41,7 @@
       this.annotator
           .subscribe("annotationCreated", function (annotation) {
             console.info(annotation)
-            if (annotation['text'].toUpperCase() == 'INT'){
+            if ((annotation['text'] != null) && (annotation['text'].toUpperCase() == 'INT')){
               num_int_annotations += 1
             }
             num_annotations += 1;
@@ -51,7 +51,7 @@
           })
           .subscribe("annotationDeleted", function (annotation) {
             console.info("The annotation: %o has just been deleted!", annotation)
-            if (annotation['text'].toUpperCase() == 'INT'){
+            if ((annotation['text'] != null) && (annotation['text'].toUpperCase() == 'INT')){
               num_int_annotations -= 1
             }
             num_annotations -= 1;
