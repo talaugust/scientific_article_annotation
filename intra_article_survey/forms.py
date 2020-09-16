@@ -44,7 +44,7 @@ class ArticleResponseForm(ModelForm):
             'enjoy': 'How much did you enjoy the article you just read?',
             'is_most_interesting_highlight': 'I have highlighted the most interesting sentences to me.',
             'is_difficult_highlight': 'I have highlighted any difficult sentences.',
-            'int_why': 'What did you find interesting about the sentences you highlighted with \'INT\'?',   
+            'int_why': 'In your own words, what did you find interesting about the sentences you highlighted with \'INT\'?',   
         }
 
 

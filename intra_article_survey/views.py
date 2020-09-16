@@ -29,13 +29,27 @@ SURVEY_ARTICLE_IDS = ['1449d9ad-0fbb-47af-8925-bbdf5a99e265',
  '1e91c25e-d709-4e03-a983-69caa949a1b0',
  ]
 
+
+
+#  # helper function for getting the articles for the study
+# def get_articles(request):
+#     articles = Article.objects.getNotUserAnnotated(user=request.user).filter(id__in=SURVEY_ARTICLE_IDS).order_by('?')
+#     article_ids = [articles.first().id, articles.last().id]
+#     print(article_ids)
+#     return article_ids
+
+
 def landing(request):
     return render(request, 'consent.html', {})
 
 
 def instructions(request):
-
     # get a new article to go to after the instructions 
+    # article_count = self.request.session.get('article_count')
+    # article_ids = self.request.session.get('article_ids')
+    # new_article_id = article_ids[article_count - 1]
+
+    # return render(request, 'instructions.html', {'pk': new_article_id})
     new_article = Article.objects.getNotUserAnnotated(user=request.user).filter(id__in=SURVEY_ARTICLE_IDS).order_by('?').first()
     return render(request, 'instructions.html', {'pk': new_article.id})
 
@@ -101,6 +115,8 @@ class DemographicsView(FormView):
     model = Demographics
     article_model = Article
 
+
+
     # helper function for making a new user (with a random password) and logging them in
     # this is how we are getting around django's auth system, and make it work for us a bit
     # also this sets the user's session article count to 1 (starting at one, going to > 3)
@@ -111,7 +127,6 @@ class DemographicsView(FormView):
             logout(self.request)
 
         self.request.session['article_count'] = 1
-
 
         # make a new user with a random name and password
         username = uuid.uuid4()
@@ -126,6 +141,7 @@ class DemographicsView(FormView):
         login(self.request, user)
 
         return user
+
         
     # overriding to add in testing infrastructure
     def get_context_data(self, **kwargs):
@@ -140,6 +156,9 @@ class DemographicsView(FormView):
     # adding a section to log in a user automatically here before they fill out the form
     def get(self, request, *args, **kwargs):
         user = self.make_user()
+        # article_ids = get_articles(self.request)
+
+        # self.request.session['article_ids'] = article_ids
         
         return super().get(request, *args, **kwargs)
 
@@ -210,6 +229,13 @@ class ArticleResponseDetailView(DetailView):
         context['max_count'] = ARTICLE_COUNT
 
         return context
+
+    def get(self, request, *args, **kwargs):
+        # first check if already past the article limit
+        article_count = request.session.get('article_count')
+        if article_count > ARTICLE_COUNT:
+            return redirect('end_question')
+        return super().get(request, *args, **kwargs)
 
 # view for handling form posting
 class ArticleResponseFormView(SingleObjectMixin, FormView):
