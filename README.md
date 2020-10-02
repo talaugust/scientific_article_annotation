@@ -1,7 +1,7 @@
 # Science News Annotation
 
 ## Purpose
-This repo holds to code for running a server that supports annotations on science news articles. The interface is used in the publication:
+This repo holds the code for running a server that supports annotations on science news articles. The interface is used in the publication:
 
   Tal August, Lauren Kim, Katharina Reinecke, and Noah Smith ''Writing Strategies for Science Communication: Data and Computational Analysis'', Conference on Empirical Methods in Natural Language Processing (EMNLP) 2020.
 
