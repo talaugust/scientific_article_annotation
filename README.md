@@ -45,6 +45,8 @@ And run the server
 
 `python manag.py runserver`
 
-You can access the site at http://localhost:8000/home/
+You can access the site at http://localhost:8000/home/. Note that we do not provide any articles to populate the database, but you can access the original article urls used in the paper at https://github.com/talaugust/scientific-writing-strategies. 
 
+## Annotation API
 
+To enable annotations, we use [annotator.js](http://annotatorjs.org/) and connect it to the backend with the [Django REST Framework](https://www.django-rest-framework.org/). The file `/annotationAPI/static/annotationAPI/js/annotation.js` sets up the annotator frontend and connects it to the django backend. 
