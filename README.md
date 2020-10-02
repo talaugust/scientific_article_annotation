@@ -9,11 +9,9 @@ This repo holds the code for running a server that supports annotations on scien
 ## Prerequisites 
 This project is built with [Django](https://www.djangoproject.com/) and uses [annotator.js](http://annotatorjs.org/) for annotations. 
 
-You also need a database to connect to. See here for [setting up a database with Django](https://docs.djangoproject.com/en/3.1/ref/databases/).
+You also need a database to connect to. See here for [setting up a database with Django](https://docs.djangoproject.com/en/3.1/ref/databases/). Note that we used mysql for our database.
 
-Note that we used mysql for our database.
-
-Once your dataset is set up, export the connection parameters with (assuming you are doing this on a local environment):
+Once your database is set up, export the connection parameters with (assuming you are doing this on a local environment):
 
 ```
 export DBNAME=""
@@ -27,8 +25,8 @@ export WEBSITE_SITE_NAME="127.0.0.1"
 
 
 ## Installation
-Begin by creating a new virtual environment and installing required packages 
-(here using [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html))
+To run the server locally, begin by creating a new virtual environment and installing the required packages 
+(here using [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)):
 
 `conda env create -f environment.yml`
 
@@ -43,7 +41,7 @@ Migrate the django models to the database
 
 And run the server
 
-`python manag.py runserver`
+`python manage.py runserver`
 
 You can access the site at http://localhost:8000/home/. Note that we do not provide any articles to populate the database, but you can access the original article urls used in the paper at https://github.com/talaugust/scientific-writing-strategies. 
 
