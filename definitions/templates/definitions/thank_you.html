@@ -1,0 +1,42 @@
+{% extends 'litw_base.html' %}
+
+{% block title %}Comments{% endblock %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="card mt-4">
+        	{% if completed %}
+	            <div class="card-header">
+	                <h2>Thank you for participating in our task!</h2>
+	            </div>
+	            <div class="card-body">
+	                <p> Here is the code to enter to receive credit for the task: <strong> {{ code }}</strong>. </p>
+            {% else %}
+            	<div class="card-header">
+	                <h2>HIT incomplete</h2>
+	            </div>
+	            <div class="card-body">
+	                <p> It looks like this HIT hasn't been completed yet, please make sure you filled in all sections of the study. Thank you. </p>
+            {% endif %}
+
+
+		            <p> <strong> Please remember that you can only complete the task once. </strong> </p>
+
+					<p> This task is part of a study on how people read and assess machine-generated text. As text generation models improve and generate longer, better text, we want to know how well people are able to distinguish between human- and machine-generated text and if there are ways to improve people’s ability to do this.</p>
+
+					<p> This is still preliminary work, but if you are interested to know more or have questions about the task, please contact us through the Amazon Mechanical Turk platform.</p>
+
+					<p> Thank you!</p>
+				</div>
+
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

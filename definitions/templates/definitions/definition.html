@@ -1,0 +1,53 @@
+{% extends 'litw_base.html' %}
+
+{% block title %}Definition{% endblock %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+
+
+<div class="m-4 row justify-content-md-center">
+  <p class='lead'> You are currently on section: {{ request.session.defCount }} / {{ request.session.maxDefCount }} </p>
+</div>
+
+	<div class="row">
+      	<div class="col-8">
+       		<div class="panel panel-info mt-3">
+       			<div class="panel-heading"> Instructions </div>
+       			<div class="panel-body show"> 
+       				<strong> Please read the following text and answer the questions below: </strong>
+
+              <hr style="border-top: dotted 1px;" />
+              <p> <strong> Term: </strong> {{ object.term.term_text }} </p>
+              <p> <strong> Definition: </strong> {{ object.def_text }} </p>
+              {% if form.relevancy_rating is not None %}
+                <p> <strong> Context: </strong> {{ object.context_sentence }} </p>                
+              {% endif %}
+       			</div>
+        	</div>
+    	</div>
+	</div>
+
+
+
+
+	<div class="row">
+		<div class="col-8">
+			<form method="post", id='snippetForm'>
+          {% csrf_token %}
+    			{% include 'definitions/sections/form_field_likert.html' with form=form field=form.fluency_rating is_likert=True %}
+          {% include 'definitions/sections/form_field_likert.html' with form=form field=form.relevancy_rating is_likert=True %}
+          <br>
+          <div class="row ml-3 mt-3">
+              <button id='submitButton' type="submit" class="btn btn-primary">Submit</button>
+          </div>
+      </form>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

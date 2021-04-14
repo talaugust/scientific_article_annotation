@@ -1,0 +1,28 @@
+{% extends 'litw_base.html' %}
+
+{% block title %}Comments{% endblock %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row"> 
+        <div class='col-8'>
+            <h2>One last thing...</h2>
+        </div> 
+    </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row"> 
+                <div class='col-8'>
+                    {% include 'definitions/sections/form_field.html' with form=form field=form.comment_text is_check=False %}
+                </div> 
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

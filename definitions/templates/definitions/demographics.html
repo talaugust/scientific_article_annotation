@@ -1,0 +1,27 @@
+{% extends 'litw_base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <h2>Please tell us about yourself.</h2>
+    </div>
+        <form method="post">
+            {% csrf_token %}
+            {% include 'definitions/sections/form_field.html' with form=form field=form.english_prof is_check=False %}
+            {% include 'definitions/sections/form_field.html' with form=form field=form.education is_check=False %}       
+            {% include 'definitions/sections/form_field.html' with form=form field=form.stem_exp is_check=False %}                
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'intra_article_survey',
     'annotationAPI',
+    'reader_tool',
+    'definitions',
     'widget_tweaks',
     'rest_framework.authtoken',
 ]

@@ -1,0 +1,49 @@
+{% extends 'litw_base.html' %}
+
+{% block title %}Definition{% endblock %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-3 mb-3">
+        <h2>Instructions</h2>
+    </div>
+    <!-- Base instructions -->
+    <div class="row"> <p> You will be given 3 terms with their definitions and asked to rate how fluent and relevent to the term the definition is. </p> </div>
+
+    <div class="row"> <p> You will be asked to rate the fluency and relevance of the definition on a scale from <strong> Not at all </strong> fluent or relevant to <strong> Very </strong> fluent or relevant.  </p> </div>
+
+    <div class="row"> <p class='lead mt-2 mb-2'> Examples of very fluent definitions: </p> </div>
+		<p> <strong> Term: </strong> wattmeter </p>
+		<p> <strong> Definition: </strong> An instrument that measures electrical power. </p>
+		
+		<br>   	
+
+		<p> <strong> Term: </strong> Chronic fatigue syndrome </p>
+		<p> <strong> Definition: </strong> Chronic fatigue syndrome, also known as systemic exertion intolerance disease, is a condition that causes extreme, long-lasting fatigue which can limit the ability to participate in ordinary, daily activities. </p>
+
+		<br>
+
+	<div class="row"> <p class='lead mt-2 mb-2'> Examples of not at all fluent definitions: </p> </div>
+
+		<p> <strong> Term: </strong> Parkes Weber syndrome </p>
+		<p> <strong> Definition: </strong> Parkinsurance~damage of the skin </p>
+
+		<br>   		
+
+		<p> <strong> Term: </strong> Cardinal directions </p>
+		<p> <strong> Definition: </strong> See cardinal directions.=e.g. </p>
+
+
+	<strong> Please do not press the back button while taking this task. </strong>
+	<div class="row m-5">
+        <a href="{% url 'definition-form' pk=pk %}" id='next-button' class="btn btn-primary">Continue to task</a>
+    </div>
+</div>
+
+  
+
+
+{% endblock %}

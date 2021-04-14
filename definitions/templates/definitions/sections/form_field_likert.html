@@ -1,0 +1,58 @@
+{% if is_likert %}
+
+<div class="form-group">
+    {% if field.field.required %} <span class="text-danger font-weight-bold"> * </span> {% endif %}  {{ field.label }} 
+    <div class="row m-2 no-gutters">
+      <div class="col-2">
+         Not at all
+      </div>  
+        {% for choice in field %}
+          {% if choice.choice_label != 'None' %}
+          <div class="col">{{ choice.tag }}</div>
+          {% endif %}
+        {% endfor %}
+      <div class="col">
+          Very 
+      </div>
+    </div>
+    {% if form.is_bound %}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <div class="col invalid-feedback d-block">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+    {% if field.help_text %}
+      <small class="form-text text-muted">{{ field.help_text }}</small>
+    {% endif %}
+  </div>
+
+  {% else %}
+
+  <div class="form-check">
+      {% if field.field.required %} <span class="text-danger font-weight-bold"> * </span> {% endif %}  {{ field.label }}
+      {% for choice in field %} 
+        {% if choice.choice_label != 'None' %}
+          <div class="form-check mt-2">
+            {{ choice }}
+          </div> 
+        {% endif %}
+      {% endfor %}
+    {% if form.is_bound %}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <div class="col invalid-feedback d-block">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+    {% if field.help_text %}
+      <small class="form-text text-muted">{{ field.help_text }}</small>
+    {% endif %}
+  </div>
+
+
+  {% endif %}
