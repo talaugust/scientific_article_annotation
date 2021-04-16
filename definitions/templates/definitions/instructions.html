@@ -10,32 +10,52 @@
     <div class="row mt-3 mb-3">
         <h2>Instructions</h2>
     </div>
-    <!-- Base instructions -->
-    <div class="row"> <p> You will be given 3 terms with their definitions and asked to rate how fluent and relevent to the term the definition is. </p> </div>
+   	{% if response_type == 'FLUENCY' %}
+	    <div class="row"> <p> You will be given 3 terms with their definitions and asked to rate how fluent and relevent to the term the definition is. </p> </div>
 
-    <div class="row"> <p> You will be asked to rate the fluency and relevance of the definition on a scale from <strong> Not at all </strong> fluent or relevant to <strong> Very </strong> fluent or relevant.  </p> </div>
+	    <div class="row"> <p> You will be asked to rate the fluency and relevance of the definition on a scale from <strong> Not at all </strong> fluent or relevant to <strong> Very </strong> fluent or relevant.  </p> </div>
 
-    <div class="row"> <p class='lead mt-2 mb-2'> Examples of very fluent definitions: </p> </div>
-		<p> <strong> Term: </strong> wattmeter </p>
-		<p> <strong> Definition: </strong> An instrument that measures electrical power. </p>
-		
-		<br>   	
+	    <div class="row"> <p class='lead mt-2 mb-2'> Examples of very fluent definitions: </p> </div>
+			<p> <strong> Term: </strong> wattmeter </p>
+			<p> <strong> Definition: </strong> An instrument that measures electrical power. </p>
+			
+			<br>   	
 
-		<p> <strong> Term: </strong> Chronic fatigue syndrome </p>
-		<p> <strong> Definition: </strong> Chronic fatigue syndrome, also known as systemic exertion intolerance disease, is a condition that causes extreme, long-lasting fatigue which can limit the ability to participate in ordinary, daily activities. </p>
+			<p> <strong> Term: </strong> Chronic fatigue syndrome </p>
+			<p> <strong> Definition: </strong> Chronic fatigue syndrome, also known as systemic exertion intolerance disease, is a condition that causes extreme, long-lasting fatigue which can limit the ability to participate in ordinary, daily activities. </p>
 
-		<br>
+			<br>
 
-	<div class="row"> <p class='lead mt-2 mb-2'> Examples of not at all fluent definitions: </p> </div>
+		<div class="row"> <p class='lead mt-2 mb-2'> Examples of not at all fluent definitions: </p> </div>
 
-		<p> <strong> Term: </strong> Parkes Weber syndrome </p>
-		<p> <strong> Definition: </strong> Parkinsurance~damage of the skin </p>
+			<p> <strong> Term: </strong> Parkes Weber syndrome </p>
+			<p> <strong> Definition: </strong> Parkinsurance~damage of the skin </p>
 
-		<br>   		
+			<br>   		
 
-		<p> <strong> Term: </strong> Cardinal directions </p>
-		<p> <strong> Definition: </strong> See cardinal directions.=e.g. </p>
+			<p> <strong> Term: </strong> Cardinal directions </p>
+			<p> <strong> Definition: </strong> See cardinal directions.=e.g. </p>
 
+	{% elif response_type == 'COMPLEXITY' %}
+		<div class="row"> <p> You will be given 3 terms with their definitions and asked to rate how complicated and understandable the definitions are. </p> </div>
+
+	    <div class="row"> <p> You will be asked to rate the how complicated and understandable the definition is on a scale from <strong> Not at all </strong> to <strong> Very</strong>. </p> </div>
+
+
+	    <div class="row"> <p class='lead mt-2 mb-2'> Examples of very complicated definitions: </p> </div>
+			<p> <strong> Term: </strong> Convolutional Neural Network </p>
+			<p> <strong> Definition: </strong> In deep learning, a convolutional neural network (CNN, or ConvNet) is a class of deep neural networks, most commonly applied to analyzing visual imagery. </p>
+			
+			<br>   	
+
+	
+		<div class="row"> <p class='lead mt-2 mb-2'> Examples of not at all complicated definitions: </p> </div>
+
+			<p> <strong> Term: </strong> Convolutional Neural Network </p>
+			<p> <strong> Definition: </strong> A convolutional neural network (CNN, or ConvNet) is a program used by computers to see things in the real world. </p>
+
+			<br>   		
+	{% endif %}
 
 	<strong> Please do not press the back button while taking this task. </strong>
 	<div class="row m-5">

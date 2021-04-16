@@ -38,8 +38,13 @@
 		<div class="col-8">
 			<form method="post", id='snippetForm'>
           {% csrf_token %}
-    			{% include 'definitions/sections/form_field_likert.html' with form=form field=form.fluency_rating is_likert=True %}
-          {% include 'definitions/sections/form_field_likert.html' with form=form field=form.relevancy_rating is_likert=True %}
+          {% if form.relevancy_rating is not None %}
+      			{% include 'definitions/sections/form_field_likert.html' with form=form field=form.fluency_rating is_likert=True %}
+            {% include 'definitions/sections/form_field_likert.html' with form=form field=form.relevancy_rating is_likert=True %}
+          {% elif form.complexity_rating is not None %}
+            {% include 'definitions/sections/form_field_likert.html' with form=form field=form.complexity_rating is_likert=True %}
+            {% include 'definitions/sections/form_field_likert.html' with form=form field=form.understand_rating is_likert=True %}
+          {% endif %}
           <br>
           <div class="row ml-3 mt-3">
               <button id='submitButton' type="submit" class="btn btn-primary">Submit</button>

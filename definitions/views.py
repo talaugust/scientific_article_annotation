@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, reverse
 from annotationAPI.models import Annotation, Article
 from .models import Participant, Definition, FluencyResponse, ComplexityResponse, Comment
-from .forms import ParticipantForm, FluencyResponseForm, CommentForm
+from .forms import ParticipantForm, FluencyResponseForm, ComplexityResponseForm, CommentForm
 from django.views.generic.edit import FormView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views import View
 import uuid
+import random
 from article_annotation.settings import DEBUG
 
 
@@ -13,10 +14,24 @@ TESTING = False
 TEST_DATA_DEM = {'english_prof': 'LIMIT', 'education': 'PRE-HIGH', 'stem_exp': '1-3'}
 TEST_DATA_RESPONSE = {'fluency_rating': 4, 'relevancy_rating': 4}
 
+RESPONSE_MAP = {1: 'FLUENCY', 2:'COMPLEXITY'}
+RESPONSE_TYPE_MAP = {'FLUENCY': FluencyResponse, 'COMPLEXITY':ComplexityResponse}
+
 DEF_COUNT = 3
 
 # Create your views here.
-def landing(request):
+def landing(request, response_type=None):
+
+    # way of specifying which response type we want, fluency or complexity
+    response_type = RESPONSE_MAP.get(response_type, None)
+
+    # if it is none, pick randomly 
+    if response_type is None:
+        request.session['response_type'] = random.choice(list(RESPONSE_MAP.values()))
+    else:
+        request.session['response_type'] = response_type
+
+
     return render(request, 'definitions/landing.html', {})
 
 
@@ -26,6 +41,8 @@ def DefinitionInstructions(request):
 
     def_count = request.session.get('defCount')
     def_ids = request.session.get('defIDs')
+
+    context['response_type'] = request.session.get('response_type')
 
     context.update({'pk': def_ids[def_count - 1]})
     
@@ -138,16 +155,36 @@ Definition Fluency Response
 class DefinitionResponseView(View):
 
     template_name = 'definitions/definition.html'
-    form_class = FluencyResponseForm
+    form_class = None
     object_model = Definition
-    response_model = FluencyResponse
+    response_model = None
+
+
+    # helper function for deciding on response type
+
+    def set_response_type(self, request):
+        # check which response type we are doing
+        response_type = request.session.get('response_type')
+
+        if response_type == 'FLUENCY':
+            self.response_model = FluencyResponse
+            self.form_class = FluencyResponseForm
+        elif response_type == 'COMPLEXITY':
+            self.response_model = ComplexityResponse
+            self.form_class = ComplexityResponseForm
+        else:
+            raise(Exception('Response type ({}) unknown'.format(response_type)))
 
 
     def get(self, request, *args, **kwargs):
+
+        self.set_response_type(request)
         view = DefinitionResponseDetailView.as_view(template_name=self.template_name, form_class=self.form_class, model=self.object_model, response_model=self.response_model)
         return view(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+
+        self.set_response_type(request)
         view = DefinitionResponseFormView.as_view(template_name=self.template_name, form_class=self.form_class, model=self.object_model, response_model=self.response_model)
         return view(request, *args, **kwargs)
 
@@ -302,12 +339,14 @@ def thank_you(request):
     participant_id = request.session.get('participantID', None)
     participant = Participant.objects.get(id=participant_id)
     code = participant.HITid
-    # snippet_response = get_snippetresponse_participant(request, snippet=None)
-    # if (snippet_response is not None) and (participant_id is not None):
-    #     participant = Participant.objects.get(id=participant_id)
-    #     code = participant.HITid
-    return render(request, 'thank_you.html', {'completed': True, 'code': code})
-    # else: 
 
-    #     return render(request, 'thank_you.html', {'completed': False})
+    # get the response type so we know which responses to look for
+    response_type = RESPONSE_TYPE_MAP[request.session.get('response_type')]
+    def_responses = get_definitionresponse_participant(request, definition=None, responseType=response_type)
+
+    if (def_responses is not None) and (participant_id is not None):
+        participant = Participant.objects.get(id=participant_id)
+        code = participant.HITid
+    return render(request, 'definitions/thank_you.html', {'completed': True, 'code': code})
+    
 

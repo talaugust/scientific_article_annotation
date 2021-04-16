@@ -288,7 +288,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
 
-    def get_queryset(self, search_user=None):
+    def get_queryset(self, search_user=None, annotation_type=None):
         if self.request.user.is_superuser:
             # return whatever user the super user is querying
             if search_user is not None:
@@ -298,6 +298,12 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 annotations = self.queryset
         else:
             annotations = self.queryset.filter(user=self.request.user.id)
+
+        if annotation_type is not None:
+            annotations = annotations.filter(text=annotation_type)
+
+        print(annotation_type, annotations)
+
         return annotations
 
     def create(self, request):
@@ -315,12 +321,13 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         article_id = request.GET.get('id', None)
         limit = request.GET.get('limit', len(self.get_queryset()))
         search_user = request.GET.get('search_user', request.user)
+        annotation_type = request.GET.get('annotation_type', None)
 
         if article_id is None:
             # return all the annotations
             filtered_queryset = self.get_queryset()[:int(limit)]   
         else:
-            filtered_queryset = self.get_queryset(search_user=search_user).filter(article=article_id)[:int(limit)]  
+            filtered_queryset = self.get_queryset(search_user=search_user, annotation_type=annotation_type).filter(article=article_id)[:int(limit)]  
 
         serializer = self.serializer_class(filtered_queryset, many=True)
 

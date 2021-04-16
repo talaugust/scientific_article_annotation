@@ -1,4 +1,4 @@
-// https://docs.djangoproject.com/en/1.11/ref/csrf/#ajax
+  // https://docs.djangoproject.com/en/1.11/ref/csrf/#ajax
   function getCookie(name) {
       var cookieValue = null;
       if (document.cookie && document.cookie !== '') {
@@ -42,7 +42,7 @@
           .subscribe("annotationCreated", function (annotation) {
             console.info(annotation)
             if ((annotation['text'] != null) && (annotation['text'].toUpperCase() == 'INT')){
-              num_int_annotations += 1
+              num_int_annotations += 1;
             }
             num_annotations += 1;
           })
@@ -55,6 +55,10 @@
               num_int_annotations -= 1
             }
             num_annotations -= 1;
+          })
+          .subscribe("annotationsLoaded", function(annotations) {
+            console.log('Here')
+            console.log(annotations)
           })
     }
   }
@@ -72,10 +76,27 @@
 
 
   // function for setting up an annotator
-  var setupAnnotator = function(area, article_id, search_user, read_only){
+  var setupAnnotator = function(area, article_id, options){
+  
+    // https://2ality.com/2011/11/keyword-parameters.html
+    if (options === undefined){
+      options = {};
+      search_user = undefined
+      type_choice = undefined
+      read_only =  false
+      no_load = false
+    } else{
+      search_user = options.search_user
+      type_choice = options.type_choice
+      read_only =  options.read_only
+      no_load = options.no_load
+    }
+  
     var content = $(area).annotator({
         readOnly: read_only
     });
+
+    console.log(search_user, type_choice, read_only, no_load);
     content.annotator('addPlugin', 'StoreLogger');
     content.annotator('addPlugin', 'Tags');
 
@@ -97,10 +118,11 @@
       },
       // This will perform a "search" action when the plugin loads. Will
       // request the last 20 annotations for the current url.
-      loadFromSearch: {
-        'id': DEBUG? 'https://www.test.com':article_id,
+      loadFromSearch: no_load? false: {
+        'id': article_id,
         'limit': 100,
         'search_user':search_user,
+        'annotation_type':type_choice,
       },
     });
 

@@ -19,10 +19,23 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 def uuid_int():
     return uuid.uuid4().int
 
-# TODO: ADD MORE LATER
+# # TODO: ADD MORE LATER
+# MODEL_CHOICES = [
+#     ('SVM-NEWS', 'SVM reranker for news text'),
+#     ('SVM-JOURNAL', 'SVM reranker for academic text'),
+# ]
+
 MODEL_CHOICES = [
-    ('SVM-NEWS', 'SVM reranker for news text'),
-    ('SVM-JOURNAL', 'SVM reranker for academic text'),
+    ('BERT-RERANK-JOURNAL', 'BERT Reranker Journal'),
+    ('BERT-RERANK-NEWS', 'BERT Reranker News'),
+    ('SVM-RERANK-JOURNAL', 'SVM Reranker Journal'),
+    ('SVM-RERANK-NEWS', 'SVM Reranker News'),
+    ('GEDI-NEWS', 'Gedi News'),
+    ('GEDI-JOURNAL', 'Gedi Journal'),
+    ('DEXPERT-JOURNAL','DExpert Journal'),
+    ('DEXPERT-NEWS', 'DExpert News'),
+    ('DAPT-NEWS', 'DAPT News'),
+    ('DAPT-JOURNAL', 'DAPT Journal'),
 ]
 
 # common choices
@@ -191,8 +204,9 @@ class Definition(models.Model):
     )
 
     def_text = models.TextField(blank=False)
-    model_type = models.CharField(max_length=15, choices=MODEL_CHOICES, blank=False)
+    model_type = models.CharField(max_length=100, choices=MODEL_CHOICES, blank=False)
     context_sentence = models.TextField(blank=True)
+    reference = models.TextField(blank=True)
     objects = DefinitionManager()
 
 class FluencyResponse(models.Model):

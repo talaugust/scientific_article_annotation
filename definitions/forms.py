@@ -1,5 +1,5 @@
 from django.forms import ModelForm, Textarea, RadioSelect, HiddenInput, ChoiceField, ValidationError
-from .models import Participant, Definition, FluencyResponse, Comment
+from .models import Participant, Definition, FluencyResponse, ComplexityResponse, Comment
 import re 
 from django.core.exceptions import ValidationError
 
@@ -34,6 +34,26 @@ class FluencyResponseForm(ModelForm):
             'fluency_rating': 'How fluent is this definition?',
             'relevancy_rating': 'How relevant is this definition for the term?',
         }
+
+class ComplexityResponseForm(ModelForm):
+
+    class Meta:
+        model = ComplexityResponse
+        fields = ['complexity_rating', 'understand_rating']
+        widgets = {
+            'complexity_rating': RadioSelect,
+            'understand_rating': RadioSelect,
+
+        }
+        # help_texts = {
+        #     'complexity_rating': 'This does not include if the text is ungrammitical.',
+
+        # }
+        labels = {
+            'complexity_rating': 'How complicated is the definition\'s text?',
+            'understand_rating': 'Imagine you are looking up this term, how hard is it for you to understand this definition?',
+        }
+
 
 
 class CommentForm(ModelForm):
