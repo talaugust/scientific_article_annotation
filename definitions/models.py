@@ -178,6 +178,13 @@ class DefinitionManager(models.Manager):
 
         return super().get_queryset().filter(pk__in=def_pks).order_by('?')
 
+    # not currently using
+    def getNotParticipantAnnotated(self, participant_id, responseType):
+        participant_ratings = Count('annotation', filter=Q(responseType__participant_id=participant_id))
+        avalaibleDefinitions = super().get_queryset().annotate(participant_ratings=participant_ratings)
+        return avalaibleArticles.filter(user_annotations=0).order_by('?')
+        
+
 class Definition(models.Model):
 
     '''

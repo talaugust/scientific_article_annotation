@@ -45,10 +45,10 @@ class ComplexityResponseForm(ModelForm):
             'understand_rating': RadioSelect,
 
         }
-        # help_texts = {
-        #     'complexity_rating': 'This does not include if the text is ungrammitical.',
+        help_texts = {
+            'understand_rating': 'This includes the definition having terms that are unfamiliar to you.',
 
-        # }
+        }
         labels = {
             'complexity_rating': 'How complicated is the definition\'s text?',
             'understand_rating': 'Imagine you are looking up this term, how hard is it for you to understand this definition?',

@@ -11,6 +11,7 @@ from article_annotation.settings import DEBUG
 
 
 TESTING = False  
+IS_SINGLE_PARTICIPANT = True
 TEST_DATA_DEM = {'english_prof': 'LIMIT', 'education': 'PRE-HIGH', 'stem_exp': '1-3'}
 TEST_DATA_RESPONSE = {'fluency_rating': 4, 'relevancy_rating': 4}
 
@@ -21,6 +22,10 @@ DEF_COUNT = 3
 
 # Create your views here.
 def landing(request, response_type=None):
+
+    # TODO: make sure this is taken out
+        # if TESTING:
+    # request.session.flush() 
 
     # way of specifying which response type we want, fluency or complexity
     response_type = RESPONSE_MAP.get(response_type, None)
@@ -39,8 +44,11 @@ def DefinitionInstructions(request):
 
     context = {}
 
+    print('HERE')
+
     def_count = request.session.get('defCount')
     def_ids = request.session.get('defIDs')
+
 
     context['response_type'] = request.session.get('response_type')
 
@@ -78,8 +86,16 @@ class DefinitionDemographicsView(FormView):
 
 
     def set_order(self):
-         # get the definitions for this user
-        defs = Definition.objects.getRandomDefs(DEF_COUNT, testing=TESTING)
+
+        
+        # if this is a single participant set up, get all the definitions instead
+        # this will only be called the first time the participant fills out the demographics, 
+        if IS_SINGLE_PARTICIPANT:
+             # get all the definitions
+            defs = Definition.objects.all()
+        else:
+            defs = Definition.objects.getRandomDefs(DEF_COUNT, testing=TESTING)
+        
         def_ids = [str(d.id) for d in defs]
 
         # save the def ids
@@ -89,7 +105,7 @@ class DefinitionDemographicsView(FormView):
         self.request.session['defCount'] = 1
 
         # set max number
-        self.request.session['maxDefCount'] = DEF_COUNT
+        self.request.session['maxDefCount'] = len(def_ids)
 
         return def_ids
 
@@ -104,12 +120,24 @@ class DefinitionDemographicsView(FormView):
         
         return super().get_context_data(**kwargs)
 
-    def get(self, request, *args, **kwargs):        
+    def get(self, request, *args, **kwargs):  
+        # check if a session already exists for this participant and we are assuming a single participant
+        if IS_SINGLE_PARTICIPANT:
+            participant_id = self.request.session.get('participantID', None)
+
+            print(participant_id)
+
+            # first time this participant is logging on
+            if participant_id is None:
+                return super().get(request, *args, **kwargs)
+
+            # the participant exists, allow them to resume rating (note that the expiry length of the session is 2 weeks by default)
+            return redirect(self.get_success_url())
+
         return super().get(request, *args, **kwargs)
 
 
     def form_valid(self, form):
-        print(form.cleaned_data)
         if TESTING:
             data = TEST_DATA_DEM
         else:
@@ -117,7 +145,8 @@ class DefinitionDemographicsView(FormView):
 
         participant = self.model(**data)
 
-        
+
+
         # get the definition order 
         def_ids = self.set_order()
         participant.order = ','.join([str(d_id) for d_id in def_ids])
@@ -140,6 +169,8 @@ class DefinitionDemographicsView(FormView):
         def_count = self.request.session.get('defCount')
         def_ids = self.request.session.get('defIDs')
         next_def_id = def_ids[def_count - 1]
+
+        print(def_count, def_ids)
 
         # return reverse('definitions-form', kwargs={'pk':next_def_id})
         return reverse('definition-instructions')
@@ -231,7 +262,8 @@ class DefinitionResponseDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         # first check if already past the article limit
         def_count = request.session.get('defCount')
-        if def_count > DEF_COUNT:
+        max_def_count = request.session.get('maxDefCount')
+        if def_count > max_def_count:
             return redirect('landing')
         return super().get(request, *args, **kwargs)
 
@@ -297,7 +329,8 @@ class DefinitionResponseFormView(SingleObjectMixin, FormView):
 
         # checks if the user has done three articles, if so sends them to the thank you page
         def_count = self.request.session.get('defCount')
-        if def_count > DEF_COUNT:
+        max_def_count = self.request.session.get('maxDefCount')
+        if def_count > max_def_count:
             return reverse('definition-comments')
         else:
             # get another snippet to show the user from the order
