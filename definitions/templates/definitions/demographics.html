@@ -11,8 +11,13 @@
     <div class="row">
         <h2>Please tell us about yourself.</h2>
     </div>
+     <div class="row">
+        <p class="text text-left text-danger"> Required fields are marked with a *</p>
+    </div>
+    
         <form method="post">
             {% csrf_token %}
+            {% include 'definitions/sections/form_field.html' with form=form field=form.age is_check=False %}
             {% include 'definitions/sections/form_field.html' with form=form field=form.english_prof is_check=False %}
             {% include 'definitions/sections/form_field.html' with form=form field=form.education is_check=False %}       
             {% include 'definitions/sections/form_field.html' with form=form field=form.stem_exp is_check=False %}                

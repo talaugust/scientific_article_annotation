@@ -11,7 +11,7 @@ from article_annotation.settings import DEBUG
 
 
 TESTING = False  
-IS_SINGLE_PARTICIPANT = True
+IS_SINGLE_PARTICIPANT = False
 TEST_DATA_DEM = {'english_prof': 'LIMIT', 'education': 'PRE-HIGH', 'stem_exp': '1-3'}
 TEST_DATA_RESPONSE = {'fluency_rating': 4, 'relevancy_rating': 4}
 
@@ -25,7 +25,7 @@ def landing(request, response_type=None):
 
     # TODO: make sure this is taken out
         # if TESTING:
-    # request.session.flush() 
+    request.session.flush() 
 
     # way of specifying which response type we want, fluency or complexity
     response_type = RESPONSE_MAP.get(response_type, None)

@@ -7,8 +7,9 @@ from django.core.exceptions import ValidationError
 class ParticipantForm(ModelForm):
     class Meta:
         model = Participant
-        fields = ['english_prof', 'education', 'stem_exp',]
+        fields = ['age', 'english_prof', 'education', 'stem_exp',]
         labels = {
+        	'age': 'What is your age?',
             'english_prof': 'How proficient are you in English?',
             'education': 'What is the highest level of education you have received or are currently pursuing?',
             'stem_exp': 'Approximately how many STEM courses have you taken after high school? (STEM stands for "science, technology, engineering, and math.")',

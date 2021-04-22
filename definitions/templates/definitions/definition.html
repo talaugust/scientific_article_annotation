@@ -18,14 +18,17 @@
        		<div class="panel panel-info mt-3">
        			<div class="panel-heading"> Instructions </div>
        			<div class="panel-body show"> 
-       				<strong> Please read the following text and answer the questions below: </strong>
+       				<strong> Please read the following text and answer the questions below. </strong>
 
+              {% if form.complexity_rating is not None %}
+                <p> When rating definitions, please focus on unfamiliar terms or very long, complicated sentences, not grammaticality.  </p>     
+              {% endif %}
               <hr style="border-top: dotted 1px;" />
               <p> <strong> Term: </strong> {{ object.term.term_text }} </p>
               <p> <strong> Definition: </strong> {{ object.def_text }} </p>
-              {% if form.relevancy_rating is not None %}
+              <!-- {% if form.relevancy_rating is not None %}
                 <p> <strong> Context: </strong> {{ object.context_sentence }} </p>                
-              {% endif %}
+              {% endif %} -->
        			</div>
         	</div>
     	</div>

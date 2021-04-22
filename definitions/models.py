@@ -107,6 +107,7 @@ class Participant(models.Model):
     english_prof = models.CharField(max_length=50, choices=PROF_CHOICES)
     education = models.CharField(max_length=50, choices=EDU_CHOICES)
     stem_exp = models.CharField(max_length=50, choices=STEM_CHOICES)
+    age = models.PositiveIntegerField(validators=[MaxValueValidator(150), MinValueValidator(18)])
 
     eval_exp = models.CharField(max_length=50, choices=EVAL_CHOICES)
     order = models.TextField(blank=False) # TODO: potentially add a method for establishing order here
