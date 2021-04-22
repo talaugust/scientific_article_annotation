@@ -26,16 +26,16 @@ def uuid_int():
 # ]
 
 MODEL_CHOICES = [
-    ('BERT-RERANK-JOURNAL', 'BERT Reranker Journal'),
-    ('BERT-RERANK-NEWS', 'BERT Reranker News'),
+    # ('BERT-RERANK-JOURNAL', 'BERT Reranker Journal'),
+    # ('BERT-RERANK-NEWS', 'BERT Reranker News'),
     ('SVM-RERANK-JOURNAL', 'SVM Reranker Journal'),
     ('SVM-RERANK-NEWS', 'SVM Reranker News'),
     ('GEDI-NEWS', 'Gedi News'),
     ('GEDI-JOURNAL', 'Gedi Journal'),
     ('DEXPERT-JOURNAL','DExpert Journal'),
     ('DEXPERT-NEWS', 'DExpert News'),
-    ('DAPT-NEWS', 'DAPT News'),
-    ('DAPT-JOURNAL', 'DAPT Journal'),
+    # ('DAPT-NEWS', 'DAPT News'),
+    # ('DAPT-JOURNAL', 'DAPT Journal'),
 ]
 
 # common choices

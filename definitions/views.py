@@ -11,7 +11,7 @@ from article_annotation.settings import DEBUG
 
 
 TESTING = False  
-IS_SINGLE_PARTICIPANT = False
+IS_SINGLE_PARTICIPANT = True
 TEST_DATA_DEM = {'english_prof': 'LIMIT', 'education': 'PRE-HIGH', 'stem_exp': '1-3'}
 TEST_DATA_RESPONSE = {'fluency_rating': 4, 'relevancy_rating': 4}
 
