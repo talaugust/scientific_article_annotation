@@ -23,9 +23,7 @@
               {% if form.complexity_rating is not None %}
                 <p> When rating definitions, please focus on unfamiliar terms or very long, complicated sentences, not grammaticality.  </p>     
               {% endif %}
-              <hr style="border-top: dotted 1px;" />
-              <p> <strong> Term: </strong> {{ object.term.term_text }} </p>
-              <p> <strong> Definition: </strong> {{ object.def_text }} </p>
+              <!-- <hr style="border-top: dotted 1px;" /> -->
               <!-- {% if form.relevancy_rating is not None %}
                 <p> <strong> Context: </strong> {{ object.context_sentence }} </p>                
               {% endif %} -->
@@ -33,6 +31,19 @@
         	</div>
     	</div>
 	</div>
+
+  <div class="row mt-5 mb-5">
+        <div class="col-8">
+          <div class="panel panel-info mt-3">
+            <!-- <div class="panel-heading"> Term & Definition </div> -->
+            <div class="panel-body show"> 
+              <p> <strong> Term: </strong> {{ object.term.term_text }} </p>
+              <p> <strong> Definition: </strong> {{ object.def_text }} </p>
+            </div>
+          </div>
+      </div>
+  </div>
+
 
 
 

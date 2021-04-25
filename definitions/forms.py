@@ -47,6 +47,7 @@ class ComplexityResponseForm(ModelForm):
 
         }
         help_texts = {
+        	# 'complexity_rating': 'When rating definitions please focus on unfamiliar terms or very long, complicated sentences, not grammaticality.',
             'understand_rating': 'This includes the definition having terms that are unfamiliar to you.',
 
         }
