@@ -21,7 +21,8 @@
        				<strong> Please read the following text and answer the questions below. </strong>
 
               {% if form.complexity_rating is not None %}
-                <p> When rating definitions, please focus on unfamiliar terms or very long, complicated sentences, not grammaticality.  </p>     
+                <p> When rating definitions, please focus on unfamiliar terms or very long, complicated sentences, not grammaticality.  </p> 
+                <p> If a definition is 'nan' please rate it as <strong> Very </strong> complex and <strong> Very </strong> hard to understand.  </p>      
               {% endif %}
               <!-- <hr style="border-top: dotted 1px;" /> -->
               <!-- {% if form.relevancy_rating is not None %}

@@ -264,7 +264,7 @@ class DefinitionResponseDetailView(DetailView):
         def_count = request.session.get('defCount')
         max_def_count = request.session.get('maxDefCount')
         if def_count > max_def_count:
-            return redirect('landing')
+            return redirect('definition-comments')
         return super().get(request, *args, **kwargs)
 
 
