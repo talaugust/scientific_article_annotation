@@ -380,6 +380,7 @@ def thank_you(request):
     if (def_responses is not None) and (participant_id is not None):
         participant = Participant.objects.get(id=participant_id)
         code = participant.HITid
-    return render(request, 'definitions/thank_you.html', {'completed': True, 'code': code})
-    
+        return render(request, 'definitions/thank_you.html', {'completed': True, 'code': code})
+    else: 
+        return render(request, 'definitions/thank_you.html', {'completed': False})
 
