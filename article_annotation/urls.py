@@ -41,6 +41,5 @@ urlpatterns = [
     # path('LITW/results', annotationViews.results, name='LITW-results'),
     path('survey/', include('intra_article_survey.urls')),
     path('definitions/', include('definitions.urls')),
-    path('tool/', include('reader_tool.urls')),
 ]
 

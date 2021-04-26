@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['PROD_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  
+DEBUG = False  
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['scicomm.labinthewild.org', '127.0.0.1', 'localhost']
@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'intra_article_survey',
     'annotationAPI',
-    'reader_tool',
     'definitions',
     'widget_tweaks',
     'rest_framework.authtoken',

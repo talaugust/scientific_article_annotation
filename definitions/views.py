@@ -92,7 +92,7 @@ class DefinitionDemographicsView(FormView):
         # this will only be called the first time the participant fills out the demographics, 
         if IS_SINGLE_PARTICIPANT:
              # get all the definitions
-            defs = Definition.objects.all()
+            defs = Definition.objects.all().order_by('?')
         else:
             defs = Definition.objects.getAvaliableComplexityDefs(n=DEF_COUNT)
         
