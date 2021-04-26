@@ -94,7 +94,7 @@ class DefinitionDemographicsView(FormView):
              # get all the definitions
             defs = Definition.objects.all()
         else:
-            defs = Definition.objects.getRandomDefs(DEF_COUNT, testing=TESTING)
+            defs = Definition.objects.getAvaliableComplexityDefs(n=DEF_COUNT)
         
         def_ids = [str(d.id) for d in defs]
 

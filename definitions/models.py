@@ -133,6 +133,26 @@ class TermManager(models.Manager):
         # return, with an extra shuffle just in case
         return super().get_queryset().filter(pk__in=random_sample_ids).order_by('?')
 
+    # returns n terms, randomly selected that have AT LEAST one definition with < k TOTAL complexity responses
+    def getRandomComplexityNotAnnotatedTerms(self, n, k):
+
+        # first annotate the terms for their total number of complexity responses
+        avalaibleTerms = super().get_queryset().annotate(number_complexity_responses=Count('definition__complexityresponse'))
+
+        # while this doesn't look at individual definitions, the assumption is that if the definition 
+        # manager restricts each definition to at most 2 complexity responses, then we can just use 
+        # an aggregate filter here (of 6*2 = 12 = k)
+        avalaibleTerms = avalaibleTerms.filter(number_complexity_responses__lte=k)
+
+        # get all the ids of the qs in a list
+        all_avaliable_ids = list(avalaibleTerms.values_list('id', flat=True))  
+
+        # randomly sample n of them (without replacement)
+        random_sample_ids = random.sample(all_avaliable_ids, n)
+
+        # return, with an extra shuffle just in case
+        return avalaibleTerms.filter(pk__in=random_sample_ids).order_by('?')
+
 class Term(models.Model):
     TERM_CATEGORIES = [
             ('WIKI', 'Wikipedia'),
@@ -152,7 +172,8 @@ class DefinitionManager(models.Manager):
     # number of hits that will fill out the db, but still a good thing to know. 
     # also order_by is super slow, but whatever
 
-    # returns n snippets randomly except none are from the same term and we cover all generator types
+    # returns n definitions randomly except none are from the same term and we cover all generator types
+    
     def getRandomDefs(self, n, testing=False):
 
         # first off get a random set of unique terms
@@ -176,6 +197,22 @@ class DefinitionManager(models.Manager):
             else:
                 # else just pick a random model
                 def_pks.add(defs.order_by('?').first().pk)
+
+        return super().get_queryset().filter(pk__in=def_pks).order_by('?')
+
+    # returns n definitions that have not been responded to by more than 2 people (for complexity response) 
+    def getAvaliableComplexityDefs(self, n, max_num_complexity_responses=2):
+
+        # first off get a random set of unique terms
+        terms = Term.objects.getRandomComplexityNotAnnotatedTerms(n, k=max_num_complexity_responses*len(MODEL_CHOICES))
+
+        def_pks = set()
+
+        # for each term, select definition that has less than 2 complexity responses
+        for t in terms:
+            defs = super().get_queryset().filter(term=t).annotate(number_complexity_responses=Count('complexityresponse'))
+            defs = defs.filter(number_complexity_responses__lte=max_num_complexity_responses) 
+            def_pks.add(defs.order_by('?').first().pk)
 
         return super().get_queryset().filter(pk__in=def_pks).order_by('?')
 
