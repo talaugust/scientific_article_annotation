@@ -21,14 +21,32 @@ RESPONSE_TYPE_MAP = {'FLUENCY': FluencyResponse, 'COMPLEXITY':ComplexityResponse
 DEF_COUNT = 3
 
 # Create your views here.
-def landing(request, response_type=None):
+def landing(request, response_type=None, d1=None, d2=None, d3=None):
 
     # TODO: make sure this is taken out
         # if TESTING:
-    # request.session.flush() 
+    request.session.flush() 
 
     # way of specifying which response type we want, fluency or complexity
     response_type = RESPONSE_MAP.get(response_type, None)
+    
+    # way of controlling the presented definitions, d1-3 are the uuids of the assigned definitions
+    defs = [d1, d2, d3]
+
+    # only set the definition order if all the definitions are defined
+    if None not in defs:
+
+        def_ids = [str(d) for d in defs]
+
+        # save the def ids
+        request.session['defIDs'] = def_ids
+
+        # set current def number
+        request.session['defCount'] = 1
+
+        # set max number
+        request.session['maxDefCount'] = len(def_ids)
+
 
     # if it is none, pick randomly 
     if response_type is None:
@@ -148,7 +166,12 @@ class DefinitionDemographicsView(FormView):
 
 
         # get the definition order 
-        def_ids = self.set_order()
+
+        # check if the definitions were set at the landing page
+        def_ids = self.request.session.get('defIDs', None)
+        if def_ids is None:
+            def_ids = self.set_order()
+
         participant.order = ','.join([str(d_id) for d_id in def_ids])
 
         participant.save()

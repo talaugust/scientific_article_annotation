@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('landing', views.landing, name='landing'),
     path('landing/<int:response_type>', views.landing, name='landing'),
+    path('landing/<int:response_type>/<uuid:d1>/<uuid:d2>/<uuid:d3>', views.landing, name='landing'),
     path('demographics', views.DefinitionDemographicsView.as_view(), name='definition-demographics'),
     path('instructions', views.DefinitionInstructions, name='definition-instructions'),    
     path('form/<uuid:pk>/', views.DefinitionResponseView.as_view(), name='definition-form'),
