@@ -40,6 +40,9 @@
             <div class="panel-body show"> 
               <p> <strong> Term: </strong> {{ object.term.term_text }} </p>
               <p> <strong> Definition: </strong> {{ object.def_text }} </p>
+              {% if form.is_not_factual is not None %}
+                <p> <strong> Reference: </strong> {{ object.reference }} </p>
+              {% endif %}
             </div>
           </div>
       </div>
@@ -59,6 +62,11 @@
           {% elif form.complexity_rating is not None %}
             {% include 'definitions/sections/form_field_likert.html' with form=form field=form.complexity_rating is_likert=True %}
             {% include 'definitions/sections/form_field_likert.html' with form=form field=form.understand_rating is_likert=True %}
+          {% elif form.factuality_rating is not None %}
+            {% include 'definitions/sections/form_field.html' with form=form field=form.is_not_factual is_check=True %}
+            <br>
+            <br>
+            {% include 'definitions/sections/form_field_likert.html' with form=form field=form.factuality_rating is_likert=True %}
           {% endif %}
           <br>
           <div class="row ml-3 mt-3">

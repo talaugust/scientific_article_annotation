@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from annotationAPI.models import Annotation, Article
-from .models import Participant, Definition, FluencyResponse, ComplexityResponse, Comment
-from .forms import ParticipantForm, FluencyResponseForm, ComplexityResponseForm, CommentForm
+from .models import Participant, Definition, FluencyResponse, ComplexityResponse, FactualityResponse, Comment
+from .forms import ParticipantForm, FluencyResponseForm, ComplexityResponseForm, FactualityResponseForm, CommentForm
 from django.views.generic.edit import FormView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views import View
@@ -11,12 +11,12 @@ from article_annotation.settings import DEBUG
 
 
 TESTING = False  
-IS_SINGLE_PARTICIPANT = False
+IS_SINGLE_PARTICIPANT = True
 TEST_DATA_DEM = {'english_prof': 'LIMIT', 'education': 'PRE-HIGH', 'stem_exp': '1-3'}
 TEST_DATA_RESPONSE = {'fluency_rating': 4, 'relevancy_rating': 4}
 
-RESPONSE_MAP = {1: 'FLUENCY', 2:'COMPLEXITY'}
-RESPONSE_TYPE_MAP = {'FLUENCY': FluencyResponse, 'COMPLEXITY':ComplexityResponse}
+RESPONSE_MAP = {1: 'FLUENCY', 2:'COMPLEXITY', 3:'FACT'}
+RESPONSE_TYPE_MAP = {'FLUENCY': FluencyResponse, 'COMPLEXITY':ComplexityResponse, 'FACT':FactualityResponse}
 
 DEF_COUNT = 3
 
@@ -226,6 +226,9 @@ class DefinitionResponseView(View):
         elif response_type == 'COMPLEXITY':
             self.response_model = ComplexityResponse
             self.form_class = ComplexityResponseForm
+        elif response_type == 'FACT':
+            self.response_model = FactualityResponse
+            self.form_class = FactualityResponseForm
         else:
             raise(Exception('Response type ({}) unknown'.format(response_type)))
 

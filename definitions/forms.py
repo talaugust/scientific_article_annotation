@@ -1,5 +1,5 @@
 from django.forms import ModelForm, Textarea, RadioSelect, HiddenInput, ChoiceField, ValidationError
-from .models import Participant, Definition, FluencyResponse, ComplexityResponse, Comment
+from .models import Participant, Definition, FluencyResponse, ComplexityResponse, FactualityResponse, Comment
 import re 
 from django.core.exceptions import ValidationError
 
@@ -56,6 +56,24 @@ class ComplexityResponseForm(ModelForm):
             'understand_rating': 'Imagine you are looking up this term, how hard is it for you to understand this definition?',
         }
 
+class FactualityResponseForm(ModelForm):
+
+    class Meta:
+        model = FactualityResponse
+        fields = ['is_not_factual', 'factuality_rating']
+        widgets = {
+            'factuality_rating': RadioSelect,
+
+        }
+        help_texts = {
+        	# 'complexity_rating': 'When rating definitions please focus on unfamiliar terms or very long, complicated sentences, not grammaticality.',
+            'factuality_rating': 'If the definition is correct, just mark \'Not at all\' ',
+
+        }
+        labels = {
+            'is_not_factual': 'Does this definition contain factually incorrect information?',
+            'factuality_rating': 'If the definition contains factually incorrect information, how extensive are these errors?',
+        }
 
 
 class CommentForm(ModelForm):

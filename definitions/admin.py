@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Participant, Definition, Term, FluencyResponse, ComplexityResponse, Comment
+from .models import Participant, Definition, Term, FluencyResponse, ComplexityResponse, FactualityResponse, Comment
 from django.core import serializers
 from django.http import HttpResponse
 import csv
@@ -30,38 +30,37 @@ class ExportCsvMixin:
     export_as_csv.short_description = "Export Selected"
 
 
-# Register your models here.
 @admin.register(Definition)
 class DefinitionAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('id', 'term_id', 'model', 'def_text')
     actions = ['export_as_csv']
 
-# Register your models here.
 @admin.register(Term)
 class TermAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('id', 'term_text', 'category')
     actions = ['export_as_csv']
 
-# Register your models here.
 @admin.register(FluencyResponse)
 class FluencyResponseAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('id', 'definition', 'fluency_rating', 'relevancy_rating', 'created')
     actions = ['export_as_csv']
 
-# Register your models here.
 @admin.register(ComplexityResponse)
 class ComplexityResponse(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('id', 'definition', 'complexity_rating', 'understand_rating', 'created')
     actions = ['export_as_csv']
 
+@admin.register(FactualityResponse)
+class FactualityResponse(admin.ModelAdmin, ExportCsvMixin):
+    list_display = ('id', 'definition', 'is_not_factual', 'factuality_rating', 'created')
+    actions = ['export_as_csv']
 
-# Register your models here.
+
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('id', 'participant', 'comment_text')
     actions = ['export_as_csv']
 
-# Register your models here.
 @admin.register(Participant)
 class ParticipantAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('id', 'english_prof', 'education', 'stem_exp', 'HITid', 'created')

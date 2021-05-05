@@ -11,7 +11,7 @@
         <h2>Instructions</h2>
     </div>
    	{% if response_type == 'FLUENCY' %}
-	    <div class="row"> <p> You will be given 3 terms with their definitions and asked to rate how fluent and relevent to the term the definition is. </p> </div>
+	    <div class="row"> <p> You will be given terms with their definitions and asked to rate how fluent and relevent to the term the definition is. </p> </div>
 
 	    <div class="row"> <p> You will be asked to rate the fluency and relevance of the definition on a scale from <strong> Not at all </strong> fluent or relevant to <strong> Very </strong> fluent or relevant.  </p> </div>
 
@@ -74,7 +74,28 @@
 
 			
 
-			<br>   		
+			<br>   	
+
+	{% elif response_type == 'FACT' %}
+
+		<div class="row"> <p> You will be given terms with their definitions and asked to rate how factual the definition is. </p> </div>
+
+	    <div class="row"> <p> You will be asked to mark if a definition contains factually incorrect information and rate how extensive these factual errors are from <strong> Not at all </strong> to <strong> Very</strong>.</p> </div>
+
+	    <div class="row"> <p> A correct reference definition is given below each definition, which you can use to assess the factuality of the definition you are rating. If you are unsure if a definition is factual or not, you can also use the internet.</p> </div>
+
+	    <div class="row"> <p> A definition th </p> </div>
+
+	    <div class="row"> <p class='lead mt-2 mb-2'> Example of not at all extensive errors for a factually incorrect definition: </p> </div>
+			<p> <strong> Term: </strong> Magnetic field </p>
+			<p> <strong> Definition: </strong> An object that causes magnets and currents to experience forces. (The field is not an object) </p>
+
+		<div class="row"> <p class='lead mt-2 mb-2'> Example of very extensive factual errors: </p> </div>
+
+			<p> <strong> Term: </strong> Magnetic field </p>
+			<p> <strong> Definition: </strong> A large object that causes exerts electrical currents on the ground. (The field is not a large object, nor does it exert electrical currents. There is also nothing specific about the ground for a magnetic field.)</p>
+
+
 	{% endif %}
 
 	<strong> Please do not press the back button while taking this task. </strong>

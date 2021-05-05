@@ -302,6 +302,31 @@ class ComplexityResponse(models.Model):
     understand_rating = models.IntegerField(choices=LIKERT_CHOICES, default=0)
 
 
+class FactualityResponse(models.Model):
+    '''
+    A complexity response model. Includes:
+        (1) the definition
+        (2) the participant
+        (3) boolean if there is non-factual information
+        (4) score for factuality
+        (5) a timestamp
+    '''
+
+
+    participant = models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+    )
+    definition = models.ForeignKey(
+        Definition,
+        on_delete=models.CASCADE,
+    )
+    created = models.DateTimeField(default=now)
+    is_not_factual = models.BooleanField()
+    factuality_rating = models.IntegerField(choices=LIKERT_CHOICES, default=0)
+
+
+
 
 class Comment(models.Model):
     participant = models.ForeignKey(
